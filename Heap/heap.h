@@ -69,8 +69,6 @@ typedef struct
 
 
 
-
-
 /*
  * Function prototypings of procedures regarding the
  * binary heap data structure such as create,insert,removeRoot,

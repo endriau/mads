@@ -31,7 +31,7 @@
 
 
 /*
- * COMPLEXITY: Theta(1)
+ * @COMPLEXITY: Theta(1)
  *
  * The function heap_create() takes four arguments, an integer and three
  * function pointers.It creates a new heap_t data structure by allocating
@@ -78,7 +78,7 @@ heap_t *heap_create(int type,HeapCompareFn cmp,HeapPrintFn print,HeapDestroyFn d
 
 
 /*
- * COMPLEXITY: O(logn)
+ * @COMPLEXITY: O(logn)
  *
  * The static function heap_bubbleup() takes two arguments, a heap_t
  * data structure, an integer that represents a position within
