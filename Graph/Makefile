@@ -22,4 +22,3 @@ clobber:
 memcheck:
 	valgrind --leak-check=full ./$(EXE)
 
-

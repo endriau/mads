@@ -119,4 +119,3 @@ int         graph_isConnected(graph_t *g);
 void        graph_explore(graph_t *g,label_t u,void (*exploreFn)(graph_t *g,label_t u));
 void        graph_print(graph_t *g);
 void        graph_free(graph_t *g);
-

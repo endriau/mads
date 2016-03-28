@@ -29,7 +29,8 @@ int main(int argc,char *argv[])
     assert(var!=NULL);
     uint number_of_vertices=4;
     graph_t *new_graph=NULL;
-    new_graph=graph_create("graph1",number_of_vertices,double_compare,print_doubles,NULL);
+    new_graph=graph_create("graph1",number_of_vertices,
+                    double_compare,print_doubles,NULL);
 
     *var=50;
     temp=(void **)var;
@@ -52,4 +53,3 @@ int main(int argc,char *argv[])
     free(var);
     return 0;
 }
-
