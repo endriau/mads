@@ -116,6 +116,6 @@ void        graph_del_edge(graph_t *g,label_t u,label_t v);
 void        graph_setVertex(graph_t *g,void *data,label_t u);
 int         graph_hasEdge(graph_t *g,label_t u,label_t v);
 int         graph_isConnected(graph_t *g);
-void        graph_explore(graph_t *g,label_t u,void (*exploreFn)(graph_t *g,label_t u));
+void        graph_explore(graph_t *g,label_t u,void (*exploreFn)(graph_t *g,uint *counter,label_t u));
 void        graph_print(graph_t *g);
 void        graph_free(graph_t *g);

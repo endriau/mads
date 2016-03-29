@@ -1,5 +1,5 @@
-OBJ		= graph.o main.o
-SRC		= graph.c main.c
+OBJ		= graph.o main.o ../Heap/heap.o
+SRC		= graph.c main.c ../Heap/heap.c
 EXE		= testGraph
 
 

@@ -328,22 +328,23 @@ int graph_isConnected(graph_t *g)
  *
  * @param:   graph_t    *g
  * @param:   label_t    u
- * @param:   void       (*exploreFn)(graph_t *g,label_t u)
+ * @param:   void       (*exploreFn)(graph_t *g,uint *counter,label_t u)
  * @return:  void
  *
  */
 
-void graph_explore(graph_t *g,label_t u,void (*exploreFn)(graph_t *g,label_t u))
+void graph_explore(graph_t *g,label_t u,void (*exploreFn)(graph_t *g,uint *counter,label_t u))
 {
     int i;
+    uint counter=0;
     assert(g!=NULL);
     assert(exploreFn!=NULL);
     assert(u>=0 && u<g->num_vertices);
-    exploreFn(g,u);
+    exploreFn(g,&counter,u);
     
     for (i=0;i<g->num_vertices;i++)
     {
-        exploreFn(g,i);
+            exploreFn(g,&counter,i);
     }
 
     return;
@@ -380,7 +381,7 @@ void graph_print(graph_t *g)
         {
             if (g->vertices[i].edges[j].weight!=(void *)(-1))
             {
-                printf("( %d, %d, ",g->vertices[i].u,g->vertices[i].edges[j].v);
+                printf("( %d, %d, weight = ",g->vertices[i].u,g->vertices[i].edges[j].v);
                 g->print(g->vertices[i].edges[j].weight);
                 printf(" )\n");
             }
