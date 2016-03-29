@@ -9,6 +9,17 @@
  */
 
 
+
+/*
+ * Including the standard input-output library,
+ * the standard general utilities library,the
+ * standard assertion library and the header file
+ * tree.h which contains datatype definitions and
+ * function prototypings for the balanced binary
+ * tree data structure.
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -16,12 +27,41 @@
 
 
 
+
+/*
+ * Defining one macro constant to represent the
+ * maximum allowed imbalance of a node in a balanced
+ * binary tree and two macro-like functions that return
+ * the height component of a node_t structure and the
+ * maximum of two given arguments consecutively.
+ *
+ */
+
 #define	ALLOWED_IMBALANCE	1
 #define HEIGHT(node)        (node==NULL ? -1 : node->height)
 #define MAX(a,b)            (a > b ? a : b)
 
 
 
+
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function tree_create() takes three function pointers 
+ * as arguments.It creates a new tree_t data structure by
+ * allocating memory for it and it's components and instantiates
+ * it's components to the default values.The print and cmp components
+ * are mandatory and cannot be null.The user has to create their own
+ * cmp,print,destroy ( optional ) functions.Failure to do so will 
+ * result in program termination due to invalid assertions.
+ *
+ * @param:	TreeCompareFn	cmp
+ * @param:	TreePrintFn		print
+ * @param:	TreeDestroyFn	destroy
+ * @return:	tree_t 			*
+ *
+ */
 
 tree_t *tree_create(TreeCompareFn cmp,TreePrintFn print,TreeDestroyFn destroy)
 {
@@ -37,11 +77,22 @@ tree_t *tree_create(TreeCompareFn cmp,TreePrintFn print,TreeDestroyFn destroy)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The static function rotate_with_left_child() takes as an
+ * argument a node_t data structure and performs a rotation
+ * with it's left child.Once the rotation has been completed
+ * the heights are updated.
+ *
+ * @param:	node_t 		*node
+ * @return:	node_t		*
+ *
+ */
 
 static node_t *rotate_with_left_child(node_t *node)
 {
@@ -57,6 +108,19 @@ static node_t *rotate_with_left_child(node_t *node)
 
 
 
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The static function rotate_with_right_child() takes as
+ * an argument a node_t data structure and performs a rotation
+ * with it's right child.Once the rotation has been completed
+ * the heights are updated.
+ *
+ * @param:	node_t 		*node
+ * @return:	node_t		*
+ *
+ */
+
 static node_t *rotate_with_right_child(node_t *node)
 {
 	node_t *rotate_node=NULL;
@@ -71,6 +135,19 @@ static node_t *rotate_with_right_child(node_t *node)
 
 
 
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The static function double_with_left_child() takes as
+ * an argument a node_t data structure and performs a
+ * rotation with the right child of the given node's left
+ * child and another rotation with the left child of the node.
+ *
+ * @param: 	node_t 		*node
+ * @return:	node_t 		*
+ *
+ */
+
 static node_t *double_with_left_child(node_t *node)
 {
 	node->left=rotate_with_right_child(node->left);
@@ -79,6 +156,19 @@ static node_t *double_with_left_child(node_t *node)
 
 
 
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The static function double_with_right_child() takes as
+ * and argument a node_t data structure and performs a
+ * rotation with the left child of the given node's right
+ * child and another rotation with the right child of the node.
+ *
+ * @param:	node_t 		*node
+ * @return:	node_t		*
+ *
+ */
 
 static node_t *double_with_right_child(node_t *node)
 {
@@ -91,6 +181,20 @@ static node_t *double_with_right_child(node_t *node)
 
 
 
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The static function balance() takes as argument
+ * a node_t data structure and checks whether the
+ * given node satisfies the balanced binary tree
+ * properties.If the tree is not balanced it performs
+ * the necessary rotations, depending on the heights
+ * of the nodes, to rebalance it and update the height.
+ *
+ * @param:	node_t 		*node
+ * @return:	node_t		*
+ *
+ */
 
 static node_t *balance(node_t *node)
 {
@@ -132,6 +236,23 @@ static node_t *balance(node_t *node)
 
 
 
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The static function tree_recursive_insert() takes three arguments,
+ * a node_t data structure, a TreeCompareFn function and a void pointer
+ * to some data and checks whether the given element exists within the
+ * balanced binary tree.If the element does not exist it inserts it into
+ * the tree and rebalances it when necessary via the static function balance().
+ * If on the other the element already exists in the tree, nothing happesn.
+ * No duplicates are allowed.The given TreeCompareFn has to be not null.
+ *
+ * @param:	node_t				*node
+ * @param:	TreeCompareFn		cmp
+ * @param:	void				*data
+ * @return:	node_t				*
+ *
+ */
 
 static node_t *tree_recursive_insert(node_t *node,TreeCompareFn cmp,void *data)
 {
@@ -165,9 +286,22 @@ static node_t *tree_recursive_insert(node_t *node,TreeCompareFn cmp,void *data)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The function tree_insert() takes two arguments,
+ * a tree_t data structure and a void pointer to
+ * some data and inserts the given element into the
+ * tree by invoking the static function tree_recursive_insert().
+ *
+ * @param:	tree_t 		*t
+ * @param:	void		*data
+ * @return:	void
+ *
+ */
 
 void tree_insert(tree_t *t,void *data)
 {
@@ -177,10 +311,24 @@ void tree_insert(tree_t *t,void *data)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The static function tree_recursive_search() takes three arguments,
+ * a node_t data structure,a TreeCompareFn function,a void pointer to
+ * some data and searches the balanced binary tree for the given element.
+ * If the element exists within the tree it returns the node containing
+ * the element otherwise it returns null.
+ *
+ * @param:	node_t 				*node
+ * @param:	TreeCompareFn		cmp
+ * @param:	void				*item
+ * @return:	node_t				*
+ *
+ */
 
 static node_t *tree_recursive_search(node_t *node,TreeCompareFn cmp,void *item)
 {
@@ -204,8 +352,22 @@ static node_t *tree_recursive_search(node_t *node,TreeCompareFn cmp,void *item)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The function tree_search() takes two arguments,
+ * a tree_t data structure, a void pointer to some
+ * data and searches the balanced binary tree for
+ * the given element by invoking the static function
+ * tree_recursive_search().If the element exists it
+ * returns one, otherwise it returns zero.
+ *
+ * @param:	tree_t 		*t
+ * @param:	void		*item
+ *
+ */
 
 int tree_search(tree_t *t,void *item)
 {
@@ -217,6 +379,22 @@ int tree_search(tree_t *t,void *item)
 
 
 
+
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The function tree_getElem() takes two arguments,
+ * a tree_t data structure, a void pointer to some
+ * data and searches the tree for the given element.
+ * If the element is within the tree it is returned,
+ * otherwise it returns null.
+ *
+ * @param:	tree_t 		*t
+ * @param:	void		*item
+ * @return:	void		*
+ *
+ */
+
 void *tree_getElem(tree_t *t,void *item)
 {
 	node_t *query_node=NULL;
@@ -226,6 +404,21 @@ void *tree_getElem(tree_t *t,void *item)
 }
 
 
+
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function tree_getRoot() takes as an argument
+ * a tree_t data structure and returns the data
+ * component of the root node.It the root is null,
+ * it returns null.
+ *
+ * @param:	tree_t 		*t
+ * @return:	void		*
+ *
+ */
+
 void *tree_getRoot(tree_t *t)
 {
 	assert(t!=NULL);
@@ -234,8 +427,21 @@ void *tree_getRoot(tree_t *t)
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The static function find_min() takes a node_t
+ * data structure as an argument and returns it's
+ * left most node grandchild.if the given node
+ * is null, null is returned.
+ *
+ * @param:	node_t		*node
+ * @return:	node_t 		*
+ *
+ */
 
 static node_t *find_min(node_t *node)
 {
@@ -253,6 +459,25 @@ static node_t *find_min(node_t *node)
 }
 
 
+
+
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The static function tree_recursive_remove() takes four arguments,
+ * a node_t data structure,a TreeCompareFn function,a TreeDestroyFn
+ * function,a void pointer to some data and searches the balanced
+ * binary tree for the given element,if the element exists,it is 
+ * deleted  from the binary tree.Once deleted, the tree is rebalanced 
+ * where necessary.If the element does not exist then nothing happens.
+ *
+ * @param:	node_t 				*node
+ * @param:	TreeCompareFn		cmp
+ * @param:	TreeDestroyFn		destroy
+ * @param:	void				*item
+ * @return:	node_t				*
+ *
+ */
 
 static node_t *tree_recursive_remove(node_t *node,TreeCompareFn cmp,TreeDestroyFn destroy,void *item)
 {
@@ -328,9 +553,24 @@ static node_t *tree_recursive_remove(node_t *node,TreeCompareFn cmp,TreeDestroyF
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+/*
+ * @COMPLEXITY: O(logn)
+ *
+ * The function tree_remove() takes two arguments,
+ * a tree_t data structure, a void pointer to some
+ * data and removes that element from the tree by
+ * invoking the static function tree_recursive_remove() .
+ * If the element does not exist nothing happesn.
+ *
+ * @param:	tree_t 		*t
+ * @param:	void		*item
+ * @return:	void
+ *
+ */
 
 void tree_remove(tree_t *t,void *item)
 {
@@ -341,6 +581,20 @@ void tree_remove(tree_t *t,void *item)
 }
 
 
+
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function tree_removeRoot() takes as an argument
+ * a tree_t data tructure and removes the root element
+ * from the tree, without violating tree properties.
+ *
+ * @param:	tree_t 		*t
+ * @return:	void
+ *
+ */
+
 void tree_removeRoot(tree_t *t)
 {
 	assert(t!=NULL);
@@ -349,8 +603,21 @@ void tree_removeRoot(tree_t *t)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function tree_isEmpty() takes as an argument
+ * a tree_t data structure and checks whether the
+ * given tree is empty or not.If the tree is empty
+ * it returns one, otherwise if the tree is not
+ * empty it returns zero.
+ *
+ * @param:	tree_t 		*t
+ * @return:	int
+ *
+ */
 
 int tree_isEmpty(tree_t *t)
 {
@@ -359,6 +626,20 @@ int tree_isEmpty(tree_t *t)
 }
 
 
+
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function tree_getHeight() takes as an argument
+ * a tree_t data structure and returns the height of
+ * of the balanced binary tree.
+ *
+ * @param:	tree_t 		*t
+ * @return:	int
+ *
+ */
+
 int tree_getHeight(tree_t *t)
 {
 	assert(t!=NULL);
@@ -366,9 +647,23 @@ int tree_getHeight(tree_t *t)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+/*
+ * @COMPLEXITY: O(n)
+ *
+ * The static function tree_recursive_print() takes three arguments,
+ * a node_t data structure,a TreePrintFn function,a integer that
+ * represents the current depth of recursion and prints out all of the
+ * elements within the tree from the right most element to the left most.
+ *
+ * @param:	node_t 				*t
+ * @param:	TreePrintFn			print
+ * @param:	int 				depth
+ * @return:	void
+ *
+ */
 
 static void tree_recursive_print(node_t *node,TreePrintFn print,int depth)
 {
@@ -384,8 +679,20 @@ static void tree_recursive_print(node_t *node,TreePrintFn print,int depth)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+/*
+ * @COMPLEXITY: O(n)
+ *
+ * The function tree_print() takes as an argument
+ * a tree_t data structure and prints the tree
+ * in a user-friendly format.This function makes
+ * use of the static function tree_recursive_print().
+ *
+ * @param:	tree_t 		*t
+ * @return:	void
+ *
+ */
 
 void tree_print(tree_t *t)
 {
@@ -398,12 +705,33 @@ void tree_print(tree_t *t)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*
+ * @COMPLEXITY: O(n)
+ *
+ * The function tree_free() takes as an argument
+ * a tree_t data structure and removes the root
+ * of the tree until the tree becomes empty by
+ * invoking the static function tree_removeRoot().
+ * If the user has provided a destroy function
+ * the data components of each node is deallocated
+ * as well.Otherwise only the node components are.
+ * Once the tree is empty, the tree data structure
+ * is deallocated and it's components set to null.
+ *
+ * @param:	tree_t 		*t
+ * @return:	void
+ *
+ */
 
 void tree_free(tree_t *t)
 {
 	assert(t!=NULL);
 	while (!tree_isEmpty(t)) { tree_removeRoot(t); }
+	t->cmp=NULL;
+	t->print=NULL;
+	t->destroy=NULL;
 	free(t);
 	t=NULL;
 	return;
