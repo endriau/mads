@@ -12,6 +12,24 @@
 
 
 /*
+ * Using include guards to check if the
+ * heap.h header file has been included
+ * at least once.If it hasns't the compiler
+ * copy-pastes everything into the file that
+ * is including it.If the file on the other
+ * hand has been included the compiler
+ * skips the contents entirely.
+ *
+ */
+
+#ifndef HEAP_H
+#define HEAP_H
+
+
+
+
+
+/*
  * Defining two macro constants
  * that represent the two types
  * of heaps, min-heap and max-heap.
@@ -87,3 +105,15 @@ int         heap_isEmpty(heap_t *h);
 void        heap_print(heap_t *h);
 void        heap_free(heap_t *h);
 
+
+
+
+/*
+ * Once everything has been copy-pasted by
+ * the compiler and the macro HEAP_H 
+ * has been defined, the heap.h header
+ * file  will not be included more than once.
+ *
+ */
+
+#endif

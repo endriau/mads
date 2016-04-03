@@ -12,6 +12,24 @@
 
 
 /*
+ * Using include guards to check if the
+ * graph.h header file has been included
+ * at least once.If it hasns't the compiler
+ * copy-pastes everything into the file that
+ * is including it.If the file on the other
+ * hand has been included the compiler
+ * skips the contents entirely.
+ *
+ */
+
+#ifndef GRAPH_H
+#define GRAPH_H
+
+
+
+
+
+/*
  * Defining two aliases for the unsigned integer native type,
  * called uint and label_t.Defining three new data types of
  * function pointers called GraphCompareFn,GraphPrintFn,GraphDestroyFn.
@@ -119,3 +137,16 @@ int         graph_isConnected(graph_t *g);
 void        graph_explore(graph_t *g,label_t u,void (*exploreFn)(graph_t *g,uint *counter,label_t u));
 void        graph_print(graph_t *g);
 void        graph_free(graph_t *g);
+
+
+
+
+/*
+ * Once everything has been copy-pasted by
+ * the compiler and the macro GRAPH_H has
+ * been defined, the graph.h header file 
+ * will not be included more than once.
+ *
+ */
+
+#endif

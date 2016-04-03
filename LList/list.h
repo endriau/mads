@@ -10,6 +10,25 @@
 
 
 
+
+/*
+ * Using include guards to check if the
+ * list.h header file has been included
+ * at least once.If it hasns't the compiler
+ * copy-pastes everything into the file that
+ * is including it.If the file on the other
+ * hand has been included the compiler
+ * skips the contents entirely.
+ *
+ */
+
+#ifndef LIST_H
+#define LIST_H
+
+
+
+
+
 /*
  * Defining three new data types of function pointers
  * called ListCompareFn,ListPrintFn and ListDestroyFn.
@@ -94,3 +113,16 @@ void        list_free(list_t *list);
 int         list_isEmpty(list_t *list);
 int         list_hasElem(list_t *list,void *item);
 
+
+
+
+
+/*
+ * Once everything has been copy-pasted by
+ * the compiler and the macro LIST_H has
+ * been defined, the list.h header file 
+ * will not be included more than once.
+ *
+ */
+
+#endif

@@ -10,6 +10,25 @@
 
 
 
+
+/*
+ * Using include guards to check if the
+ * tree.h header file has been included
+ * at least once.If it hasns't the compiler
+ * copy-pastes everything into the file that
+ * is including it.If the file on the other
+ * hand has been included the compiler
+ * skips the contents entirely.
+ *
+ */
+
+#ifndef TREE_H
+#define TREE_H
+
+
+
+
+
 /*
  * Defining three new data types of function pointers called
  * TreeCompareFn,TreePrintFn,TreeDestroyFn.These functions 
@@ -89,3 +108,16 @@ int 		tree_isEmpty(tree_t *t);
 int 		tree_getHeight(tree_t *t);
 void 		tree_print(tree_t *t);
 void 		tree_free(tree_t *t);
+
+
+
+
+/*
+ * Once everything has been copy-pasted by
+ * the compiler and the macro TREE_H has
+ * been defined, the tree.h header file 
+ * will not be included more than once.
+ *
+ */
+
+#endif

@@ -12,6 +12,24 @@
 
 
 /*
+ * Using include guards to check if the
+ * hashtable.h header file has been included
+ * at least once.If it hasns't the compiler
+ * copy-pastes everything into the file that
+ * is including it.If the file on the other
+ * hand has been included the compiler
+ * skips the contents entirely.
+ *
+ */
+
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
+
+
+
+
+
+/*
  * Defining a constant that 
  * represents the initial size
  * of the hash table.The number
@@ -107,3 +125,15 @@ void        *htable_getValue(htable_t *t,void *key);
 void        htable_print(htable_t *t);
 void        htable_free(htable_t *t);
 
+
+
+
+/*
+ * Once everything has been copy-pasted by
+ * the compiler and the macro HASHTABLE_H 
+ * has been defined, the hashtable.h header
+ * file  will not be included more than once.
+ *
+ */
+
+#endif

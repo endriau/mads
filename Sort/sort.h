@@ -10,6 +10,25 @@
 
 
 
+
+/*
+ * Using include guards to check if the
+ * sort.h header file has been included
+ * at least once.If it hasns't the compiler
+ * copy-pastes everything into the file that
+ * is including it.If the file on the other
+ * hand has been included the compiler
+ * skips the contents entirely.
+ *
+ */
+
+#ifndef SORT_H
+#define SORT_H
+
+
+
+
+
 /*
  * Defining a new datatype of a function pointer called
  * SortCompareFn that takes as arguments two immutable
@@ -38,3 +57,14 @@ void        merge_sort(void **A,int n,SortCompareFn cmp);
 void        insertion_sort(void **A,int n,SortCompareFn cmp);
 
 
+
+
+/*
+ * Once everything has been copy-pasted by
+ * the compiler and the macro SORT_H has
+ * been defined, the sort.h header file 
+ * will not be included more than once.
+ *
+ */
+
+#endif
