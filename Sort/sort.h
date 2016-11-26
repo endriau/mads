@@ -14,7 +14,7 @@
 /*
  * Using include guards to check if the
  * sort.h header file has been included
- * at least once.If it hasns't the compiler
+ * at least once.If it hasn't the compiler
  * copy-pastes everything into the file that
  * is including it.If the file on the other
  * hand has been included the compiler
@@ -30,16 +30,33 @@
 
 
 /*
+ * Defining two macro constants
+ * that represent the two types
+ * of sorting, namely recursive
+ * sort and iterative sort.
+ *
+ */
+
+#define RECURSIVE_SORT 82
+#define ITERATIVE_SORT 73
+
+
+
+
+
+
+/*
  * Defining a new datatype of a function pointer called
  * SortCompareFn that takes as arguments two immutable
- * addresses to void pointers.These function pointer enables
+ * addresses to void pointers.This function pointer enables
  * polymorphism by specifying an interface for the comparison
  * function.The comparison function has to be written by the
  * user and has to meet the following criteria.
  *
  */
 
-typedef int     (*SortCompareFn)(const void *,const void *);
+typedef int   (*SortCompareFn)(const void *,const void *);
+
 
 
 
@@ -52,10 +69,10 @@ typedef int     (*SortCompareFn)(const void *,const void *);
  *
  */
 
-void        quick_sort(void **A,int n,SortCompareFn cmp);
-void        merge_sort(void **A,int n,SortCompareFn cmp);
-void        insertion_sort(void **A,int n,SortCompareFn cmp);
-
+void            quick_sort(void **A,int n,SortCompareFn cmp,int type);
+void            merge_sort(void **A,int n,SortCompareFn cmp,int type);
+void            insertion_sort(void **A,int n,SortCompareFn cmp);
+int             is_sorted(void **A,int n,SortCompareFn cmp);
 
 
 

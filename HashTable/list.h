@@ -14,7 +14,7 @@
 /*
  * Using include guards to check if the
  * list.h header file has been included
- * at least once.If it hasns't the compiler
+ * at least once.If it hasn't the compiler
  * copy-pastes everything into the file that
  * is including it.If the file on the other
  * hand has been included the compiler
