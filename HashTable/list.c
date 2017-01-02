@@ -85,9 +85,9 @@ list_t *list_create(ListCompareFn cmp,ListPrintFn print,ListDestroyFn destroy)
 
 void list_push(list_t *list,void *data)
 {
-    node_t *new_node=NULL;
+    llnode_t *new_node=NULL;
     assert(list!=NULL);
-    new_node=(node_t *)malloc(sizeof(*new_node));
+    new_node=(llnode_t *)malloc(sizeof(*new_node));
     assert(new_node!=NULL);
     new_node->data=data;
     new_node->previous=new_node->next=NULL;
@@ -129,9 +129,9 @@ void list_push(list_t *list,void *data)
 
 void list_append(list_t *list,void *data)
 {
-    node_t *new_node=NULL;
+    llnode_t *new_node=NULL;
     assert(list!=NULL);
-    new_node=(node_t *)malloc(sizeof(*new_node));
+    new_node=(llnode_t *)malloc(sizeof(*new_node));
     assert(new_node!=NULL);
     new_node->data=data;
     new_node->next=new_node->previous=NULL;
@@ -179,7 +179,7 @@ void list_append(list_t *list,void *data)
 void list_insertAt(list_t *list,void *data,uint position)
 {
     uint step=0;
-    node_t *next_node=NULL,*new_node=NULL;
+    llnode_t *next_node=NULL,*new_node=NULL;
     assert(list!=NULL && position<list->size);
     
     if (position==0)
@@ -194,7 +194,7 @@ void list_insertAt(list_t *list,void *data,uint position)
     }
     else
     {
-       new_node=(node_t *)malloc(sizeof(*new_node));
+       new_node=(llnode_t *)malloc(sizeof(*new_node));
        assert(new_node!=NULL);
        new_node->data=data;
        new_node->next=new_node->previous=NULL;
@@ -276,8 +276,8 @@ void *list_getFoot(list_t *list)
 
 void *list_getAt(list_t *list,uint position)
 {
-    int step=0;
-    node_t *next_node=NULL;
+    uint step=0;
+    llnode_t *next_node=NULL;
     assert(list!=NULL && position<list->size);
 
     if (position==0)
@@ -311,7 +311,7 @@ void *list_getAt(list_t *list,uint position)
  * The function list_removeHead() removes the
  * first element in the list.If the list's 
  * destroy component is set to null, the 
- * data component of the node_t will not
+ * data component of the llnode_t will not
  * be deallocated.
  *
  * @param:   list_t     *list
@@ -321,7 +321,7 @@ void *list_getAt(list_t *list,uint position)
 
 void list_removeHead(list_t *list)
 {
-    node_t *old_node=NULL;
+    llnode_t *old_node=NULL;
     assert(list!=NULL);
     
     if (list->head!=list->foot)
@@ -359,7 +359,7 @@ void list_removeHead(list_t *list)
  * The function list_removeFoot() removes the
  * last element in the list.If the list's destroy
  * component is set to null, the data component
- * of the node_t will not be deallocated.
+ * of the llnode_t will not be deallocated.
  *
  * @param:   list_t     *list
  * @return:  void
@@ -368,7 +368,7 @@ void list_removeHead(list_t *list)
 
 void list_removeFoot(list_t *list)
 {
-    node_t *old_node=NULL;
+    llnode_t *old_node=NULL;
     assert(list!=NULL);
 
     if (list->foot!=list->head)
@@ -407,7 +407,7 @@ void list_removeFoot(list_t *list)
  * a list_t data structure,an unsigned integer
  * specifying a position and removes the element at
  * in that position.If the list's destroy component
- * is null,the data component of the node_t will not
+ * is null,the data component of the llnode_t will not
  * be deallocated.
  *
  * @param:   list_t     *list
@@ -419,7 +419,7 @@ void list_removeFoot(list_t *list)
 void list_removeAt(list_t *list,uint position)
 {
     uint step=0;
-    node_t *old_node=NULL,*next_node=NULL;
+    llnode_t *old_node=NULL,*next_node=NULL;
     assert(list!=NULL && position<list->size);
 
     if (position==0)
@@ -482,7 +482,7 @@ void list_removeAt(list_t *list,uint position)
 
 void list_print(list_t *list)
 {
-    node_t *current_node=NULL;
+    llnode_t *current_node=NULL;
     assert(list!=NULL);
     current_node=list->head;
     
@@ -515,7 +515,7 @@ void list_print(list_t *list)
  * data structure as argument and deallocates
  * memory for the list and it's components.
  * If the list's destroy component is set to null,
- * the data component of each node_t will not be 
+ * the data component of each llnode_t will not be 
  * deallocated.
  *
  * @param:   list_t     *list
@@ -525,7 +525,7 @@ void list_print(list_t *list)
 
 void list_free(list_t *list)
 {
-    node_t *old_node=NULL,*next_node=NULL;
+    llnode_t *old_node=NULL,*next_node=NULL;
     assert(list!=NULL);
     next_node=list->head;
 
@@ -596,7 +596,7 @@ int list_isEmpty(list_t *list)
 int list_hasElem(list_t *list,void *item)
 {
     int result,step=0;
-    node_t *next_node=NULL;
+    llnode_t *next_node=NULL;
     assert(list!=NULL);
     next_node=list->head;
     

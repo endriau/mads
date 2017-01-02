@@ -49,20 +49,20 @@ typedef void    (*ListDestroyFn)(void *);
  * Defining aliases for the unsigned integer native
  * type,and the node structure, which represents the
  * abstract concept of a node in a doubly linked
- * list.The node_t structure is a recursive data type that
- * can have as fields other node_t structs.
+ * list.The llnode_t structure is a recursive data type that
+ * can have as fields other llnode_t structs.
  *
  */
 
 
 typedef unsigned int    uint;
-typedef struct node     node_t;
+typedef struct llnode   llnode_t;
 
-struct node
+struct llnode
 {
-    void      *data;
-    node_t    *next;
-    node_t    *previous;
+    void        *data;
+    llnode_t    *next;
+    llnode_t    *previous;
 };
 
 
@@ -80,8 +80,8 @@ struct node
 typedef struct
 {
     uint                size;
-    node_t              *head;
-    node_t              *foot;
+    llnode_t            *head;
+    llnode_t            *foot;
     ListCompareFn       cmp;
     ListPrintFn         print;
     ListDestroyFn       destroy;

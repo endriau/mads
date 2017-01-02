@@ -1,12 +1,14 @@
 /*
- * This file contains data type definitions
- * and function prototypings for the hash
+ * The following file contains datatype
+ * definitions and function prototyping
+ * regarding the seperate chaining hash
  * table data structure.
- *
+ * 
  * @author: Endri Kastrati
- * @date:   9/12/2015
+ * @date:   1/01/2017
  *
  */
+
 
 
 
@@ -14,12 +16,12 @@
 /*
  * Using include guards to check if the
  * hashtable.h header file has been included
- * at least once.If it hasns't the compiler
- * copy-pastes everything into the file that
- * is including it.If the file on the other
- * hand has been included the compiler
+ * at least once.If it hasn't the compiler
+ * copy-pastes everything into the file 
+ * that is including it.If the file on the
+ * other hand has been included the compiler
  * skips the contents entirely.
- *
+ * 
  */
 
 #ifndef HASHTABLE_H
@@ -28,19 +30,37 @@
 
 
 
-
-/*
- * Defining a constant that 
- * represents the initial size
- * of the hash table.The number
- * 1097 is a prime number.Having
- * a prime number as the initial size
- * serves as well into the hashing
- * procedure of elements into the table.
- *
+/* 
+ * Including the pair.h and uhash.h
+ * headers files that contain datatype
+ * definitions and function prototyping
+ * for the pair_t data structure and the
+ * hashfn_t data structure.For more detailed
+ * explanation of the datatypes consult their
+ * corresponding header files.
+ * 
  */
 
+#include "pair.h"
+#include "uhash.h"
+
+
+
+
+
+/*
+ * Defining three macro constants.
+ * The first one,namely INITIAL_SIZE,
+ * represents the initial size of the
+ * hash table.The rest,namely CHAIN_LIST
+ * and CHAIN_TREE represent the possible
+ * types of hash table buckets,namely a
+ * linked list or an avl tree.
+ *
+ */
 #define INITIAL_SIZE    1097
+#define CHAIN_LIST      76
+#define CHAIN_TREE      84
 
 
 
@@ -48,92 +68,75 @@
 
 /*
  * Defining an alias for the unsigned integer native type.
- * Defining four new data types of function pointers called
- * TableHashFn,TableCompareFn,TablePrintFn and TableDestroyFn.
- * These function pointers enable polymorphism by specifying
- * an interface for the hashing,comparison,printing and memory
- * deallocation functions.These functions have to be written
- * by the user and meet the following criteria.
- *
+ * Defining a new datatype of function pointer called 
+ * TableHashFn.This function has two take two arguments
+ * as parameters.The first parameter is a pointer to a
+ * hashfn_t data structure.The second one is a pointer
+ * to some immutable data address.This interface enables
+ * the users to create their own hashing functions as
+ * long as they abide by the following function signature.
+ * The users are responsible for the creation of this function.
+ * 
  */
 
-typedef unsigned int    uint;
+typedef unsigned    uint;
 
-typedef uint    (*TableHashFn)(uint,const void *);
-typedef int     (*TableCompareFn)(const void *,const void *);
-typedef void    (*TablePrintFn)(const void *);
-typedef void    (*TableDestroyFn)(void *);
+typedef uint    (*TableHashFn)(hashfn_t *,const void *);
 
 
 
 
-/*
- * Defining a new data type that represents
- * the abstract concept of a pair <key,value>
- * which will be used to store the corresponding
- * key and value component of the hash table elements.
- *
- */
 
-typedef struct
-{
-    void    *key;
-    void    *data;
-} pair_t;
-
-
-
-/*
- * This is the C implementation of the Hash
- * Table data structure.This enhanced version
- * contains as components an array of void pointers A,
- * n which represents the total number of slots that
- * are filled,table_size which represents the maximum
- * number of buckets the table contains and three
- * function pointers hash,cmp,print,destroy to enable
- * polymorphism.
- *
+/* 
+ * This is the C implementation of the hash table
+ * data structure.This ehanced version contains as
+ * components an array of void pointers that represents
+ * the buckets in the table,the type of seperate chaining
+ * being used,the total number of elements in the hash
+ * table,the size of the table,the load factor as well
+ * as a universal hashing function data structure and a
+ * function that calculates the hash.
+ * 
  */
 
 typedef struct
 {
     void                **A;
+    int                 type;
     uint                n;
-    uint                table_size;
+    uint                size;
+    uint                lf;
+    hashfn_t            *hfunc;
     TableHashFn         hash;
-    TableCompareFn      cmp;
-    TablePrintFn        print;
-    TableDestroyFn      destroy;
-} htable_t;
-
+} table_t;
 
 
 
 
 /*
- * Function prototyping of procedures 
+ * Function prototyping of procedures
  * regarding the hash table data structure
- * such as insert,lookup,remove etc..
- *
+ * such as create,insert,lookup,remove etc..
+ * 
  */
 
-htable_t    *htable_create(TableHashFn hash,TableCompareFn cmp,TablePrintFn print,TableDestroyFn destroy);
-void        htable_insert(htable_t *t,void *key,void *data);
-void        htable_remove(htable_t *t,void *key);
-int         htable_lookup(htable_t *t,void *key);
-void        *htable_getValue(htable_t *t,void *key);
-void        htable_print(htable_t *t);
-void        htable_free(htable_t *t);
+table_t     *table_create(TableHashFn hash,int chain_type);
+void        table_insert(table_t *t,pair_t *p);
+int         table_lookup(table_t *t,void *key);
+void        table_remove(table_t *t,void *key);
+void        *table_getValue(table_t *t,void *key);
+void        table_changeValue(table_t *t,void *key,void *value);
+void        table_print(table_t *t);
+void        table_free(table_t *t);
 
 
 
-
-/*
+/* 
  * Once everything has been copy-pasted by
- * the compiler and the macro HASHTABLE_H 
- * has been defined, the hashtable.h header
- * file  will not be included more than once.
- *
+ * the compiler and the macro HASHTABLE_H
+ * has been defined,the hashtable.h header
+ * file will not be included more than once.
+ *  
  */
 
 #endif

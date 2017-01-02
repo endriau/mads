@@ -1,143 +1,99 @@
 /*
- * This file contains function defintions
- * for procedures regarding the hash table
- * data structure.This hash table is implemented
- * using seperate chaining with linked lists.
- *
- * @author: Endri kastrati
- * @date:   10/12/2015
+ * The following file contains definition of
+ * procedures and operations regarding the
+ * hash table data structure using seperate
+ * chaining technique.
+ *  
+ * @author: Endri Kastrati
+ * @date:   1/01/2017
  *
  */
 
 
 
 
+
 /*
- * Including the standard input-output library,
- * the standard utilities library,the hashtable.h
- * header file that contains the hash table data type
- * and the list.c library upon which the hash table
- * data structure depends on.
- *
+ * Including the standard input-output
+ * library,the standard utilities library,
+ * the standard assertions library,the 
+ * tree.h and list.h header files that
+ * contain datatype definitions for the
+ * linked list and avl tree data structures.
+ * Finally lost include,the header file 
+ * hashtable.h that contains datatype
+ * definitions for the hash table dataype.
+ * 
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "hashtable.h"
+#include "tree.h"
 #include "list.h"
+#include "hashtable.h"
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
 
 
 
 /*
- * @COMPLEXITY: O(sqrt(n))
- *
- * The static function is_prime() takes an integer
- * as argument and checks whether it's prime
- * or not.If so it returns one, otherwise it
- * returns zero.
- *
- * @param:   uint   n
- * @return:  int
- *
+ * @COMPLEXITY: Theta(1) best case,worst case O(F(n))
+ *              where F(n) is some type of mathematical
+ *              function that represents the asymptotic
+ *              complexity of the given datatype.
+ *              
+ * The static function compare_pairs(),takes two pair
+ * data structures as arguments and compares their
+ * cue values.Depending on the method that the cues
+ * are compared this function returns the appropriate
+ * result value.
+ * 
+ * @param:  const void      *p1
+ * @param:  const void      *p2
+ * @return: int
+ * 
  */
 
-static int is_prime(uint n)
+static int compare_pairs(const void *p1,const void *p2)
 {
-    int divisor;
-
-    if (n<2)
-    {
-        return 0;
-    }
-
-    for (divisor=2;divisor*divisor<=n;divisor++)
-    {
-        if (n%divisor==0)
-        {
-            return 0;
-        }
-    }
-
-    return 1;
+    pair_t *pp1=NULL,*pp2=NULL;
+    cue_t *c1=NULL,*c2=NULL;
+    pp1=(pair_t *)p1;
+    pp2=(pair_t *)p2;
+    c1=pair_getCue(pp1);
+    c2=pair_getCue(pp2);
+    return cue_compareTo(c1,cue_get(c2));
 }
 
 
 
 
-
 /*
- * @COMPLEXITY: O(ln(p)*sqrt(p))
+ * @COMPLEXITY: Theta(1) best case,worst case O(F(n))
+ *              where F(n) is some type of mathematical
+ *              function that represents the asymptotic
+ *              complexity of the given datatype.
  *
- * The static function next_prime() takes as argument
- * a number and calculates the next prime number.
- *
- * @param:   uint   n
- * @return:  uint
- *
+ * The static function print_pair() takes a pair
+ * data structure as an argument and prints it's
+ * components in a user-friendly format.
+ * 
+ * @param:  const void  *p
+ * @return: void
+ * 
  */
 
-static uint next_prime(uint n)
+static void print_pair(const void *p)
 {
-    n=n+1;
-
-    while (!is_prime(n))
-    {
-        n=n+1;
-    }
-    
-    return n;
+    pair_t *pair=NULL;
+    pair=(pair_t *)p;
+    pair_print(pair);
+    return;
 }
-
-
-
-
-
-/*
- * @COMPLEXITY: O(n)
- *
- * The function htable_create() takes four function pointers
- * as arguments.It creates a new htable_t data structure
- * by allocating memory for it and it's components and instantiates
- * it's components to the default values.The hash,cmp and print
- * components are mandatory and cannot be null,the destroy component
- * on the other hand can be null.The users have to create their own
- * hash,cmp,print,destroy ( optional ) functions.Failure to do so
- * will result in program termination due to invalid assertions.
- *
- * @param:   TableHashFn        hash
- * @param:   TableCompareFn     cmp
- * @param:   TablePrintFn       print
- * @param:   TableDestroyFn     destroy
- * @return:  htable_t           *
- *
- */
-
-htable_t *htable_create(TableHashFn hash,TableCompareFn cmp,TablePrintFn print,TableDestroyFn destroy)
-{
-    uint i;
-    htable_t *table=NULL;
-    assert(hash!=NULL && cmp!=NULL && print!=NULL);
-    table=(htable_t *)malloc(sizeof(*table));
-    assert(table!=NULL);
-    table->A=(void **)malloc(INITIAL_SIZE*sizeof(void *));
-    assert(table->A!=NULL);
-    table->n=0;
-    table->table_size=INITIAL_SIZE;
-    table->hash=hash;
-    table->cmp=cmp;
-    table->print=print;
-    table->destroy=destroy;
-
-    for (i=0;i<INITIAL_SIZE;i++)
-    {
-        table->A[i]=list_create(table->cmp,table->print,table->destroy);
-    }
-
-    return table;
-}
-
 
 
 
@@ -145,240 +101,331 @@ htable_t *htable_create(TableHashFn hash,TableCompareFn cmp,TablePrintFn print,T
 /*
  * @COMPLEXITY: Theta(1)
  *
- * The function htable_insert() takes three arguments,
- * a htable_t data structure, a pointer to a key and
- * a pointer to some data.Checks if the given key 
- * already exists in the table, if so it does nothing,
- * otherwise it inserts the new pair_t data structure
- * into the linked list at the bucket given by the hash
- * function on input key.
- *
- * @param:   htable_t   *t
- * @param:   void       *key
- * @param:   void       *data
- * @return:  void
- *
+ * The static function deallocate_pair(),takes
+ * a pair data structure as an argument and 
+ * deallocates memory for it and it's components.
+ * 
+ * @param:  void    *p
+ * @return: void
+ * 
  */
 
-void htable_insert(htable_t *t,void *key,void *data)
+static void deallocate_pair(void *p)
 {
-    int flag;
-    uint index,previous_size,i;
-    pair_t *new_pair=NULL;
-    assert(t!=NULL);
-    previous_size=t->table_size;
+    pair_t *pair=NULL;
+    pair=(pair_t *)p;
+    pair_free(pair);
+    pair=NULL;
+    return;
+}
 
-    if (t->table_size<=t->n)
+
+//////////////////////////////////////////////////////////////////////////////////// 
+
+
+
+
+
+
+
+/*
+ * @COMPLEXITY: O(m), where m is the initial hash table size.
+ * 
+ * 
+ * The function table_create(),takes two arguments as
+ * parameters.The first argument is a function pointer
+ * that represents the type of hashing.The second one
+ * is a macro constant that specifies what kind of
+ * seperate chaining buckets to used (list or tree).
+ * This function instantiates a new table_t datatype
+ * and allocates memory for it and it's components
+ * and sets them to their corresponding default values.
+ * 
+ * @param:  TableHashFn     hash
+ * @param:  int             chain_type
+ * @return: table_t         *
+ * 
+ * 
+ */
+
+table_t *table_create(TableHashFn hash,int chain_type)
+{
+    int i;
+    table_t *new_table=NULL;
+    assert(hash!=NULL);
+    assert(chain_type==CHAIN_LIST || chain_type==CHAIN_TREE);
+    new_table=(table_t *)malloc(sizeof(*new_table));
+    assert(new_table!=NULL);
+    new_table->A=(void **)malloc(INITIAL_SIZE*sizeof(void *));
+    assert(new_table->A!=NULL);
+    new_table->type=chain_type;
+
+    for (i=0;i<INITIAL_SIZE;i++)
     {
-        t->table_size=next_prime(t->table_size*2);
-        t->A=(void **)realloc(t->A,t->table_size*sizeof(void *));
-        assert(t->A!=NULL);
-
-        for (i=previous_size;i<t->table_size;i++)
+        if (new_table->type==CHAIN_LIST)
         {
-            t->A[i]=list_create(t->cmp,t->print,t->destroy);
+            new_table->A[i]=list_create(compare_pairs,print_pair,deallocate_pair);
         }
-
+        else if (new_table->type==CHAIN_TREE)
+        {
+            new_table->A[i]=tree_create(compare_pairs,print_pair,deallocate_pair);
+        }
+        else {}
     }
 
-    new_pair=(pair_t *)malloc(sizeof(*new_pair));
-    assert(new_pair!=NULL);
-    new_pair->key=key;
-    new_pair->data=data;
-    index=t->hash(t->table_size,key);
-    flag=list_hasElem(t->A[index],new_pair);
-
-    if (flag!=-1)
-    {
-        free(new_pair);
-        new_pair=NULL;
-        return;
-    }
-    else
-    {
-        list_push(t->A[index],new_pair);
-        t->n++;
-        return;
-    }
+    new_table->n=0;
+    new_table->size=INITIAL_SIZE;
+    new_table->lf=(new_table->n)/(new_table->size);
+    new_table->hfunc=hashfn_create(INITIAL_SIZE,20);
+    new_table->hash=hash;
+    return new_table;
 }
 
 
 
 
 
-/*
- * @COMPLEXITY: Theta(1) best case, O(n) worst case
- *
- * The function htable_remove() takes two arguments,
- * a htable_t data structure and a void pointer to a key,
- * Checks if the key exists in the hash table, if so
- * it removes it from the table, otherwise it does nothing.
- *
- * @param:   htable_t   *t
- * @param:   void       *key
- * @return:  void
- *
+/* 
+ * @COMPLEXITY:
+ * 
+ * The function table_insert(),takes two arguments
+ * as parameters,namely a hash table data structure
+ * and a pair data structure.This function firstly
+ * checks if the key of the given pair exists in
+ * the table.If the key does not exist it is inserted
+ * into the table.If the key on the other hand exists
+ * nothing happens.
+ * 
+ * @param:  table_t     *t
+ * @param:  pair_t      *p
+ * @return: void
+ *  
  */
 
-void htable_remove(htable_t *t,void *key)
+void table_insert(table_t *t,pair_t *p)
 {
-    int flag;
-    uint index;
-    pair_t *search_pair=NULL;
-    assert(t!=NULL);
-    search_pair=(pair_t *)malloc(sizeof(*search_pair));
-    assert(search_pair!=NULL);
-    search_pair->key=key;
-    search_pair->data=NULL;
-    index=t->hash(t->table_size,key);
-    flag=list_hasElem(t->A[index],search_pair);
-    search_pair->key=NULL;
-    free(search_pair);
-    search_pair=NULL;
+    uint position;
+    cue_t *temp_cue=NULL;
+    void *cue_data=NULL;
+    assert(t!=NULL && p!=NULL);
+    temp_cue=pair_getCue(p);
+    cue_data=cue_get(temp_cue);
+    if (table_lookup(t,cue_data)==1) { return; }
+    position=t->hash(t->hfunc,cue_data);
 
-    if (flag==-1)
+    if (t->type==CHAIN_LIST)
     {
-        return;
+        list_push(t->A[position],p);
+        t->n=t->n+1;
     }
-    else
+    else if (t->type==CHAIN_TREE)
     {
-        list_removeAt(t->A[index],flag);
-        t->n--;
-        return;
+        tree_insert(t->A[position],p);
+        t->n=t->n+1;
     }
-}
-
-    
-
-
-
-
-/*
- * @COMPLEXITY: Theta(1) Best case, O(n) worst case
- *
- * The function htable_getValue() takes two arguments,
- * a htable_t data structure and a void pointer to a key,
- * checks if the given key exists in the hash table,if so
- * it returns it's value otherwise it returns null.
- *
- * @param:   htable_t   *t
- * @param:   void       *key
- * @return:  void       *
- *
- */
-
-void *htable_getValue(htable_t *t,void *key)
-{
-    int flag;
-    uint index;
-    pair_t *search_pair=NULL,*return_pair=NULL;
-    assert(t!=NULL);
-    search_pair=(pair_t *)malloc(sizeof(*search_pair));
-    assert(search_pair!=NULL);
-    search_pair->key=key;
-    search_pair->data=NULL;
-    index=t->hash(t->table_size,key);
-    flag=list_hasElem(t->A[index],search_pair);
-    search_pair->key=NULL;
-    free(search_pair);
-    search_pair=NULL;
-
-    if (flag==-1)
-    {
-        return NULL;
-    }
-    else
-    {
-        return_pair=list_getAt(t->A[index],flag);
-        return return_pair->data;
-    }
+    else {}
+    return;
 }
 
 
 
 
-
 /*
- * @COMPLEXITY: Theta(1) best case, O(n) worst case
- *
- * The function htable_lookup(), takes two arguments,
- * a htable_t data structure and a void pointer to a key.
- * Searches for the given key in the linked list at the
- * bucket given by the hash function on input key.
- * If the key does not exist it returns zero,otherwise
- * it returns one.
- *
- * @param:   htable_t   *t
- * @param:   void       *key
- * @return:  int
- *
+ * @COMPLEXITY:
+ * 
+ * The function table_lookup(),takes two
+ * arguments as parameters.The first argument
+ * is a hash table data structure and the
+ * second one an address to some key.This
+ * function searches through the table for
+ * the given key value.If the key exists
+ * in the table it returns one.Otherwise,
+ * if the key does not exist in the table
+ * it returns zero.
+ * 
+ * @param:  table_t     *t
+ * @param:  void        *key
+ * @return: int
+ * 
  */
 
-int htable_lookup(htable_t *t,void *key)
+int table_lookup(table_t *t,void *key)
 {
-    int flag;
-    uint index;
-    pair_t *search_pair=NULL;
-    assert(t!=NULL);
-    search_pair=(pair_t *)malloc(sizeof(*search_pair));
-    assert(search_pair!=NULL);
-    search_pair->key=key;
-    search_pair->data=NULL;
-    index=t->hash(t->table_size,key);
-    flag=list_hasElem(t->A[index],search_pair);
-    free(search_pair);
-    search_pair=NULL;
-    
-    if (flag==-1)
+    int chain_query; uint position;
+    pair_t temp_pair; cue_t temp_cue;
+    assert(t!=NULL && key!=NULL);
+    position=t->hash(t->hfunc,key);
+    temp_cue.cue=key;
+    temp_pair.k=&temp_cue;
+
+    if (t->type==CHAIN_LIST)
+    {
+        chain_query=list_hasElem(t->A[position],&temp_pair);
+        return (chain_query>-1 ? 1 : 0);
+    }
+    else if (t->type==CHAIN_TREE)
+    {
+        chain_query=tree_search(t->A[position],&temp_pair);
+        return chain_query;
+    }
+    else
     {
         return 0;
     }
-    else
-    {
-        return 1;
-    }
 }
 
 
 
 
 
-/*
- * @COMPLEXITY: O(m*n), where n is the number of
- * buckets and m the number of elements in the list
- * at each bucket.
- *
- * The function htable_print() takes as argument
- * a htable_t data structure and prints all of
- * the elements of the hash table as pairs <key,value>.
- *
- * @param:   htable_t   *t
- * @return:  void
- *
+
+/* 
+ * @COMPLEXITY:
+ * 
+ * The function table_remove(),takes two
+ * arguments as parameters.The first argument
+ * is a hash table data structure and the
+ * second one is an address to some key.This
+ * function searches the table for the given
+ * key.If the key is found,it is removed
+ * from the hash table including it's value.
+ * If the key does not exist,nothing happesn.
+ * 
+ * @param:  table_t     *t
+ * @param:  void        *key
+ * @return: void
+ * 
  */
 
-void htable_print(htable_t *t)
+void table_remove(table_t *t,void *key)
 {
-    pair_t *pair=NULL;
-    uint i,j,list_size;
-    assert(t!=NULL);
-    list_t *current_list=NULL;
-    printf("{ "); 
+    pair_t temp_pair; cue_t temp_cue;
+    uint position,chain_pos;
+    assert(t!=NULL && key!=NULL);
+    position=t->hash(t->hfunc,key);
+    if (table_lookup(t,key)==0) { return; }
+    temp_cue.cue=key;
+    temp_pair.k=&temp_cue;
 
-    for (i=0;i<t->table_size;i++)
+    if (t->type==CHAIN_LIST)
     {
-        current_list=t->A[i];
-        list_size=current_list->size;
-
-        for (j=0;j<list_size;j++)
-        {
-            pair=list_getAt(current_list,j);
-            current_list->print(pair);
-            printf(", ");
-        }
+        chain_pos=list_hasElem(t->A[position],&temp_pair);
+        list_removeAt(t->A[position],chain_pos);
+        t->n=t->n-1;
     }
+    else if (t->type==CHAIN_TREE)
+    {
+        tree_remove(t->A[position],&temp_pair);
+        t->n=t->n-1;
+    }
+    else {}
+    return;
+}
 
-    printf("\b\b }\n");
+
+
+
+/* 
+ * @COMPLEXITY:
+ * 
+ * The function table_getValue(),takes two
+ * arguments as parameters.The first argument
+ * is a hash table data structure and the second
+ * one is an address to some key.This function
+ * searches for the given key and returns the
+ * value associated with it in the table.If the
+ * key does not exist in the table nothing happens
+ * and the function returns the value of NULL.
+ * 
+ * @param:  table_t     *t
+ * @param:  void        *key
+ * @return: void        *      
+ *  
+ */
+
+void *table_getValue(table_t *t,void *key)
+{
+    cue_t temp_cue; pair_t temp_pair;
+    uint position,chain_query;
+    pair_t *returned_pair=NULL;
+    value_t *returned_value=NULL;
+    assert(t!=NULL && key!=NULL);
+    if (table_lookup(t,key)==0) { return NULL; }
+    position=t->hash(t->hfunc,key);
+    temp_cue.cue=key;
+    temp_pair.k=&temp_cue;
+
+    if (t->type==CHAIN_LIST)
+    {
+        chain_query=list_hasElem(t->A[position],&temp_pair);
+        returned_pair=list_getAt(t->A[position],chain_query);
+        returned_value=pair_getValue(returned_pair);
+        return value_get(returned_value);
+    }
+    else if (t->type==CHAIN_TREE)
+    {
+        returned_pair=tree_getElem(t->A[position],&temp_pair);
+        returned_value=pair_getValue(returned_pair);
+        return value_get(returned_value);
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+
+/* 
+ * @COMPLEXITY: 
+ * 
+ * The function table_changeValue(),takes three
+ * arguments as parameters.The first argument
+ * is a hash table data structure,the second
+ * is an address to a key and the third is
+ * the new value to be associated with the
+ * given key.This function changes the value
+ * of the given key.If the key does not exist
+ * nothing happens.
+ * 
+ * @param:  table_t     *t
+ * @param:  void        *key
+ * @param:  void        *value
+ * 
+ */
+
+void table_changeValue(table_t *t,void *key,void *value)
+{
+    uint position,chain_query;
+    pair_t *returned_pair=NULL;
+    cue_t temp_cue; pair_t temp_pair;
+    value_t *old_value=NULL,*new_value=NULL;
+    assert(t!=NULL && key!=NULL);
+    if (table_lookup(t,key)==0) { return; }
+    position=t->hash(t->hfunc,key);
+    temp_cue.cue=key;
+    temp_pair.k=&temp_cue;
+
+
+    if (t->type==CHAIN_LIST)
+    {
+        chain_query=list_hasElem(t->A[position],&temp_pair);
+        returned_pair=list_getAt(t->A[position],chain_query);
+        old_value=pair_getValue(returned_pair);
+        new_value=value_create(value,old_value->cmp,
+                old_value->print,old_value->destroy);
+        pair_changeValue(returned_pair,new_value);
+        return;
+    }
+    else if (t->type==CHAIN_TREE)
+    {
+        returned_pair=tree_getElem(t->A[position],&temp_pair);
+        old_value=pair_getValue(returned_pair);
+        new_value=value_create(value,old_value->cmp,
+                old_value->print,old_value->destroy);
+        pair_changeValue(returned_pair,new_value);
+        return;
+    }
+    else {}
     return;
 }
 
@@ -386,34 +433,91 @@ void htable_print(htable_t *t)
 
 
 
-/*
- * @COMPLEXITY: O(n)
- *
- * The function htable_free() takes a
- * htable_t data structure as an argument
- * and deallocates all of the linked lists
- * at the buckets and then deallocates the
- * hash table and all of it's components.
- *
- * @param:   table_t    *t
- * @return:  void
- *
+/* 
+ * @COMPLEXITY: O(m*n) where m is the size of
+ *              table and n is the size of the
+ *              bucket with the maximum depth.
+ * 
+ * The function table_print(),takes a hash table
+ * data structure as an argument and prints the
+ * elements of the table in a user-friendly format.
+ * 
+ * @param:  table_t     *t
+ * @return: void
+ * 
  */
 
-void htable_free(htable_t *t)
+void table_print(table_t *t)
 {
-    uint i;
+    int i;
     assert(t!=NULL);
-    
-    for (i=0;i<t->table_size;i++)
+
+    for (i=0;i<t->size;i++)
     {
-        list_free(t->A[i]);
-        t->A[i]=NULL;
+        printf("index %d:",i);
+
+        if (t->type==CHAIN_LIST)
+        {
+            list_print(t->A[i]);
+        }
+        else if (t->type==CHAIN_TREE)
+        {
+            tree_print(t->A[i]);
+        }
+        else {}
     }
 
-    free(t->A);
-    t->A=NULL;
-    free(t);
-    t=NULL;
+    return;
 }
 
+
+
+
+/* 
+ * @COMLEXITY: O(m) where m is the size of table.
+ * 
+ * The function table_free(),takes a hash table
+ * data structure as an argument and deallocates
+ * memory for it and it's components.In the cases
+ * where the chain type is an avl tree, the trees
+ * at every bucket are reassigned a new comparison
+ * function before memory deallocation.Once all buckets
+ * have been freed,the memory of the table and it's fields
+ * is also deallocated.
+ * 
+ * @param:  table_t     *t
+ * @return: void
+ * 
+ */
+
+void table_free(table_t *t)
+{
+    int i;
+    tree_t *temp_tree=NULL;
+    assert(t!=NULL);
+
+    for (i=0;i<t->size;i++)
+    {
+        if (t->type==CHAIN_LIST)
+        {
+            list_free(t->A[i]);
+        }
+        else if (t->type==CHAIN_TREE)
+        {
+            temp_tree=t->A[i];
+            temp_tree->cmp=compare_pairs;
+            tree_free(temp_tree);
+        }
+        else {}
+    }
+
+    free(t->A); t->A=NULL;
+    hashfn_free(t->hfunc);
+    t->hfunc=NULL;
+    free(t); t=NULL;
+    return;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
