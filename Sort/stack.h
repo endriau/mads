@@ -57,8 +57,8 @@ typedef void    (*StackDestroyFn)(void *);
 typedef struct
 {
     void                **A;
-    int                 n;
-    int                 size;
+    long long int       n;
+    long long int       size;
     StackCompareFn      cmp;
     StackPrintFn        print;
     StackDestroyFn      destroy;

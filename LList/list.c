@@ -161,7 +161,7 @@ void list_append(list_t *list,void *data)
  *
  * The function list_insertAt() takes three arguments,
  * a list_t data structure, a pointer to some data and
- * an unsigned integer specifying a position in the list
+ * an unsigned long long int specifying a position in the list
  * from [ 0 .. list->size - 1 ].If the given position is
  * zero the list_push() function is invoked, if the position
  * equals to list->size-1 the list_append() function is invoked,
@@ -171,14 +171,14 @@ void list_append(list_t *list,void *data)
  *
  * @param:   list_t     *list
  * @param:   void       *data
- * @param:   uint       position
+ * @param:   lluint     position
  * @return:  void
  *
  */
 
-void list_insertAt(list_t *list,void *data,uint position)
+void list_insertAt(list_t *list,void *data,lluint position)
 {
-    uint step=0;
+    lluint step=0;
     llnode_t *next_node=NULL,*new_node=NULL;
     assert(list!=NULL && position<list->size);
     
@@ -264,19 +264,19 @@ void *list_getFoot(list_t *list)
  * @COMPLEXITY: O(n)
  *
  * The function list_getAt() takes two arguments,
- * a list_t data structure and an unsigned integer
- * specifying a position and returns the element
+ * a list_t data structure and an unsigned long long
+ * int specifying a position and returns the element
  * at particular position.
  *
  * @param:   list_t     *list
- * @param:   uint       position
+ * @param:   lluint     position
  * @return:  void       *
  *
  */
 
-void *list_getAt(list_t *list,uint position)
+void *list_getAt(list_t *list,lluint position)
 {
-    uint step=0;
+    lluint step=0;
     llnode_t *next_node=NULL;
     assert(list!=NULL && position<list->size);
 
@@ -404,7 +404,7 @@ void list_removeFoot(list_t *list)
  * @COMPLEXITY: O(n)
  *
  * The function list_removeAt() takes two arguments,
- * a list_t data structure,an unsigned integer
+ * a list_t data structure,an unsigned long long int
  * specifying a position and removes the element at
  * in that position.If the list's destroy component
  * is null,the data component of the llnode_t will not
@@ -416,9 +416,9 @@ void list_removeFoot(list_t *list)
  *
  */
 
-void list_removeAt(list_t *list,uint position)
+void list_removeAt(list_t *list,lluint position)
 {
-    uint step=0;
+    lluint step=0;
     llnode_t *old_node=NULL,*next_node=NULL;
     assert(list!=NULL && position<list->size);
 
@@ -595,7 +595,7 @@ int list_isEmpty(list_t *list)
 
 int list_hasElem(list_t *list,void *item)
 {
-    int result,step=0;
+    int result; lluint step=0;
     llnode_t *next_node=NULL;
     assert(list!=NULL);
     next_node=list->head;

@@ -92,14 +92,14 @@ static void print_index(const void *i)
  * i,j representing indices and swaps the
  * the address at i with the address at j.
  *
- * @param:   void     **A
- * @param:   int      i
- * @param:   int      j
+ * @param:   void       **A
+ * @param:   llint      i
+ * @param:   llint      j
  * @return:  void
  *
  */
 
-static void swap(void **A,int i,int j)
+static void swap(void **A,llint i,llint j)
 {
     void *temp=NULL;
     assert(A!=NULL && i>=0 && j>=0);
@@ -125,18 +125,18 @@ static void swap(void **A,int i,int j)
  * It also keeps track of equal items thus not including then in the partitioning.
  * 
  * @param:   void               **A
- * @param:   int                n
+ * @param:   llint              n
  * @param:   void               *pivot
- * @param:   int                *first_eq
- * @param:   int                *first_gt
+ * @param:   llint              *first_eq
+ * @param:   llint              *first_gt
  * @param:   SortCompareFn      cmp
  * @return:  void
  *
  */
 
-static void partition(void **A,int n,void *pivot,int *first_eq,int *first_gt,SortCompareFn cmp)
+static void partition(void **A,llint n,void *pivot,llint *first_eq,llint *first_gt,SortCompareFn cmp)
 {
-    int next=0,fe=0,fg=n,outcome=0;
+    llint next=0,fe=0,fg=n,outcome=0;
     assert(A!=NULL && cmp!=NULL);
     
     while (next<fg)
@@ -181,15 +181,15 @@ static void partition(void **A,int n,void *pivot,int *first_eq,int *first_gt,Sor
  * on those two subarrays respectively and so on.
  *
  * @param:   void               **A
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @return:  void
  *
  */
 
-static void quick_sort_recursive(void **A,int n,SortCompareFn cmp)
+static void quick_sort_recursive(void **A,llint n,SortCompareFn cmp)
 {
-    int first_eq,first_gt;
+    llint first_eq,first_gt;
     if (n<=1) { return; }
     partition(A,n,A[rand()%n],&first_eq,&first_gt,cmp);
     quick_sort_recursive(A,first_eq,cmp);
@@ -216,17 +216,17 @@ static void quick_sort_recursive(void **A,int n,SortCompareFn cmp)
  * is empty.
  *
  * @param:   void               **A
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @return:  void
  * 
  */
 
-static void quick_sort_iterative(void **A,int n,SortCompareFn cmp)
+static void quick_sort_iterative(void **A,llint n,SortCompareFn cmp)
 {
     stack_t *stack=NULL;
-    int first_eq,first_gt,new_n;
-    long left=0,right=n-1,random_index;
+    llint first_eq,first_gt,new_n;
+    llint left=0,right=n-1,random_index;
     assert(A!=NULL && cmp!=NULL && n>=0);
     stack=stack_create(compare_indices,print_index,NULL);
     stack_push(stack,(void *)left);
@@ -234,8 +234,8 @@ static void quick_sort_iterative(void **A,int n,SortCompareFn cmp)
 
     while (!stack_isEmpty(stack))
     {
-        right=(long )stack_pop(stack);
-        left=(long )stack_pop(stack);
+        right=(llint )stack_pop(stack);
+        left=(llint )stack_pop(stack);
 
         if ((right-left)>0)
         {
@@ -277,14 +277,14 @@ static void quick_sort_iterative(void **A,int n,SortCompareFn cmp)
  * otherwise terminates execution based on failed assertions.
  *
  * @param:   void               **A
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @param:   int                type
  * @return:  void
  *
  */
 
-void quick_sort(void **A,int n,SortCompareFn cmp,int type)
+void quick_sort(void **A,llint n,SortCompareFn cmp,int type)
 {
     time_t seed;
     srand((unsigned )time(&seed));
@@ -315,16 +315,16 @@ void quick_sort(void **A,int n,SortCompareFn cmp,int type)
  *
  * @param:   void               **A
  * @param:   void               **T
- * @param:   int                mid
- * @param:   int                n
+ * @param:   llint              mid
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @return:  void
  *
  */
 
-static void merge(void **A,void **T,int mid,int n,SortCompareFn cmp)
+static void merge(void **A,void **T,llint mid,llint n,SortCompareFn cmp)
 {
-    int i,s1=0,s2=mid,outcome;
+    llint i,s1=0,s2=mid,outcome;
     assert(A!=NULL && T!=NULL && cmp!=NULL);
     assert(n>=0 && mid>=0);
 
@@ -378,16 +378,16 @@ static void merge(void **A,void **T,int mid,int n,SortCompareFn cmp)
  *
  * @param:   void               **A
  * @param:   void               **T
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @return:  void
  *
  */
 
-static void merge_sort_recursive(void **A,void **T,int n,SortCompareFn cmp)
+static void merge_sort_recursive(void **A,void **T,llint n,SortCompareFn cmp)
 {
     if (n<=1) { return; }
-    int middle=n/2;
+    llint middle=n/2;
     merge_sort_recursive(A,T,middle,cmp);
     merge_sort_recursive(A+middle,T,n-middle,cmp);
     merge(A,T,middle,n,cmp);
@@ -414,17 +414,17 @@ static void merge_sort_recursive(void **A,void **T,int n,SortCompareFn cmp)
  *
  * @param:   void               **A
  * @param:   void               **T
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @return:  void
  *
  */
 
-static void merge_sort_iterative(void **A,void **T,int n,SortCompareFn cmp)
+static void merge_sort_iterative(void **A,void **T,llint n,SortCompareFn cmp)
 {
-    long left=0,right=n-1,mid;
+    llint left=0,right=n-1,mid;
     stack_t *stack=NULL,*calls=NULL;
-    long type_call=99,type_merge=109,type;
+    llint type_call=99,type_merge=109,type;
     assert(A!=NULL && T!=NULL);
     assert(n>=0 && cmp!=NULL);
     stack=stack_create(compare_indices,print_index,NULL);
@@ -435,9 +435,9 @@ static void merge_sort_iterative(void **A,void **T,int n,SortCompareFn cmp)
 
     while (!stack_isEmpty(stack))
     {
-        right=(long )stack_pop(stack);
-        left=(long )stack_pop(stack);
-        type=(long )stack_pop(calls);
+        right=(llint )stack_pop(stack);
+        left=(llint )stack_pop(stack);
+        type=(llint )stack_pop(calls);
         mid=(right+left)/2;
 
         if (type==type_call)
@@ -483,14 +483,14 @@ static void merge_sort_iterative(void **A,void **T,int n,SortCompareFn cmp)
  * otherwise it terminates execution based on invalid assertions.
  *
  * @param:   void               **A
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @param:   int                type
  * @return:  void
  *
  */
 
-void merge_sort(void **A,int n,SortCompareFn cmp,int type)
+void merge_sort(void **A,llint n,SortCompareFn cmp,int type)
 {
     void **T=NULL;
     assert(type==RECURSIVE_SORT || type==ITERATIVE_SORT);
@@ -519,15 +519,15 @@ void merge_sort(void **A,int n,SortCompareFn cmp,int type)
  * and it inserts it there,it repeats until no input element remains.
  *
  * @param:   void               **A
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @return:  void
  *
  */
 
-void insertion_sort(void **A,int n,SortCompareFn cmp)
+void insertion_sort(void **A,llint n,SortCompareFn cmp)
 {
-    int i,j;
+    llint i,j;
     assert(A!=NULL && n>=0 && cmp!=NULL);
 
     for (i=1;i<n;i++)
@@ -556,15 +556,15 @@ void insertion_sort(void **A,int n,SortCompareFn cmp)
  * sort properties.
  *
  * @param:   void               **A
- * @param:   int                n
+ * @param:   llint              n
  * @param:   SortCompareFn      cmp
  * @return:  int
  *
  */
 
-int is_sorted(void **A,int n,SortCompareFn cmp)
+int is_sorted(void **A,llint n,SortCompareFn cmp)
 {
-    int i=0,flag=0;
+    llint i=0; int flag=0;
     assert(A!=NULL && n>=0 && cmp!=NULL);
     
     for (i=1;i<n;i++)

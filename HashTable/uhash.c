@@ -41,15 +41,15 @@
  * a prime number or not.If the given number is a
  * prime it returns one,otherwise it returns zero.
  *
- * @param:  uint   n
+ * @param:  lluint   n
  * @return: int
  *
  */
 
-static int is_prime(uint n)
+static int is_prime(lluint n)
 {
-    uint divisor;
-    uint isprime=1;
+    lluint divisor;
+    lluint isprime=1;
     if (n<2) { return 0; }
 
     for (divisor=2;divisor*divisor<=n;divisor++)
@@ -78,14 +78,14 @@ static int is_prime(uint n)
  * is_prime() function to check if a value is prime
  * or not.
  *
- * @param:  uint    n
- * @return: uint
+ * @param:  lluint    n
+ * @return: lluint
  *
  */
 
-static uint next_prime(uint n)
+static lluint next_prime(lluint n)
 {
-    uint step;
+    lluint step;
     assert(n!=0);
     step=n+1;
 
@@ -114,15 +114,15 @@ static uint next_prime(uint n)
  * structure by allocating memory for it and it's 
  * components.
  *
- * @param:  uint            ts
- * @param:  uint            k
+ * @param:  lluint            ts
+ * @param:  lluint            k
  * @return: hashfn_t        *
  *
  */
 
-hashfn_t *hashfn_create(uint ts,uint k)
+hashfn_t *hashfn_create(lluint ts,lluint k)
 {
-    int i;
+    lluint i;
     time_t seed;
     hashfn_t *h=NULL;
     assert(ts!=0 && k>=0);
@@ -130,7 +130,7 @@ hashfn_t *hashfn_create(uint ts,uint k)
     h=(hashfn_t *)malloc(sizeof(*h));
     assert(h!=NULL);
     h->kvalue=k; h->tabsize=ts;
-    h->values=(uint *)malloc(k*sizeof(uint ));
+    h->values=(lluint *)malloc(k*sizeof(lluint ));
     assert(h->values!=NULL);
 
     for (i=0;i<k;i++)
@@ -155,11 +155,11 @@ hashfn_t *hashfn_create(uint ts,uint k)
  * selected prime indices.
  *
  * @param:  hashfn_t    *h
- * @return: uint        *
+ * @return: lluint        *
  *
  */
 
-uint *hashfn_getValues(hashfn_t *h)
+lluint *hashfn_getValues(hashfn_t *h)
 {
     assert(h!=NULL);
     return h->values;
@@ -178,11 +178,11 @@ uint *hashfn_getValues(hashfn_t *h)
  * size that has been assigned to it.
  *
  * @param:  hashfn_t    *h
- * @return: uint        
+ * @return: lluint        
  *
  */
 
-uint hashfn_getTableSize(hashfn_t *h)
+lluint hashfn_getTableSize(hashfn_t *h)
 {
     assert(h!=NULL);
     return h->tabsize;
@@ -202,11 +202,11 @@ uint hashfn_getTableSize(hashfn_t *h)
  * been assigned to it.
  *
  * @param:  hashfn_t    *h
- * @return: uint
+ * @return: lluint
  *
  */
 
-uint hashfn_getK(hashfn_t *h)
+lluint hashfn_getK(hashfn_t *h)
 {
     assert(h!=NULL);
     return h->kvalue;
@@ -232,14 +232,14 @@ uint hashfn_getK(hashfn_t *h)
 
 void hashfn_print(hashfn_t *h)
 {
-    int i;
+    lluint i;
     assert(h!=NULL);
-    printf("table_size=%u, k=%u, values=[ ",
+    printf("table_size=%llu, k=%llu, values=[ ",
         h->tabsize,h->kvalue);
 
     for (i=0;i<h->kvalue;i++)
     {
-        printf("%u, ",h->values[i]);
+        printf("%llu, ",h->values[i]);
     }
 
     printf("\b\b ]\n");

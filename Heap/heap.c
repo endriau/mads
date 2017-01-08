@@ -53,7 +53,7 @@
 
 heap_t *heap_create(int type,HeapCompareFn cmp,HeapPrintFn print,HeapDestroyFn destroy)
 {
-    int initial_size=4;
+    lluint initial_size=4;
     heap_t *heap=NULL;
     assert(type==MIN_HEAP || type==MAX_HEAP);
     assert(cmp!=NULL && print!=NULL);
@@ -87,15 +87,15 @@ heap_t *heap_create(int type,HeapCompareFn cmp,HeapPrintFn print,HeapDestroyFn d
  * type of heap that has been created.
  *
  * @param:   heap_t     *h
- * @praam:   int        position
+ * @praam:   lluint     position
  * @return:  void
  *
  */
 
-static void heap_bubbleup(heap_t *h,int position)
+static void heap_bubbleup(heap_t *h,lluint position)
 {
-    int parent=position/2,index=position;
     void *temp=NULL;
+    lluint parent=position/2,index=position;
 
     if (h->type==MIN_HEAP)
     {
@@ -146,7 +146,7 @@ static void heap_bubbleup(heap_t *h,int position)
 
 void heap_insert(heap_t *h,void *data)
 {
-    int double_size=0;
+    lluint double_size=0;
     assert(h!=NULL);
     
     if (heap_isEmpty(h)==1)
@@ -186,14 +186,14 @@ void heap_insert(heap_t *h,void *data)
  *
  * @param:   heap_t     *h
  * @param:   void       **Array
- * @param:   int        n
+ * @param:   lluint     n
  * @return:  void
  *
  */
 
-void heap_build(heap_t *h,void **Array,int n)
+void heap_build(heap_t *h,void **Array,lluint n)
 {
-    int i;
+    lluint i;
     assert(h!=NULL && Array!=NULL);
     
     while (heap_isEmpty(h)==0)
@@ -232,7 +232,7 @@ void heap_build(heap_t *h,void **Array,int n)
 
 int heap_find(heap_t *h,void *item)
 {
-    int i,compare;
+    int compare; lluint i;
     assert(h!=NULL && item!=NULL);
 
     for (i=1;i<h->n;i++)
@@ -298,15 +298,16 @@ void *heap_getRoot(heap_t *h)
  * the minimum value.
  *
  * @param:   heap_t     *h
- * @param:   int        parent
- * @return:  int
+ * @param:   lluint     parent
+ * @return:  lluint
  *
  */
-static int minchild(heap_t *h,int parent)
+
+static lluint minchild(heap_t *h,lluint parent)
 {
 
-    int right_child,left_child;
-    int result,minimum;
+    lluint right_child,left_child;
+    lluint minimum; int result;
     assert(h!=NULL);
     right_child=2*parent+1;
     left_child=2*parent;
@@ -354,15 +355,15 @@ static int minchild(heap_t *h,int parent)
  * the maximum value.
  *
  * @param:   heap_t     *h
- * @param:   int        parent
- * @return:  int
+ * @param:   lluint     parent
+ * @return:  lluint
  *
  */
 
-static int maxchild(heap_t *h,int parent)
+static lluint maxchild(heap_t *h,lluint parent)
 {
-    int result,maximum;
-    int left_child,right_child;
+    int result; lluint maximum;
+    lluint left_child,right_child;
     assert(h!=NULL);
     right_child=2*parent+1;
     left_child=2*parent;
@@ -413,15 +414,15 @@ static int maxchild(heap_t *h,int parent)
  * of the heap that has been created.
  *
  * @param:   heap_t     *h
- * @param:   int        position
+ * @param:   lluint     position
  * @return:  void
  *
  */
 
-static void heap_siftdown(heap_t *h,int position)
+static void heap_siftdown(heap_t *h,lluint position)
 { 
     void *temp=NULL;
-    int child,parent=position;
+    lluint child,parent=position;
     assert(h!=NULL);
 
     if (h->type==MIN_HEAP)
@@ -522,13 +523,13 @@ void heap_removeRoot(heap_t *h)
  * If the item does not exist nothing happens.
  *
  * @param:   heap_t     *h
- * @param:   int        index
+ * @param:   lluint     index
  * @param:   void       *item
  * @return:  void
  *
  */
 
-void heap_changeKey(heap_t *h,int index,void *item)
+void heap_changeKey(heap_t *h,lluint index,void *item)
 {
     int result;
     void *old_temp=NULL;
@@ -619,15 +620,15 @@ int heap_isEmpty(heap_t *h)
  * array in a binary tree format.
  *
  * @param:   heap_t     *h
- * @param:   int        child
- * @param:   int        depth
+ * @param:   lluint     child
+ * @param:   lluint     depth
  * @return:  void
  *
  */
 
-static void heap_recursive_print(heap_t *h,int child,int depth)
+static void heap_recursive_print(heap_t *h,lluint child,lluint depth)
 {
-    int i;
+    lluint i;
     assert(h!=NULL);
 
     if (h->n<=child)
@@ -667,7 +668,7 @@ static void heap_recursive_print(heap_t *h,int child,int depth)
 
 void heap_print(heap_t *h)
 {
-    int root=1;
+    lluint root=1;
     assert(h!=NULL);
     printf("----------BINARY HEAP----------\n");
     heap_recursive_print(h,root,1);
@@ -697,7 +698,7 @@ void heap_print(heap_t *h)
 
 void heap_free(heap_t *h)
 {
-    int i;
+    lluint i;
     assert(h!=NULL);
     
     if (h->destroy!=NULL)

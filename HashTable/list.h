@@ -46,17 +46,17 @@ typedef void    (*ListDestroyFn)(void *);
 
 
 /*
- * Defining aliases for the unsigned integer native
- * type,and the node structure, which represents the
- * abstract concept of a node in a doubly linked
+ * Defining aliases for the unsigned long long  integer
+ * native type,and the node structure, which represents 
+ * the abstract concept of a node in a doubly linked
  * list.The llnode_t structure is a recursive data type that
  * can have as fields other llnode_t structs.
  *
  */
 
 
-typedef unsigned int    uint;
-typedef struct llnode   llnode_t;
+typedef unsigned long long int      lluint;
+typedef struct llnode               llnode_t;
 
 struct llnode
 {
@@ -79,7 +79,7 @@ struct llnode
 
 typedef struct
 {
-    uint                size;
+    lluint              size;
     llnode_t            *head;
     llnode_t            *foot;
     ListCompareFn       cmp;
@@ -101,13 +101,13 @@ typedef struct
 list_t      *list_create(ListCompareFn cmp,ListPrintFn print,ListDestroyFn destroy);
 void        list_push(list_t *list,void *data);
 void        list_append(list_t *list,void *data);
-void        list_insertAt(list_t *list,void *data,uint position);
+void        list_insertAt(list_t *list,void *data,lluint position);
 void        *list_getHead(list_t *list);
 void        *list_getFoot(list_t *list);
-void        *list_getAt(list_t *list,uint position);
+void        *list_getAt(list_t *list,lluint position);
 void        list_removeHead(list_t *list);
 void        list_removeFoot(list_t *list);
-void        list_removeAt(list_t *list,uint position);
+void        list_removeAt(list_t *list,lluint position);
 void        list_print(list_t *list);
 void        list_free(list_t *list);
 int         list_isEmpty(list_t *list);

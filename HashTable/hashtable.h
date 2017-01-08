@@ -58,7 +58,7 @@
  * linked list or an avl tree.
  *
  */
-#define INITIAL_SIZE    1097
+#define INITIAL_SIZE    107
 #define CHAIN_LIST      76
 #define CHAIN_TREE      84
 
@@ -67,8 +67,8 @@
 
 
 /*
- * Defining an alias for the unsigned integer native type.
- * Defining a new datatype of function pointer called 
+ * Defining an alias for the unsigned long long int native
+ * type.Defining a new datatype of function pointer called 
  * TableHashFn.This function has two take two arguments
  * as parameters.The first parameter is a pointer to a
  * hashfn_t data structure.The second one is a pointer
@@ -79,9 +79,9 @@
  * 
  */
 
-typedef unsigned    uint;
+typedef unsigned long long int    lluint;
 
-typedef uint    (*TableHashFn)(hashfn_t *,const void *);
+typedef lluint    (*TableHashFn)(hashfn_t *,const void *);
 
 
 
@@ -103,9 +103,9 @@ typedef struct
 {
     void                **A;
     int                 type;
-    uint                n;
-    uint                size;
-    uint                lf;
+    lluint              n;
+    lluint              size;
+    double              lf;
     hashfn_t            *hfunc;
     TableHashFn         hash;
 } table_t;

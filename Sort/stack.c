@@ -55,7 +55,7 @@
 stack_t *stack_create(StackCompareFn cmp,StackPrintFn print,StackDestroyFn destroy)
 {
     assert(cmp!=NULL && print!=NULL);
-    int initial_size=20;
+    long long int initial_size=20;
     stack_t *stack=NULL;
     stack=(stack_t *)malloc(sizeof(*stack));
     assert(stack!=NULL);
@@ -90,8 +90,8 @@ stack_t *stack_create(StackCompareFn cmp,StackPrintFn print,StackDestroyFn destr
 
 void stack_push(stack_t *s,void *item)
 {
-    int double_size;
     assert(s!=NULL);
+    long long int double_size;
 
     if (s->n+1==s->size)
     {
@@ -165,12 +165,13 @@ void *stack_pop(stack_t *s)
 
 void stack_print(stack_t *s)
 {
-    int i;
+    long long int i;
     assert(s!=NULL);
     printf("------------STACK------------\n");
     for (i=s->n;i>=0;i--)
     {
         s->print(s->A[i]);
+        printf("\n");
     }
 
     printf("--------END OF STACK --------\n");
@@ -201,7 +202,7 @@ void stack_print(stack_t *s)
 
 void stack_free(stack_t *s)
 {
-    int i;
+    long long int i;
     assert(s!=NULL);
 
     if (s->destroy!=NULL)
@@ -265,7 +266,7 @@ int stack_isEmpty(stack_t *s)
 
 int stack_hasElem(stack_t *s,void *item)
 {
-    int i;
+    long long int i;
     assert(s!=NULL);
 
     for (i=0;i<=s->n;i++)
@@ -278,4 +279,3 @@ int stack_hasElem(stack_t *s,void *item)
 
     return 0;
 }
-

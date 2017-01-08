@@ -46,7 +46,8 @@
 
 
 /*
- * Defining a new datatype of a function pointer called
+ * Defining an alias for the long long int native datatype.
+ * Also defining a new datatype of a function pointer called
  * SortCompareFn that takes as arguments two immutable
  * addresses to void pointers.This function pointer enables
  * polymorphism by specifying an interface for the comparison
@@ -54,6 +55,8 @@
  * user and has to meet the following criteria.
  *
  */
+
+typedef long long int   llint;
 
 typedef int   (*SortCompareFn)(const void *,const void *);
 
@@ -69,10 +72,10 @@ typedef int   (*SortCompareFn)(const void *,const void *);
  *
  */
 
-void            quick_sort(void **A,int n,SortCompareFn cmp,int type);
-void            merge_sort(void **A,int n,SortCompareFn cmp,int type);
-void            insertion_sort(void **A,int n,SortCompareFn cmp);
-int             is_sorted(void **A,int n,SortCompareFn cmp);
+void            quick_sort(void **A,llint n,SortCompareFn cmp,int type);
+void            merge_sort(void **A,llint n,SortCompareFn cmp,int type);
+void            insertion_sort(void **A,llint n,SortCompareFn cmp);
+int             is_sorted(void **A,llint n,SortCompareFn cmp);
 
 
 

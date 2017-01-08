@@ -44,7 +44,7 @@
 
 
 /*
- * Defining an alias for the unsigned integer native type.
+ * Defining an alias for the unsigned long long int native type.
  * Defining three new data types of function pointers called
  * HeapCompareFn,HeapPrintFn,HeapDestroyFn.These functions
  * enable polymorphism by specifying an interface for the
@@ -54,7 +54,7 @@
  * 
  */
 
-typedef unsigned int    uint;
+typedef unsigned long long int    lluint;
 
 typedef int     (*HeapCompareFn)(const void *,const void *);
 typedef void    (*HeapPrintFn)(const void *);
@@ -76,8 +76,8 @@ typedef void    (*HeapDestroyFn)(void *);
 typedef struct
 {
     void                **A;
-    uint                n;
-    uint                size;
+    lluint              n;
+    lluint              size;
     int                 type;
     HeapCompareFn       cmp;
     HeapPrintFn         print;
@@ -96,11 +96,11 @@ typedef struct
 
 heap_t      *heap_create(int type,HeapCompareFn cmp,HeapPrintFn print,HeapDestroyFn destroy);
 void        heap_insert(heap_t *h,void *data);
-void        heap_build(heap_t *h,void **Array,int n);
+void        heap_build(heap_t *h,void **Array,lluint n);
 int         heap_find(heap_t *h,void *item);
 void        *heap_getRoot(heap_t *h);
 void        heap_removeRoot(heap_t *h);
-void        heap_changeKey(heap_t *h,int position,void *item);
+void        heap_changeKey(heap_t *h,lluint position,void *item);
 int         heap_isEmpty(heap_t *h);
 void        heap_print(heap_t *h);
 void        heap_free(heap_t *h);

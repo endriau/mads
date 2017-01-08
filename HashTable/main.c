@@ -17,7 +17,7 @@ void    destroy_string(void *s);
 int     compare_longs(const void *l1,const void *l2);
 void    print_long(const void *l);
 void    destroy_long(void *l);
-uint    hash_string_calculate(hashfn_t *h,const void *key);
+lluint  hash_string_calculate(hashfn_t *h,const void *key);
 int     get_word(char *A,int limit);
 
 
@@ -31,7 +31,7 @@ int main(int argc,char *argv[])
     cue_t *temp_key=NULL; value_t *temp_value=NULL;
     pair_t *temp_pair=NULL; char one_word[MAXCHARS+1];
     srand((unsigned int )time(&seed));
-    table=table_create(hash_string_calculate,CHAIN_TREE);
+    table=table_create(hash_string_calculate,CHAIN_LIST);
     
     while (get_word(one_word,MAXCHARS)!=EOF)
     {
@@ -54,7 +54,7 @@ int main(int argc,char *argv[])
             temp_long=NULL;
         }
     }
-
+    
     table_print(table);
     table_free(table);
     return 0;
@@ -97,8 +97,8 @@ void destroy_string(void *s)
 int compare_longs(const void *l1,const void *l2)
 {
     long *ll1=NULL,*ll2=NULL;
-    ll1=(long *)&l1;
-    ll2=(long *)&l2;
+    ll1=(long *)l1;
+    ll2=(long *)l2;
     return (*ll1-*ll2);
 }
 
@@ -106,7 +106,7 @@ int compare_longs(const void *l1,const void *l2)
 void print_long(const void *l)
 {
     long *ll=NULL;
-    ll=(long *)&l;
+    ll=(long *)l;
     printf("%ld",*ll);
     return;
 }
@@ -128,7 +128,7 @@ void destroy_long(void *l)
 
 
 
-uint hash_string_calculate(hashfn_t *h,const void *key)
+lluint hash_string_calculate(hashfn_t *h,const void *key)
 {
     uint i,step=0,hval=0;
     char *string=NULL;

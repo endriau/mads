@@ -115,13 +115,13 @@ void *cue_get(cue_t *k)
  * and a pointer to some data and compares
  * the value of the cue with the given data.
  * 
- * @param:  cue_t               *k
- * @param:  const void          *data
+ * @param:  cue_t       *k
+ * @param:  void        *data
  * @return: int
  * 
  */
 
-int cue_compareTo(cue_t *k,const void *data)
+int cue_compareTo(cue_t *k,void *data)
 {
     int result;
     assert(k!=NULL && data!=NULL);
@@ -270,13 +270,13 @@ void *value_get(value_t *v)
  * the value field of the value_t with the 
  * given data.
  * 
- * @param:  value_t             *v
- * @param:  const void          *data
+ * @param:  value_t     *v
+ * @param:  void        *data
  * @return: int
  * 
  */
 
-int value_compareTo(value_t *v,const void *data)
+int value_compareTo(value_t *v,void *data)
 {
     int result;
     assert(v!=NULL && data!=NULL);

@@ -29,8 +29,8 @@
 
 
 /*
- * Defining an alias for the unsigned integer
- * native type and a new data structure that
+ * Defining an alias for the unsigned long long
+ * int native type and a new data structure that
  * represents a universal hash function that 
  * satisfies the universal hashing properties.
  * This data structure has as components the 
@@ -42,13 +42,13 @@
  *
  */
 
-typedef unsigned int    uint;
+typedef unsigned long long int    lluint;
 
 typedef struct
 {
-    uint    kvalue;
-    uint    *values;
-    uint    tabsize;
+    lluint    kvalue;
+    lluint    *values;
+    lluint    tabsize;
 } hashfn_t;
 
 
@@ -61,10 +61,10 @@ typedef struct
  *
  */
 
-hashfn_t    *hashfn_create(uint ts,uint k);
-uint        *hashfn_getValues(hashfn_t *h);
-uint        hashfn_getTableSize(hashfn_t *h);
-uint        hashfn_getK(hashfn_t *h);
+hashfn_t    *hashfn_create(lluint ts,lluint k);
+lluint      *hashfn_getValues(hashfn_t *h);
+lluint      hashfn_getTableSize(hashfn_t *h);
+lluint      hashfn_getK(hashfn_t *h);
 void        hashfn_print(hashfn_t *h);
 void        hashfn_free(hashfn_t *h);
 

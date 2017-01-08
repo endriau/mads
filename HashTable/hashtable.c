@@ -120,6 +120,189 @@ static void deallocate_pair(void *p)
 }
 
 
+
+
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The static function table_loadFactor(),takes
+ * a hash table data structure as an argument,
+ * calculates the current load factor for the
+ * table and returns it's value.
+ *
+ * @param:  table_t     *t
+ * @return: double
+ *
+ */
+
+static double table_loadFactor(table_t *t)
+{
+    double lf;
+    assert(t!=NULL);
+    lf=(double )(t->n)/(t->size);
+    t->lf=lf; return lf;
+}
+
+
+
+
+/*
+ * @COMPLEXITY: O(sqrt(n))
+ *
+ * The static function is_prime() takes only
+ * one argument as a parameter,namely an unsigned
+ * long long int value and checks whether it constitutes
+ * a prime number or not.If the given number is a
+ * prime it returns one,otherwise it returns zero.
+ *
+ * @param:  lluint  n
+ * @return: int
+ *
+ */
+
+static int is_prime(lluint n)
+{
+    lluint divisor;
+    lluint isprime=1;
+    if (n<2) { return 0; }
+
+    for (divisor=2;divisor*divisor<=n;divisor++)
+    {
+        if (n%divisor==0)
+        {
+            isprime=0;
+            break;
+        }
+    }
+
+    return isprime;
+}
+
+
+
+
+
+/*
+ * @COMPLEXITY: O(ln(n)*sqrt(n))
+ *
+ * The static function next_prime(),takes only
+ * one argument as a parameter,namely an unsigned
+ * integer value and returns the next prime number
+ * after that value.This function invokes the static
+ * is_prime() function to check if a value is prime
+ * or not.
+ *
+ * @param:  lluint  n
+ * @return: lluint
+ *
+ */
+
+static lluint next_prime(lluint n)
+{
+    lluint step;
+    assert(n!=0);
+    step=n+1;
+
+    while (is_prime(step)==0)
+    {
+        step++;
+    }
+
+    return step;
+}
+
+
+
+
+/* 
+ * @COMPLEXITY: O(m) where m is the size of the table.
+ * 
+ * The static function table_rehash(),takes as an
+ * argument a hash table data structure and rehashes
+ * all of the elements in the buckets whehter it is 
+ * a linked list or an avl tree and reinserts them
+ * into a new table using a new randomly generated
+ * universal hash function data structure.
+ * 
+ * @param:  table_t     *t
+ * @return: void
+ * 
+ */
+
+static void table_rehash(table_t *t)
+{
+    assert(t!=NULL); hashfn_t *new_h=NULL;
+    void *cue_data=NULL; lluint i,new_size,position;
+    cue_t *temp_cue=NULL; pair_t *temp_pair=NULL;
+    tree_t *temp_tree=NULL; list_t *temp_list=NULL;
+    void **new_array=NULL; void **old_array=NULL;
+    new_size=next_prime((t->size)*2);
+    new_array=(void **)malloc(new_size*sizeof(void *));
+    assert(new_array!=NULL); new_h=hashfn_create(new_size,20);
+
+    for (i=0;i<new_size;i++)
+    {
+        if (t->type==CHAIN_LIST)
+        {
+            new_array[i]=list_create(compare_pairs,print_pair,deallocate_pair);
+        }
+        else if (t->type==CHAIN_TREE)
+        {
+            new_array[i]=tree_create(compare_pairs,print_pair,deallocate_pair);
+        }
+        else {}
+    }
+
+    for (i=0;i<t->size;i++)
+    {
+        if (t->type==CHAIN_LIST)
+        {
+            temp_list=t->A[i];
+            temp_list->destroy=NULL;
+
+            while (!list_isEmpty(temp_list))
+            {
+                temp_pair=list_getHead(temp_list);
+                temp_cue=pair_getCue(temp_pair);
+                cue_data=cue_get(temp_cue);
+                position=t->hash(new_h,cue_data);
+                list_push(new_array[position],temp_pair);
+                list_removeHead(temp_list);
+            }
+
+            list_free(temp_list);
+        }
+        else if (t->type==CHAIN_TREE)
+        {
+            temp_tree=t->A[i];
+            temp_tree->destroy=NULL;
+
+            while (!tree_isEmpty(temp_tree))
+            {
+                temp_pair=tree_getRoot(temp_tree);
+                temp_cue=pair_getCue(temp_pair);
+                cue_data=cue_get(temp_cue);
+                position=t->hash(new_h,cue_data);
+                tree_insert(new_array[position],temp_pair);
+                tree_removeRoot(temp_tree);
+            }
+
+            tree_free(temp_tree);
+        }
+    }
+
+    hashfn_free(t->hfunc); t->hfunc=new_h;
+    old_array=t->A; free(old_array);
+    t->A=new_array; t->size=new_size;
+    table_loadFactor(t);
+    return;
+}
+
+
+
+
+
 //////////////////////////////////////////////////////////////////////////////////// 
 
 
@@ -150,7 +333,7 @@ static void deallocate_pair(void *p)
 
 table_t *table_create(TableHashFn hash,int chain_type)
 {
-    int i;
+    lluint i;
     table_t *new_table=NULL;
     assert(hash!=NULL);
     assert(chain_type==CHAIN_LIST || chain_type==CHAIN_TREE);
@@ -175,7 +358,7 @@ table_t *table_create(TableHashFn hash,int chain_type)
 
     new_table->n=0;
     new_table->size=INITIAL_SIZE;
-    new_table->lf=(new_table->n)/(new_table->size);
+    new_table->lf=(double )(new_table->n)/(new_table->size);
     new_table->hfunc=hashfn_create(INITIAL_SIZE,20);
     new_table->hash=hash;
     return new_table;
@@ -186,7 +369,9 @@ table_t *table_create(TableHashFn hash,int chain_type)
 
 
 /* 
- * @COMPLEXITY:
+ * @COMPLEXITY: O(1+n/m) best case for both list and tree,
+ *              O(n) worst case for bucket list and
+ *              O(log(n)) worst case for bucket tree.
  * 
  * The function table_insert(),takes two arguments
  * as parameters,namely a hash table data structure
@@ -204,9 +389,11 @@ table_t *table_create(TableHashFn hash,int chain_type)
 
 void table_insert(table_t *t,pair_t *p)
 {
-    uint position;
-    cue_t *temp_cue=NULL;
-    void *cue_data=NULL;
+    lluint position;
+    double load_factor;
+    load_factor=table_loadFactor(t);
+    if (load_factor>0.85) { table_rehash(t); }
+    cue_t *temp_cue=NULL; void *cue_data=NULL;
     assert(t!=NULL && p!=NULL);
     temp_cue=pair_getCue(p);
     cue_data=cue_get(temp_cue);
@@ -224,15 +411,20 @@ void table_insert(table_t *t,pair_t *p)
         t->n=t->n+1;
     }
     else {}
+
+    table_loadFactor(t);
     return;
 }
 
 
 
 
+
 /*
- * @COMPLEXITY:
- * 
+ * @COMPLEXITY: O(1+n/m) best case for both list and tree,
+ *              O(n) worst case for bucket list and
+ *              O(log(n)) worst case for bucket tree.
+ *              
  * The function table_lookup(),takes two
  * arguments as parameters.The first argument
  * is a hash table data structure and the
@@ -251,7 +443,7 @@ void table_insert(table_t *t,pair_t *p)
 
 int table_lookup(table_t *t,void *key)
 {
-    int chain_query; uint position;
+    int chain_query; lluint position;
     pair_t temp_pair; cue_t temp_cue;
     assert(t!=NULL && key!=NULL);
     position=t->hash(t->hfunc,key);
@@ -280,7 +472,9 @@ int table_lookup(table_t *t,void *key)
 
 
 /* 
- * @COMPLEXITY:
+ * @COMPLEXITY: O(1+n/m) best case for both list and tree,
+ *              O(n) worst case for bucket list and
+ *              O(log(n)) worst case for bucket tree.
  * 
  * The function table_remove(),takes two
  * arguments as parameters.The first argument
@@ -300,7 +494,7 @@ int table_lookup(table_t *t,void *key)
 void table_remove(table_t *t,void *key)
 {
     pair_t temp_pair; cue_t temp_cue;
-    uint position,chain_pos;
+    lluint position,chain_pos;
     assert(t!=NULL && key!=NULL);
     position=t->hash(t->hfunc,key);
     if (table_lookup(t,key)==0) { return; }
@@ -319,14 +513,20 @@ void table_remove(table_t *t,void *key)
         t->n=t->n-1;
     }
     else {}
+
+    table_loadFactor(t);
     return;
 }
 
 
 
 
+
+
 /* 
- * @COMPLEXITY:
+ * @COMPLEXITY: O(1+n/m) best case for both list and tree,
+ *              O(n) worst case for bucket list and
+ *              O(log(n)) worst case for bucket tree.
  * 
  * The function table_getValue(),takes two
  * arguments as parameters.The first argument
@@ -346,7 +546,7 @@ void table_remove(table_t *t,void *key)
 void *table_getValue(table_t *t,void *key)
 {
     cue_t temp_cue; pair_t temp_pair;
-    uint position,chain_query;
+    lluint position,chain_query;
     pair_t *returned_pair=NULL;
     value_t *returned_value=NULL;
     assert(t!=NULL && key!=NULL);
@@ -375,8 +575,13 @@ void *table_getValue(table_t *t,void *key)
 }
 
 
+
+
+
 /* 
- * @COMPLEXITY: 
+ * @COMPLEXITY: O(1+n/m) best case for both list and tree,
+ *              O(n) worst case for bucket list and
+ *              O(log(n)) worst case for bucket tree.
  * 
  * The function table_changeValue(),takes three
  * arguments as parameters.The first argument
@@ -395,7 +600,7 @@ void *table_getValue(table_t *t,void *key)
 
 void table_changeValue(table_t *t,void *key,void *value)
 {
-    uint position,chain_query;
+    lluint position,chain_query;
     pair_t *returned_pair=NULL;
     cue_t temp_cue; pair_t temp_pair;
     value_t *old_value=NULL,*new_value=NULL;
@@ -433,6 +638,7 @@ void table_changeValue(table_t *t,void *key,void *value)
 
 
 
+
 /* 
  * @COMPLEXITY: O(m*n) where m is the size of
  *              table and n is the size of the
@@ -449,12 +655,12 @@ void table_changeValue(table_t *t,void *key,void *value)
 
 void table_print(table_t *t)
 {
-    int i;
+    lluint i;
     assert(t!=NULL);
 
     for (i=0;i<t->size;i++)
     {
-        printf("index %d:",i);
+        printf("index %lld:",i);
 
         if (t->type==CHAIN_LIST)
         {
@@ -492,8 +698,7 @@ void table_print(table_t *t)
 
 void table_free(table_t *t)
 {
-    int i;
-    tree_t *temp_tree=NULL;
+    lluint i;
     assert(t!=NULL);
 
     for (i=0;i<t->size;i++)
@@ -504,9 +709,7 @@ void table_free(table_t *t)
         }
         else if (t->type==CHAIN_TREE)
         {
-            temp_tree=t->A[i];
-            temp_tree->cmp=compare_pairs;
-            tree_free(temp_tree);
+            tree_free(t->A[i]);
         }
         else {}
     }

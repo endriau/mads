@@ -144,7 +144,7 @@ typedef struct
 
 cue_t           *cue_create(void *cue,KeyCompareFn cmp,KeyPrintFn print,KeyDestroyFn destroy);
 void            *cue_get(cue_t *k);
-int             cue_compareTo(cue_t *k,const void *data);
+int             cue_compareTo(cue_t *k,void *data);
 void            cue_print(cue_t *k);
 void            cue_free(cue_t *k);
 
@@ -159,7 +159,7 @@ void            cue_free(cue_t *k);
 
 value_t         *value_create(void *value,ValueCompareFn cmp,ValuePrintFn print,ValueDestroyFn destroy);
 void            *value_get(value_t *v);
-int             value_compareTo(value_t *v,const void *data);
+int             value_compareTo(value_t *v,void *data);
 void            value_print(value_t *v);
 void            value_free(value_t *v);
 
