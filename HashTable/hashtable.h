@@ -69,7 +69,7 @@
 /*
  * Defining an alias for the unsigned long long int native
  * type.Defining a new datatype of function pointer called 
- * TableHashFn.This function has two take two arguments
+ * TableHashFn.This function has to take two arguments
  * as parameters.The first parameter is a pointer to a
  * hashfn_t data structure.The second one is a pointer
  * to some immutable data address.This interface enables

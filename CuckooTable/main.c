@@ -4,8 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
-#include "hashtable.h"
-#include "tree.h"
+#include "cuckootable.h"
 
 #define MAXCHARS    20
 #define MAXKEY      100
@@ -27,36 +26,41 @@ int     get_word(char *A,int limit);
 int main(int argc,char *argv[])
 {
     time_t seed; int length; long *temp_long=NULL;
-    char *temp_string=NULL; table_t *table=NULL;
+    char *temp_string=NULL; cuckoo_t *table=NULL;
     cue_t *temp_key=NULL; value_t *temp_value=NULL;
     pair_t *temp_pair=NULL; char one_word[MAXCHARS+1];
     srand((unsigned int )time(&seed));
-    table=table_create(hash_string_calculate,CHAIN_TREE);
+    table=cuckoo_create(hash_string_calculate);
     
     while (get_word(one_word,MAXCHARS)!=EOF)
     {
 
-        if (table_lookup(table,one_word)==0)
+        if (cuckoo_lookup(table,one_word)==0)
         {
             length=strlen(one_word);
             temp_string=(char *)malloc((length+1)*sizeof(char ));
             assert(temp_string!=NULL);
             strcpy(temp_string,one_word);
-            temp_long=(long *)malloc(sizeof(long ));
-            *temp_long=rand()%MAXKEY;
+            // temp_long=(long *)malloc(sizeof(long ));
+            // *temp_long=rand()%MAXKEY;
             temp_key=cue_create(temp_string,compare_strings,
                             print_string,destroy_string);
-            temp_value=value_create(temp_long,compare_longs,
-                            print_long,destroy_long);
+
+            long value=rand()%100;
+            void **temp=NULL; temp=(void **)&value;
+            temp_value=value_create(*temp,compare_longs,
+                            print_long,NULL);
             temp_pair=pair_create(temp_key,temp_value);
-            table_insert(table,temp_pair);
-            temp_string=NULL;
-            temp_long=NULL;
+            cuckoo_insert(table,temp_pair);
+            // // printf("\n\n\n\n");
+            // cuckoo_print(table);
+            // temp_string=NULL;
+            // temp_long=NULL;
         }
     }
     
-    table_print(table);
-    table_free(table);
+    cuckoo_print(table);
+    cuckoo_free(table);
     return 0;
 }
 
@@ -97,8 +101,8 @@ void destroy_string(void *s)
 int compare_longs(const void *l1,const void *l2)
 {
     long *ll1=NULL,*ll2=NULL;
-    ll1=(long *)l1;
-    ll2=(long *)l2;
+    ll1=(long *)&l1;
+    ll2=(long *)&l2;
     return (*ll1-*ll2);
 }
 
@@ -106,7 +110,7 @@ int compare_longs(const void *l1,const void *l2)
 void print_long(const void *l)
 {
     long *ll=NULL;
-    ll=(long *)l;
+    ll=(long *)&l;
     printf("%ld",*ll);
     return;
 }
@@ -121,10 +125,6 @@ void destroy_long(void *l)
     free(ll); ll=NULL;
     return;
 }
-
-
-
-
 
 
 

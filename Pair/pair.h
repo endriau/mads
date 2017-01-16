@@ -51,7 +51,7 @@ typedef void    (*KeyDestroyFn)(void *);
 
 
 /*
- * Defining three new datat types of of function pointers
+ * Defining three new data types of of function pointers
  * called ValueCompareFn,ValuePrintFn and ValueDestroyFn.
  * These functions enable polymorphism by specifying an
  * interface for the comparison,printing and memory 
@@ -74,7 +74,7 @@ typedef void    (*ValueDestroyFn)(void *);
 /*
  * Defining a new data structure called cue_t.
  * This datatype represents the key component
- * in a pair data structure.It has as fileds a 
+ * in a pair data structure.It has as fields a 
  * pointer  to some key, and three function 
  * pointers cmp,print and destroy that enable 
  * polymorphism (The name cue is a synonym for key).

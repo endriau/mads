@@ -15,16 +15,14 @@
 
 /*
  * Including the standard utilities library,
- * the standard assertion library, the standard
- * time library and the header files sort.h and
- * stack.h which  contain datatype definitions 
- * and function prototypings for the sort and
- * stack procedures.
+ * the standard assertion library and the header 
+ * files sort.h and stack.h which  contain datatype 
+ * definitions  and function prototypings for the 
+ * sort and stack procedures.
  *
  */
 
 #include <stdlib.h>
-#include <time.h>
 #include <assert.h>
 #include "stack.h"
 #include "sort.h"
@@ -286,8 +284,6 @@ static void quick_sort_iterative(void **A,llint n,SortCompareFn cmp)
 
 void quick_sort(void **A,llint n,SortCompareFn cmp,int type)
 {
-    time_t seed;
-    srand((unsigned )time(&seed));
     assert(A!=NULL && n>=0 && cmp!=NULL);
     assert(type==RECURSIVE_SORT || type==ITERATIVE_SORT);
     if (type==RECURSIVE_SORT) { quick_sort_recursive(A,n,cmp); }

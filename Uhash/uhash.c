@@ -14,17 +14,15 @@
 /*
  * Including the standard input-output library,
  * the standard utilities library,standard assertion
- * library,standard time library and the uhash.h
- * header file that contains datatype definitions
- * and function prototyping for the universal hash
- * function data structure.
+ * library, and the uhash.h header file that contains 
+ * datatype definitions and function prototyping for 
+ * the universal hash function data structure.
  *
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <time.h>
 #include "uhash.h"
 
 
@@ -37,7 +35,7 @@
  *
  * The static function is_prime() takes only
  * one argument as a parameter,namely an unsigned
- * integer value and checks whether it constitutes
+ * long long int value and checks whether it constitutes
  * a prime number or not.If the given number is a
  * prime it returns one,otherwise it returns zero.
  *
@@ -48,8 +46,8 @@
 
 static int is_prime(lluint n)
 {
+    int isprime=1;
     lluint divisor;
-    lluint isprime=1;
     if (n<2) { return 0; }
 
     for (divisor=2;divisor*divisor<=n;divisor++)
@@ -72,8 +70,8 @@ static int is_prime(lluint n)
  * @COMPLEXITY: O(ln(n)*sqrt(n))
  *
  * The static function next_prime(),takes only
- * one argument as a parameter,namely an unsigned
- * integer value and returns the next prime number
+ * one argument as a parameter,namely an unsigned long
+ * long integer value and returns the next prime number
  * after that value.This function invokes the static
  * is_prime() function to check if a value is prime
  * or not.
@@ -105,17 +103,17 @@ static lluint next_prime(lluint n)
  * @COMPLEXITY: O(k), where k is the given number.
  *
  * The function hashfn_create(),takes two arguments
- * as parameters.The first argument is an unsigned
- * integer that represents the size of a table.The
- * second argument is an unsigned integer as well
- * and represents the total number of random prime 
+ * as parameters.The first argument is an unsigned long
+ * long integer that represents the size of a table.The
+ * second argument is an unsigned long long integer as 
+ * well and represents the total number of random prime 
  * indices to be selected from the table.This function 
  * instantiates the universal hash function data 
  * structure by allocating memory for it and it's 
  * components.
  *
- * @param:  lluint            ts
- * @param:  lluint            k
+ * @param:  lluint          ts
+ * @param:  lluint          k
  * @return: hashfn_t        *
  *
  */
@@ -123,10 +121,8 @@ static lluint next_prime(lluint n)
 hashfn_t *hashfn_create(lluint ts,lluint k)
 {
     lluint i;
-    time_t seed;
     hashfn_t *h=NULL;
-    assert(ts!=0 && k>=0);
-    srand((unsigned )time(&seed));
+    assert(ts!=0 && k!=0);
     h=(hashfn_t *)malloc(sizeof(*h));
     assert(h!=NULL);
     h->kvalue=k; h->tabsize=ts;
@@ -155,7 +151,7 @@ hashfn_t *hashfn_create(lluint ts,lluint k)
  * selected prime indices.
  *
  * @param:  hashfn_t    *h
- * @return: lluint        *
+ * @return: lluint      *
  *
  */
 
@@ -242,7 +238,7 @@ void hashfn_print(hashfn_t *h)
         printf("%llu, ",h->values[i]);
     }
 
-    printf("\b\b ]\n");
+    printf("\b\b ]");
     return;
 }
 

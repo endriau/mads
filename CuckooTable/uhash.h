@@ -16,7 +16,7 @@
  * at least once.If it hasn't the compiler
  * copy-pastes everything into the file 
  * that is including it.If the file on the
- * other hand has been included,the compiler
+ * other hand has been included the compiler
  * skips the contents entirely.
  * 
  */

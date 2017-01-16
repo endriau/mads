@@ -443,9 +443,9 @@ void table_insert(table_t *t,pair_t *p)
 
 int table_lookup(table_t *t,void *key)
 {
+    assert(t!=NULL);
     int chain_query; lluint position;
     pair_t temp_pair; cue_t temp_cue;
-    assert(t!=NULL && key!=NULL);
     position=t->hash(t->hfunc,key);
     temp_cue.cue=key;
     temp_pair.k=&temp_cue;
@@ -493,9 +493,9 @@ int table_lookup(table_t *t,void *key)
 
 void table_remove(table_t *t,void *key)
 {
+    assert(t!=NULL);
     pair_t temp_pair; cue_t temp_cue;
     lluint position,chain_pos;
-    assert(t!=NULL && key!=NULL);
     position=t->hash(t->hfunc,key);
     if (table_lookup(t,key)==0) { return; }
     temp_cue.cue=key;
@@ -545,11 +545,11 @@ void table_remove(table_t *t,void *key)
 
 void *table_getValue(table_t *t,void *key)
 {
+    assert(t!=NULL);
     cue_t temp_cue; pair_t temp_pair;
     lluint position,chain_query;
     pair_t *returned_pair=NULL;
     value_t *returned_value=NULL;
-    assert(t!=NULL && key!=NULL);
     if (table_lookup(t,key)==0) { return NULL; }
     position=t->hash(t->hfunc,key);
     temp_cue.cue=key;
@@ -600,11 +600,11 @@ void *table_getValue(table_t *t,void *key)
 
 void table_changeValue(table_t *t,void *key,void *value)
 {
+    assert(t!=NULL);
     lluint position,chain_query;
     pair_t *returned_pair=NULL;
     cue_t temp_cue; pair_t temp_pair;
     value_t *old_value=NULL,*new_value=NULL;
-    assert(t!=NULL && key!=NULL);
     if (table_lookup(t,key)==0) { return; }
     position=t->hash(t->hfunc,key);
     temp_cue.cue=key;

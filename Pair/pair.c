@@ -70,7 +70,7 @@
 cue_t *cue_create(void *cue,KeyCompareFn cmp,KeyPrintFn print,KeyDestroyFn destroy)
 {
     cue_t *new_cue=NULL;
-    assert(cue!=NULL && cmp!=NULL && print!=NULL);
+    assert(cmp!=NULL && print!=NULL);
     new_cue=(cue_t *)malloc(sizeof(*new_cue));
     assert(new_cue!=NULL);
     new_cue->cue=cue;
@@ -124,7 +124,7 @@ void *cue_get(cue_t *k)
 int cue_compareTo(cue_t *k,void *data)
 {
     int result;
-    assert(k!=NULL && data!=NULL);
+    assert(k!=NULL);
     result=k->cmp(k->cue,data);
     return result;
 }
@@ -224,7 +224,7 @@ void cue_free(cue_t *k)
 value_t *value_create(void *value,ValueCompareFn cmp,ValuePrintFn print,ValueDestroyFn destroy)
 {
     value_t *new_value=NULL;
-    assert(value!=NULL && cmp!=NULL && print!=NULL);
+    assert(cmp!=NULL && print!=NULL);
     new_value=(value_t *)malloc(sizeof(*new_value));
     assert(new_value!=NULL);
     new_value->value=value;
@@ -279,7 +279,7 @@ void *value_get(value_t *v)
 int value_compareTo(value_t *v,void *data)
 {
     int result;
-    assert(v!=NULL && data!=NULL);
+    assert(v!=NULL);
     result=v->cmp(v->value,data);
     return result;
 }
@@ -376,7 +376,7 @@ void value_free(value_t *v)
 pair_t  *pair_create(cue_t *k,value_t *v)
 {
     pair_t *new_pair=NULL;
-    assert(k!=NULL);
+    assert(k!=NULL && v!=NULL);
     new_pair=(pair_t *)malloc(sizeof(*new_pair));
     assert(new_pair!=NULL);
     new_pair->k=k;
@@ -441,7 +441,7 @@ value_t *pair_getValue(pair_t *p)
 void pair_changeCue(pair_t *p,cue_t *new_k)
 {
     cue_t *old_cue=NULL;
-    assert(p!=NULL);
+    assert(p!=NULL && new_k!=NULL);
     old_cue=pair_getCue(p);
     cue_free(old_cue);
     p->k=new_k;
@@ -468,7 +468,7 @@ void pair_changeCue(pair_t *p,cue_t *new_k)
 void pair_changeValue(pair_t *p,value_t *new_v)
 {
     value_t *old_value=NULL;
-    assert(p!=NULL);
+    assert(p!=NULL && new_v!=NULL);
     old_value=pair_getValue(p);
     value_free(old_value);
     p->v=new_v;
@@ -496,16 +496,16 @@ void pair_changeValue(pair_t *p,value_t *new_v)
 
 void pair_print(pair_t *p)
 {
+    assert(p!=NULL);
     cue_t *temp_cue=NULL;
     value_t *temp_value=NULL;
     temp_cue=pair_getCue(p);
     temp_value=pair_getValue(p);
-    assert(p!=NULL);
     printf("{ ");
     cue_print(temp_cue);
     printf(" : ");
     value_print(temp_value);
-    printf(" }\n");
+    printf(" }");
     return;
 }
 
