@@ -5,7 +5,8 @@
 #include <ctype.h>
 #include <time.h>
 #include "hashtable.h"
-#include "tree.h"
+#include "random.h"
+//#include "tree.h"
 
 #define MAXCHARS    20
 #define MAXKEY      100
@@ -30,7 +31,7 @@ int main(int argc,char *argv[])
     char *temp_string=NULL; table_t *table=NULL;
     cue_t *temp_key=NULL; value_t *temp_value=NULL;
     pair_t *temp_pair=NULL; char one_word[MAXCHARS+1];
-    srand((unsigned int )time(&seed));
+    init_genrand64((lluint )time(&seed));
     table=table_create(hash_string_calculate,CHAIN_TREE);
     
     while (get_word(one_word,MAXCHARS)!=EOF)
@@ -43,7 +44,7 @@ int main(int argc,char *argv[])
             assert(temp_string!=NULL);
             strcpy(temp_string,one_word);
             temp_long=(long *)malloc(sizeof(long ));
-            *temp_long=rand()%MAXKEY;
+            *temp_long=genrand64_int64()%MAXKEY;
             temp_key=cue_create(temp_string,compare_strings,
                             print_string,destroy_string);
             temp_value=value_create(temp_long,compare_longs,

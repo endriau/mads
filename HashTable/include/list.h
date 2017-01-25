@@ -110,6 +110,7 @@ void        list_removeFoot(list_t *list);
 void        list_removeAt(list_t *list,lluint position);
 void        list_print(list_t *list);
 void        list_free(list_t *list);
+lluint      list_getSize(list_t *list);
 int         list_isEmpty(list_t *list);
 int         list_hasElem(list_t *list,void *item);
 

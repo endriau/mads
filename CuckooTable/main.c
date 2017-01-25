@@ -4,6 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include "random.h"
 #include "cuckootable.h"
 
 #define MAXCHARS    20
@@ -29,7 +30,7 @@ int main(int argc,char *argv[])
     char *temp_string=NULL; cuckoo_t *table=NULL;
     cue_t *temp_key=NULL; value_t *temp_value=NULL;
     pair_t *temp_pair=NULL; char one_word[MAXCHARS+1];
-    srand((unsigned int )time(&seed));
+    init_genrand64((lluint )time(&seed));
     table=cuckoo_create(hash_string_calculate);
     
     while (get_word(one_word,MAXCHARS)!=EOF)
@@ -46,7 +47,7 @@ int main(int argc,char *argv[])
             temp_key=cue_create(temp_string,compare_strings,
                             print_string,destroy_string);
 
-            long value=rand()%100;
+            long value=genrand64_int64()%100;
             void **temp=NULL; temp=(void **)&value;
             temp_value=value_create(*temp,compare_longs,
                             print_long,NULL);
