@@ -117,7 +117,10 @@ void stack_push(stack_t *s,void *item)
  * data structure as an argument and returns
  * a void pointer to the last element in the array
  * component of the stack, assigns null to that position
- * and decrements the index component by 1.
+ * and decrements the index component by 1.The popped
+ * element has to be manually deallocated since it's
+ * address might be overwriten at a later stage within
+ * the stack data structure.
  *
  * @param:  stack_t     *s
  * @return: void        *
