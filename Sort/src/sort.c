@@ -15,7 +15,10 @@
 
 /*
  * Including the standard utilities library,
- * the standard assertion library and the header 
+ * the standard assertion library,the header file
+ * random.h that contains datatype definitions and
+ * function prototyping regarding the mersenne twister
+ * pseudo-random number generator and the header 
  * files sort.h and stack.h which  contain datatype 
  * definitions  and function prototypings for the 
  * sort and stack procedures.
@@ -24,6 +27,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
+#include "random.h"
 #include "stack.h"
 #include "sort.h"
 
@@ -189,7 +193,7 @@ static void quick_sort_recursive(void **A,llint n,SortCompareFn cmp)
 {
     llint first_eq,first_gt;
     if (n<=1) { return; }
-    partition(A,n,A[rand()%n],&first_eq,&first_gt,cmp);
+    partition(A,n,A[genrand64_int63()%n],&first_eq,&first_gt,cmp);
     quick_sort_recursive(A,first_eq,cmp);
     quick_sort_recursive(A+first_gt,n-first_gt,cmp);
     return;
@@ -238,7 +242,7 @@ static void quick_sort_iterative(void **A,llint n,SortCompareFn cmp)
         if ((right-left)>0)
         {
             new_n=(right-left)+1;
-            random_index=left+rand()%new_n;
+            random_index=left+genrand64_int63()%new_n;
             partition(A+left,new_n,A[random_index],
                         &first_eq,&first_gt,cmp);
 

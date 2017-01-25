@@ -323,7 +323,8 @@ void list_removeHead(list_t *list)
 {
     llnode_t *old_node=NULL;
     assert(list!=NULL);
-    
+    if (list_isEmpty(list)) { return; }
+
     if (list->head!=list->foot)
     {
         list->head->next->previous=NULL;
@@ -370,6 +371,7 @@ void list_removeFoot(list_t *list)
 {
     llnode_t *old_node=NULL;
     assert(list!=NULL);
+    if (list_isEmpty(list)) { return; }
 
     if (list->foot!=list->head)
     {
@@ -421,6 +423,7 @@ void list_removeAt(list_t *list,lluint position)
     lluint step=0;
     llnode_t *old_node=NULL,*next_node=NULL;
     assert(list!=NULL && position<list->size);
+    if (list_isEmpty(list)) { return; }
 
     if (position==0)
     {
@@ -548,6 +551,31 @@ void list_free(list_t *list)
     list=NULL;
     return;
 }
+
+
+
+
+
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function list_getSize() takes as
+ * an argument a list_t data structure
+ * and returns the the value of the
+ * size component.
+ *
+ * @param:  list_t      *list
+ * @return: lluint
+ *
+ */
+
+lluint list_getSize(list_t *list)
+{
+    assert(list!=NULL);
+    return (list->size);
+}
+
 
 
 

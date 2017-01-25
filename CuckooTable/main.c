@@ -25,7 +25,7 @@ int     get_word(char *A,int limit);
 
 int main(int argc,char *argv[])
 {
-    time_t seed; int length; long *temp_long=NULL;
+    time_t seed; int length; //long *temp_long=NULL;
     char *temp_string=NULL; cuckoo_t *table=NULL;
     cue_t *temp_key=NULL; value_t *temp_value=NULL;
     pair_t *temp_pair=NULL; char one_word[MAXCHARS+1];

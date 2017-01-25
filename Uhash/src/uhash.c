@@ -14,15 +14,19 @@
 /*
  * Including the standard input-output library,
  * the standard utilities library,standard assertion
- * library, and the uhash.h header file that contains 
- * datatype definitions and function prototyping for 
- * the universal hash function data structure.
+ * library,the header file random.h that contains
+ * datatype definitions and function prototyping for
+ * the mersenne twister psuedo-random number generator 
+ * and the uhash.h header file that contains datatype 
+ * definitions and function prototyping for the universal 
+ * hash function data structure.
  *
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "random.h"
 #include "uhash.h"
 
 
@@ -34,7 +38,7 @@
  * @COMPLEXITY: O(sqrt(n))
  *
  * The static function is_prime() takes only
- * one argument as one parameter,namely an unsigned
+ * one argument as a parameter,namely an unsigned
  * long long int value and checks whether it constitutes
  * a prime number or not.If the given number is a
  * prime it returns one,otherwise it returns zero.
@@ -46,8 +50,8 @@
 
 static int is_prime(lluint n)
 {
+    int isprime=1;
     lluint divisor;
-    lluint isprime=1;
     if (n<2) { return 0; }
 
     for (divisor=2;divisor*divisor<=n;divisor++)
@@ -105,8 +109,8 @@ static lluint next_prime(lluint n)
  * The function hashfn_create(),takes two arguments
  * as parameters.The first argument is an unsigned long
  * long integer that represents the size of a table.The
- * second argument is an unsigned long long integer as well
- * and represents the total number of random prime 
+ * second argument is an unsigned long long integer as 
+ * well and represents the total number of random prime 
  * indices to be selected from the table.This function 
  * instantiates the universal hash function data 
  * structure by allocating memory for it and it's 
@@ -122,7 +126,7 @@ hashfn_t *hashfn_create(lluint ts,lluint k)
 {
     lluint i;
     hashfn_t *h=NULL;
-    assert(ts!=0 && k>=0);
+    assert(ts!=0 && k!=0);
     h=(hashfn_t *)malloc(sizeof(*h));
     assert(h!=NULL);
     h->kvalue=k; h->tabsize=ts;
@@ -131,7 +135,8 @@ hashfn_t *hashfn_create(lluint ts,lluint k)
 
     for (i=0;i<k;i++)
     {
-        h->values[i]=next_prime(ts+rand()%ts);
+        h->values[i]=next_prime(ts+
+            genrand64_int64()%ts);
     }
 
     return h;
@@ -151,7 +156,7 @@ hashfn_t *hashfn_create(lluint ts,lluint k)
  * selected prime indices.
  *
  * @param:  hashfn_t    *h
- * @return: lluint        *
+ * @return: lluint      *
  *
  */
 
@@ -238,7 +243,7 @@ void hashfn_print(hashfn_t *h)
         printf("%llu, ",h->values[i]);
     }
 
-    printf("\b\b ]\n");
+    printf("\b\b ]");
     return;
 }
 

@@ -14,15 +14,19 @@
 /*
  * Including the standard input-output library,
  * the standard utilities library,standard assertion
- * library, and the uhash.h header file that contains 
- * datatype definitions and function prototyping for 
- * the universal hash function data structure.
+ * library,the header file random.h that contains
+ * datatype definitions and function prototyping for
+ * the mersenne twister psuedo-random number generator 
+ * and the uhash.h header file that contains datatype 
+ * definitions and function prototyping for the universal 
+ * hash function data structure.
  *
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "random.h"
 #include "uhash.h"
 
 
@@ -131,7 +135,8 @@ hashfn_t *hashfn_create(lluint ts,lluint k)
 
     for (i=0;i<k;i++)
     {
-        h->values[i]=next_prime(ts+rand()%ts);
+        h->values[i]=next_prime(ts+
+            genrand64_int64()%ts);
     }
 
     return h;
