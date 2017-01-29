@@ -458,6 +458,7 @@ void *cuckoo_getValue(cuckoo_t *c,void *key)
     lluint position1,position2;
     pair_t *temp_pair1=NULL,*temp_pair2=NULL;
     cue_t *temp_cue1=NULL,*temp_cue2=NULL;
+    value_t *temp_value1=NULL,*temp_value2=NULL;
     if (cuckoo_lookup(c,key)==0) { return NULL; }
     position1=c->hash(c->hfunc1,key);
     position2=c->hash(c->hfunc2,key);
@@ -468,14 +469,22 @@ void *cuckoo_getValue(cuckoo_t *c,void *key)
     {
         temp_cue1=pair_getCue(temp_pair1);
         query1=cue_compareTo(temp_cue1,key);
-        if (query1==0) { return pair_getValue(temp_pair1); }
+        if (query1==0)
+        {
+            temp_value1=pair_getValue(temp_pair1);
+            return value_get(temp_value1);
+        }
     }
 
     if (temp_pair2!=NULL)
     {
         temp_cue2=pair_getCue(temp_pair2);
         query2=cue_compareTo(temp_cue2,key);
-        if (query2==0) { return pair_getValue(temp_pair2); }
+        if (query2==0)
+        { 
+            temp_value2=pair_getValue(temp_pair2);
+            return value_get(temp_value2);
+        }
     }
 
     return NULL;

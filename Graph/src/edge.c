@@ -37,7 +37,9 @@
  * (the address of a vertex).The last three are function pointers
  * that enable polymorphism.The user has to implement the functions
  * cmp,print and destroy (optionally).Failure to do so will result
- * in program terminantion due to invalid assertions.
+ * in program terminantion due to invalid assertions.This function
+ * creates a new edge_t data structure and allocates memory for it
+ * and it's components and instantiates them to their defaults.
  *
  * @param:  void                *w
  * @param:  void                *ep
@@ -166,9 +168,12 @@ void edge_changeEndPoint(edge_t *edge,void *new_ep)
 
 
 /*
- * @COMPLEXITY: O(f(n)) where f(n) is function
- *              that describes the given datatype's
- *              comparison complexity.
+ * @COMPLEXITY: O(f(n)) where f(n) is the function
+ *              that describes the asymptotic complexity
+ *              of the comparison procedure for the
+ *              given datatype.
+ *
+ *
  * 
  * The function edge_compareTo(),takes two arguments
  * as parameters.The first one is an edge_t data
@@ -194,7 +199,10 @@ int edge_compareTo(edge_t *edge,void *data)
 
 
 /*
- * @COMPLEXITY: Theta(1)
+ * @COMPLEXITY: O(f(n)) where f(n) is the function
+ *              that describes the asymptotic complexity
+ *              of the printing procedure for the given
+ *              datatype.
  *
  * The function edge_print(),takes an edge_t data
  * structure as an argument and prints it's components

@@ -35,8 +35,9 @@
 /*
  * Defining three new datatypes of function pointers.These
  * functions enable polymorphism by providing an interface
- * for the comparison,print and memory deallocation function.
- * These functions have to be implemented by the user and
+ * for the comparison,print and memory deallocation functions
+ * regarding the edge_t data structure's components.These
+ * functions have to be implemented by the user and
  * meet the following criteria.
  *
  */

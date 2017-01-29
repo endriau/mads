@@ -31,8 +31,8 @@
 /*
  * @COMPLEXITY: O(f(n)) where f(n) is a function that
  *              describes the asymptotic complexity
- *              of the comparison procedure of for the
- *              given datatype.
+ *              of the comparison procedure of the
+ *              edge_t data structure's components.
  * 
  * The static function compare_edges(),takes two pointers 
  * to some immutable data.This function casts the given
@@ -61,8 +61,8 @@ static int compare_edges(const void *e1,const void *e2)
 /*
  * @COMPLEXITY: O(f(n)) where f(n) is a function that
  *              describes the asymptotic complexity
- *              of the comparison procedure of for the
- *              given datatype.
+ *              of the printing procedure of the
+ *              edge_t data structure's components.
  *
  * The static function print_edge() takes a pointer
  * to some immutable data.This function casts the
@@ -306,6 +306,50 @@ void vertex_removeEdge(vertex_t *vertex,void *ident)
 
 
 /*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function vertex_visited(),takes a vertex_t
+ * data structure as an argument and sets the
+ * value of the it's visited component to one.
+ *
+ * @param:  vertex_t    *vertex
+ * @return: void
+ *
+ */
+
+void vertex_visited(vertex_t *vertex)
+{
+    assert(vertex!=NULL);
+    vertex->visited=1;
+    return;
+}
+
+
+
+
+/*
+ * @COMPLEXITY: Theta(1)
+ *
+ * The function vertex_isVisited(),takes a vertex_t
+ * data structure as an argument and returns the
+ * value of the visited component.
+ *
+ * @param:  vertex_t    *vertex
+ * @return: int
+ *
+ */
+
+int vertex_isVisited(vertex_t *vertex)
+{
+    assert(vertex!=NULL);
+    return vertex->visited;
+}
+
+
+
+
+
+/*
  * @COMPLEXITY: O(m) where m is the size of
  *              the cuckoo hash table.
  * 
@@ -337,6 +381,7 @@ edge_t **vertex_arrayEdges(vertex_t *vertex)
     pair_t *temp_pair=NULL;
     value_t *temp_value=NULL;
     size=vertex->num_edges;
+    if (size==0) { return NULL; }
     edges_array=(edge_t **)malloc(size*sizeof(**edges_array));
     assert(edges_array!=NULL); step=0;
 
@@ -348,10 +393,7 @@ edge_t **vertex_arrayEdges(vertex_t *vertex)
             temp_value=pair_getValue(temp_pair);
             edges_array[step++]=value_get(temp_value);
         }
-    }
 
-    for (i=0;i<vertex->edges->size;i++)
-    {
         temp_pair=vertex->edges->T2[i];
         if (temp_pair!=NULL)
         {
@@ -367,9 +409,10 @@ edge_t **vertex_arrayEdges(vertex_t *vertex)
 
 
 /*
- * @COMPLEXITY: O(E) where E is the total
- *              number of edges that radiate
- *              outwards from this vertex.
+ * @COMPLEXITY: O(m) where m is the size of
+ *              the hash table that contains
+ *              the edges that radiate from
+ *              this vertex outwards.
  * 
  * The function vertex_print(),takes a vertex_t
  * data structure as an argument and prints it's
@@ -403,10 +446,7 @@ void vertex_print(vertex_t *vertex)
             pair_print(temp_pair);
             printf(", ");
         }
-    }
 
-    for (i=0;i<vertex->edges->size;i++)
-    {
         temp_pair=vertex->edges->T2[i];
         if (temp_pair!=NULL)
         {
@@ -414,8 +454,9 @@ void vertex_print(vertex_t *vertex)
             printf(", ");
         }
     }
-
-    printf(" \b\b\b ]");
+    
+    if (vertex->edges->n>0) { printf(" \b\b\b ]"); }
+    else { printf("]"); }
     return;
 }
 
@@ -423,7 +464,10 @@ void vertex_print(vertex_t *vertex)
 
 
 /*
- * @COMPLEXITY: Theta(1)
+ * @COMPLEXITY: O(m) where m is the size of the
+ *              hash table that contains the
+ *              edges that radiate outwards from
+ *              the given vertex data structure.
  *
  * The function vertex_free(),takes a vertex_t
  * data structure as an argument and deallocates

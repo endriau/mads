@@ -9,6 +9,22 @@
  *
  */
 
+
+
+
+
+/*
+ * Using include guards to check
+ * if the vertex.h header file has
+ * been included at least once.If it
+ * hasn't,the compiler copy-pastes
+ * everything into the file that is
+ * including it.If the file on the 
+ * other hand has been included the
+ * compiler skips the contents entirely.
+ *
+ */
+
 #ifndef VERTEX_H
 #define VERTEX_H
 
@@ -98,6 +114,8 @@ void        vertex_addEdge(vertex_t *vertex,void *ident,edge_t *edge);
 int         vertex_hasEdge(vertex_t *vertex,void *ident);
 edge_t      *vertex_getEdge(vertex_t *vertex,void *ident);
 void        vertex_removeEdge(vertex_t *vertex,void *ident);
+void        vertex_visited(vertex_t *vertex);
+int         vertex_isVisited(vertex_t *vertex);
 edge_t      **vertex_arrayEdges(vertex_t *vertex);
 void        vertex_print(vertex_t *vertex);
 void        vertex_free(vertex_t *vertex);

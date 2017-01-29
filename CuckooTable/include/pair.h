@@ -32,7 +32,7 @@
 
 /*
  * Defining three new data types of function pointers
- * called KeyCompareFn,KeyPrintFn and KeyDestroyFn.
+ * called CueCompareFn,CuePrintFn and CueDestroyFn.
  * These functions enable polymorphism by specifying
  * an interface for the comparison,printing and memory
  * deallocation function.These functions have to be
@@ -43,9 +43,9 @@
  *
  */
 
-typedef int     (*KeyCompareFn)(const void *,const void *);
-typedef void    (*KeyPrintFn)(const void *);
-typedef void    (*KeyDestroyFn)(void *);
+typedef int     (*CueCompareFn)(const void *,const void *);
+typedef void    (*CuePrintFn)(const void *);
+typedef void    (*CueDestroyFn)(void *);
 
 
 
@@ -84,9 +84,9 @@ typedef void    (*ValueDestroyFn)(void *);
 typedef struct 
 {
     void            *cue;
-    KeyCompareFn    cmp;
-    KeyPrintFn      print;
-    KeyDestroyFn    destroy;
+    CueCompareFn    cmp;
+    CuePrintFn      print;
+    CueDestroyFn    destroy;
 } cue_t;
 
 
@@ -142,7 +142,7 @@ typedef struct
  *
  */
 
-cue_t           *cue_create(void *cue,KeyCompareFn cmp,KeyPrintFn print,KeyDestroyFn destroy);
+cue_t           *cue_create(void *cue,CueCompareFn cmp,CuePrintFn print,CueDestroyFn destroy);
 void            *cue_get(cue_t *k);
 int             cue_compareTo(cue_t *k,void *data);
 void            cue_print(cue_t *k);

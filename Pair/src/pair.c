@@ -60,14 +60,14 @@
  * result in program termination due to invalide assertions.
  * 
  * @param:  void            *cue
- * @param:  KeyCompareFn    cmp
- * @param:  KeyPrintFn      print
- * @param:  KeyDestroyFn    destroy
+ * @param:  CueCompareFn    cmp
+ * @param:  CuePrintFn      print
+ * @param:  CueDestroyFn    destroy
  * @return: cue_t           *
  * 
  */
 
-cue_t *cue_create(void *cue,KeyCompareFn cmp,KeyPrintFn print,KeyDestroyFn destroy)
+cue_t *cue_create(void *cue,CueCompareFn cmp,CuePrintFn print,CueDestroyFn destroy)
 {
     cue_t *new_cue=NULL;
     assert(cmp!=NULL && print!=NULL);
@@ -213,11 +213,11 @@ void cue_free(cue_t *k)
  * and destroy (optional) functions.Failure to do so will
  * result in program termination due to invalide assertions.
  * 
- * @param:  void            *value
- * @param:  KeyCompareFn    cmp
- * @param:  KeyPrintFn      print
- * @param:  KeyDestroyFn    destroy
- * @return: value_t         *
+ * @param:  void                *value
+ * @param:  ValueCompareFn      cmp
+ * @param:  ValuePrintFn        print
+ * @param:  ValueDestroyFn      destroy
+ * @return: value_t             *
  * 
  */
 
@@ -526,8 +526,8 @@ void pair_print(pair_t *p)
 void pair_free(pair_t *p)
 {
     assert(p!=NULL);
-    cue_free(pair_getCue(p));
     value_free(pair_getValue(p));
+    cue_free(pair_getCue(p));
     free(p); p=NULL;
     return;
 }
