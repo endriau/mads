@@ -257,9 +257,8 @@ cuckoo_t *cuckoo_create(CuckooHashFn hash)
 
 void cuckoo_insert(cuckoo_t *c,pair_t *p)
 {
-    lluint position1,position2;
-    assert(c!=NULL && p!=NULL);
-    /*double load_factor;*/ int i;
+    lluint position1,position2; 
+    assert(c!=NULL && p!=NULL); int i;
     pair_t *swap_pair=NULL,*temp_pair=NULL;
     cue_t *temp_cue=NULL; void *cue_data=NULL;
     temp_cue=pair_getCue(p); cue_data=cue_get(temp_cue);

@@ -32,7 +32,7 @@ int main(int argc,char *argv[])
     cue_t *temp_key=NULL; value_t *temp_value=NULL;
     pair_t *temp_pair=NULL; char one_word[MAXCHARS+1];
     init_genrand64((lluint )time(&seed));
-    table=table_create(hash_string_calculate,CHAIN_TREE);
+    table=table_create(hash_string_calculate,CHAIN_LIST);
     
     while (get_word(one_word,MAXCHARS)!=EOF)
     {

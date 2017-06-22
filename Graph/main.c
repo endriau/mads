@@ -156,7 +156,7 @@ int graph_readFile(graph_t *graph)
     assert(graph!=NULL);
     char one_word1[MAXCHARS+1];
     char one_word2[MAXCHARS+1];
-    if (scanf("%lld",&total_vertices)!=EOF);
+    if (scanf("%lld",&total_vertices)==EOF) { return 0; }
 
     while (get_word(one_word1,MAXCHARS)!=EOF)
     {
@@ -200,13 +200,16 @@ int graph_readFile(graph_t *graph)
 
 int main(int argc,char *argv[])
 {
-    time_t seed;
+    time_t seed; int flag;
     graph_t *graph=NULL;
     init_genrand64((lluint )time(&seed));
     graph=graph_create(DIRECTED_GRAPH,hash_string_calculate,depth_first_search);
-    graph_readFile(graph);
-    graph_explore(graph,"A");
-    graph_print(graph);
+    flag=graph_readFile(graph);
+    if (flag==1)
+    {
+        graph_explore(graph,"A");
+        graph_print(graph);
+    }
     graph_free(graph);
     return 0;
 }
