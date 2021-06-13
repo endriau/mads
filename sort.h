@@ -1,0 +1,23 @@
+//
+// Created by p0int3r on 6/12/21.
+//
+
+#ifndef C_DATA_STRUCTURES_SORT_H
+#define C_DATA_STRUCTURES_SORT_H
+
+
+#define RECURSIVE_SORT 82
+#define ITERATIVE_SORT 73
+
+
+typedef long long int llint;
+
+typedef int (*sort_compare_fn)(const void *, const void *);
+
+
+void quick_sort(void **A, llint n, sort_compare_fn cmp, int type);
+void merge_sort(void **A, llint n, sort_compare_fn cmp, int type);
+void insertion_sort(void **A, llint n, sort_compare_fn cmp);
+int is_sorted(void **A, llint n, sort_compare_fn cmp);
+
+#endif //C_DATA_STRUCTURES_SORT_H
