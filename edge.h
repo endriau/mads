@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/13/21.
 //
 
-#ifndef C_DATA_STRUCTURES_EDGE_H
-#define C_DATA_STRUCTURES_EDGE_H
+#ifndef TINYLIB_EDGE_H
+#define TINYLIB_EDGE_H
 
 
 typedef int (*edge_compare_fn)(const void *, const void *);
@@ -33,4 +33,4 @@ void edge_free(edge_t *edge);
 
 
 
-#endif //C_DATA_STRUCTURES_EDGE_H
+#endif //TINYLIB_EDGE_H

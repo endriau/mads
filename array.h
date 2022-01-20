@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/12/21.
 //
 
-#ifndef C_DATA_STRUCTURES_ARRAY_H
-#define C_DATA_STRUCTURES_ARRAY_H
+#ifndef TINYLIB_ARRAY_H
+#define TINYLIB_ARRAY_H
 
 
 typedef long long int llint;
@@ -38,4 +38,4 @@ void        array_print(array_t *arr);
 void        array_free(array_t *arr);
 
 
-#endif //C_DATA_STRUCTURES_ARRAY_H
+#endif //TINYLIB_ARRAY_H

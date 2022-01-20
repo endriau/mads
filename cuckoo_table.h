@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/13/21.
 //
 
-#ifndef C_DATA_STRUCTURES_CUCKOO_TABLE_H
-#define C_DATA_STRUCTURES_CUCKOO_TABLE_H
+#ifndef TINYLIB_CUCKOO_TABLE_H
+#define TINYLIB_CUCKOO_TABLE_H
 
 
 #include "pair.h"
@@ -41,4 +41,4 @@ void cuckoo_table_print(cuckoo_table_t *c);
 void cuckoo_table_free(cuckoo_table_t *c);
 
 
-#endif //C_DATA_STRUCTURES_CUCKOO_TABLE_H
+#endif //TINYLIB_CUCKOO_TABLE_H

@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/12/21.
 //
 
-#ifndef C_DATA_STRUCTURES_SORT_H
-#define C_DATA_STRUCTURES_SORT_H
+#ifndef TINYLIB_SORT_H
+#define TINYLIB_SORT_H
 
 
 #define RECURSIVE_SORT 82
@@ -20,4 +20,4 @@ void merge_sort(void **A, llint n, sort_compare_fn cmp, int type);
 void insertion_sort(void **A, llint n, sort_compare_fn cmp);
 int is_sorted(void **A, llint n, sort_compare_fn cmp);
 
-#endif //C_DATA_STRUCTURES_SORT_H
+#endif //TINYLIB_SORT_H

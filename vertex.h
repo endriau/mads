@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/13/21.
 //
 
-#ifndef C_DATA_STRUCTURES_VERTEX_H
-#define C_DATA_STRUCTURES_VERTEX_H
+#ifndef TINYLIB_VERTEX_H
+#define TINYLIB_VERTEX_H
 
 
 #include "edge.h"
@@ -46,4 +46,4 @@ void vertex_print(vertex_t *vertex);
 void vertex_free(vertex_t *vertex);
 
 
-#endif //C_DATA_STRUCTURES_VERTEX_H
+#endif //TINYLIB_VERTEX_H

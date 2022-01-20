@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/12/21.
 //
 
-#ifndef C_DATA_STRUCTURES_RANDOM_H
-#define C_DATA_STRUCTURES_RANDOM_H
+#ifndef TINYLIB_RANDOM_H
+#define TINYLIB_RANDOM_H
 
 
 #define NN          312
@@ -25,4 +25,4 @@ double genrand64_real1(void);
 double genrand64_real2(void);
 double genrand64_real3(void);
 
-#endif //C_DATA_STRUCTURES_RANDOM_H
+#endif //TINYLIB_RANDOM_H

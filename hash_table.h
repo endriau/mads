@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/13/21.
 //
 
-#ifndef C_DATA_STRUCTURES_HASH_TABLE_H
-#define C_DATA_STRUCTURES_HASH_TABLE_H
+#ifndef TINYLIB_HASH_TABLE_H
+#define TINYLIB_HASH_TABLE_H
 
 
 #include "pair.h"
@@ -42,4 +42,4 @@ void hash_table_print(hash_table_t *t);
 void hash_table_free(hash_table_t *t);
 
 
-#endif //C_DATA_STRUCTURES_HASH_TABLE_H
+#endif //TINYLIB_HASH_TABLE_H

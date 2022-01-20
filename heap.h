@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/13/21.
 //
 
-#ifndef C_DATA_STRUCTURES_HEAP_H
-#define C_DATA_STRUCTURES_HEAP_H
+#ifndef TINYLIB_HEAP_H
+#define TINYLIB_HEAP_H
 
 
 #define MAX_HEAP 1
@@ -41,4 +41,4 @@ void heap_print(heap_t *h);
 void heap_free(heap_t *h);
 
 
-#endif //C_DATA_STRUCTURES_HEAP_H
+#endif //TINYLIB_HEAP_H

@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/12/21.
 //
 
-#ifndef C_DATA_STRUCTURES_LIST_H
-#define C_DATA_STRUCTURES_LIST_H
+#ifndef TINYLIB_LIST_H
+#define TINYLIB_LIST_H
 
 
 typedef int (*list_compare_fn)(const void *, const void *);
@@ -50,4 +50,4 @@ int list_is_empty(list_t *list);
 int list_has_elem(list_t *list, void *item);
 
 
-#endif //C_DATA_STRUCTURES_LIST_H
+#endif //TINYLIB_LIST_H

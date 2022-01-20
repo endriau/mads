@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/12/21.
 //
 
-#ifndef C_DATA_STRUCTURES_AVL_TREE_H
-#define C_DATA_STRUCTURES_AVL_TREE_H
+#ifndef TINYLIB_AVL_TREE_H
+#define TINYLIB_AVL_TREE_H
 
 
 
@@ -31,6 +31,7 @@ typedef struct
 } avl_tree_t;
 
 
+
 avl_tree_t *avl_tree_create(avl_tree_compare_fn cmp, avl_tree_print_fn print, avl_tree_destroy_fn destroy);
 void avl_tree_insert(avl_tree_t *t, void *data);
 int avl_tree_search(avl_tree_t *t, void *item);
@@ -44,4 +45,4 @@ void avl_tree_print(avl_tree_t *t);
 void avl_tree_free(avl_tree_t *t);
 
 
-#endif //C_DATA_STRUCTURES_AVL_TREE_H
+#endif //TINYLIB_AVL_TREE_H

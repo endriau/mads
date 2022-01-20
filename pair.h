@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/12/21.
 //
 
-#ifndef C_DATA_STRUCTURES_PAIR_H
-#define C_DATA_STRUCTURES_PAIR_H
+#ifndef TINYLIBPAIR_H
+#define TINYLIBPAIR_H
 
 
 /*
@@ -77,4 +77,4 @@ void pair_free(pair_t *p);
 
 
 
-#endif //C_DATA_STRUCTURES_PAIR_H
+#endif //TINYLIBPAIR_H

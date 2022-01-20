@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/12/21.
 //
 
-#ifndef C_DATA_STRUCTURES_STACK_H
-#define C_DATA_STRUCTURES_STACK_H
+#ifndef TINYLIB_STACK_H
+#define TINYLIB_STACK_H
 
 
 typedef int (*stack_compare_fn)(const void *, const void *);
@@ -31,4 +31,4 @@ int stack_is_empty(stack_t *s);
 int stack_has_elem(stack_t *s, void *item);
 
 
-#endif //C_DATA_STRUCTURES_STACK_H
+#endif //TINYLIB_STACK_H

@@ -2,8 +2,8 @@
 // Created by p0int3r on 6/13/21.
 //
 
-#ifndef C_DATA_STRUCTURES_GRAPH_H
-#define C_DATA_STRUCTURES_GRAPH_H
+#ifndef TINYLIB_GRAPH_H
+#define TINYLIB_GRAPH_H
 
 
 
@@ -47,4 +47,4 @@ void graph_print(graph_t *graph);
 void graph_free(graph_t *graph);
 
 
-#endif //C_DATA_STRUCTURES_GRAPH_H
+#endif //TINYLIB_GRAPH_H

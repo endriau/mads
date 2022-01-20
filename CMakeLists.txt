@@ -18,5 +18,3 @@ add_library(tinylib
         vertex.h vertex.c
         edge.c edge.h
         graph.h graph.c)
-
-
