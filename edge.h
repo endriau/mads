@@ -31,6 +31,4 @@ void edge_print(edge_t *edge);
 void edge_free(edge_t *edge);
 
 
-
-
 #endif //TINYLIB_EDGE_H

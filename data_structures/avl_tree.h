@@ -31,7 +31,6 @@ typedef struct
 } avl_tree_t;
 
 
-
 avl_tree_t *avl_tree_create(avl_tree_compare_fn cmp, avl_tree_print_fn print, avl_tree_destroy_fn destroy);
 void avl_tree_insert(avl_tree_t *t, void *data);
 int avl_tree_search(avl_tree_t *t, void *item);

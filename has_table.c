@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "avl_tree.h"
-#include "list.h"
+#include "data_structures/avl_tree.h"
+#include "data_structures/list.h"
 #include "hash_table.h"
 
 

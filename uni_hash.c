@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "random.h"
+#include "algorithms/random.h"
 #include "uni_hash.h"
 
 
