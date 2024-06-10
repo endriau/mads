@@ -1,19 +1,76 @@
-//
-// Created by p0int3r on 6/12/21.
-//
+// ReSharper disable CppDoxygenUnresolvedReference
+
+/**
+ * @file sort.h
+ * @brief Contains prototypes for different sorting algorithms i.e. QuickSort, MergeSort, and InsertionSort.
+ * It also includes utility macros and a check function for array sorting validation.
+ *
+ * The sorting algorithms provide both iterative and recursive variants where applicable.
+ * These algorithms operate on arrays of generic pointers and use a comparison function to determine the sorting order.
+ * The actual comparison function must be provided by the caller.
+ */
+
 
 #ifndef MADS_ALGORITHMS_SORT_H
 #define MADS_ALGORITHMS_SORT_H
 
 
-#define MADS_RECURSIVE_SORT 82
-#define MADS_ITERATIVE_SORT 73
+/**
+ * @def MADS_SORT_RECURSIVE
+ * @brief A macro constant to specify the type of sorting as recursive.
+ */
+#define MADS_SORT_RECURSIVE 82
 
+
+/**
+ * @def MADS_SORT_ITERATIVE
+ * @brief A macro constant to specify the type of sorting as iterative.
+ */
+#define MADS_SORT_ITERATIVE 73
+
+
+/**
+ * @brief A comparison function type for mads sorting algorithms.
+ * @param[in] GenericPointer to the first object.
+ * @param[in] GenericPointer to the second object.
+ * @return An integer less than, equal to, or greater than zero if the first argument is
+ * considered to be respectively less than, equal to, or greater than the second.
+ */
 typedef int (*mads_sort_compare_fn)(const void *, const void *);
 
+/**
+ * @brief An implementation of the QuickSort algorithm in the mads library.
+ * @param[in,out] A Array of generic pointers to be sorted.
+ * @param[in] n Size of the array.
+ * @param[in] cmp A comparison function to determine the sorting order.
+ * @param[in] type A constant representing the type of sorting (recursive or iterative).
+ */
 void mads_quick_sort(void **A, long long int n, mads_sort_compare_fn cmp, int type);
+
+/**
+ * @brief An implementation of the MergeSort algorithm in the mads library.
+ * @param[in,out] A Array of generic pointers to be sorted.
+ * @param[in] n Size of the array.
+ * @param[in] cmp A comparison function to determine the sorting order.
+ * @param[in] type A constant representing the type of sorting (recursive or iterative).
+ */
 void mads_merge_sort(void **A, long long int n, mads_sort_compare_fn cmp, int type);
+
+/**
+ * @brief An implementation of the InsertionSort algorithm in the mads library.
+ * @param[in,out] A Array of generic pointers to be sorted.
+ * @param[in] n Size of the array.
+ * @param[in] cmp A comparison function to determine the sorting order.
+ */
 void mads_insertion_sort(void **A, long long int n, mads_sort_compare_fn cmp);
+
+/**
+ * @brief Checks whether an array is sorted according to a comparison function.
+ * @param[in] A Array of generic pointers.
+ * @param[in] n Size of the array.
+ * @param[in] cmp The comparison function that determines the sorting order.
+ * @return Non-zero if the array is sorted, zero otherwise.
+ */
 int mads_is_sorted(void **A, long long int n, mads_sort_compare_fn cmp);
 
 #endif //MADS_ALGORITHMS_SORT_H
