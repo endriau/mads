@@ -36,7 +36,6 @@ static void test_mads_bubble_sort(void **state)
     }
 
     mads_merge_sort((void **)mblocks, 10, compare_reals_fn, MADS_SORT_ITERATIVE);
-
     printf("\n");
 
     for (int i = 0; i < 10; i++)
