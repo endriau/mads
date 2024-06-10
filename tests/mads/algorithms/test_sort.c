@@ -7,6 +7,7 @@
 #include <cmocka.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include <mads/algorithms/sort.h>
 #include <mads/algorithms/random.h>
@@ -23,12 +24,14 @@ static int compare_reals_fn(const void *x, const void *y)
 
 static void test_mads_bubble_sort(void **state)
 {
-    double *mblocks = malloc(sizeof(double *) * 10);
+    long long int *mblocks = malloc(sizeof(long long int) * 10);
     assert(mblocks != NULL);
+
+    mads_init_genrand64(time(NULL));
 
     for (int i = 0; i < 10; i++)
     {
-        const double random_value = mads_genrand64_real3();
+        const long long int random_value = mads_genrand64_int64() % 100;
         mblocks[i] = random_value;
     }
 
@@ -38,7 +41,7 @@ static void test_mads_bubble_sort(void **state)
 
     for (int i = 0; i < 10; i++)
     {
-        printf("%lf\n", mblocks[i]);
+        printf("%lld\n", mblocks[i]);
     }
 
 }
