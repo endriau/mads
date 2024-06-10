@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28.1)
+cmake_minimum_required(VERSION 3.22.1)
 
 project(mads_tests)
 
@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 23)
 
 # Unit testing for sort.h algorithm.
 add_cmocka_test(test_sort
-    SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mads/algorithms/test_sort.c"
+    SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mads/algorithms/sort_test.c"
     COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
     LINK_OPTIONS ${DEFAULT_LINK_FLAGS}
     LINK_LIBRARIES cmocka-static mads)

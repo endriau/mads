@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.28.1)
+cmake_minimum_required(VERSION 3.22.1)
 
 project(mads VERSION 1.0 LANGUAGES C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 23)
 
 include(FetchContent)
 

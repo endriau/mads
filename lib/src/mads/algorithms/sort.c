@@ -35,6 +35,7 @@
  * compare_indices(), print_index(), swap(), partition(), and merge().
  */
 
+// ReSharper disable CppParameterNeverUsed
 #include <stdlib.h>
 #include <assert.h>
 
