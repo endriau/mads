@@ -172,6 +172,22 @@ static void quick_sort_iterative(void **A, const long long int n, const mads_sor
     stack_free(stack);
 }
 
+
+// Main function to perform quick sort algorithm.
+void mads_quick_sort(void **A, const long long int n, const mads_sort_compare_fn cmp, const int type)
+{
+    // The array and comparison function must not be NULL. The array size should be not negative.
+    // The type should be either MADS_SORT_RECURSIVE or MADS_SORT_ITERATIVE, otherwise it causes an assertion failure.
+    assert(A != NULL && n >= 0 && cmp != NULL);
+    assert(type == MADS_SORT_RECURSIVE || type == MADS_SORT_ITERATIVE);
+
+    // If the type is MADS_SORT_RECURSIVE, perform the recursive quick sort
+    if (type == MADS_SORT_RECURSIVE) { quick_sort_recursive(A, n, cmp); }
+
+    // If the type is MADS_SORT_ITERATIVE, perform the iterative quick sort
+    if (type == MADS_SORT_ITERATIVE) { quick_sort_iterative(A, n, cmp); }
+}
+
 // Merge function used in merge sort algorithm. This function will merge two subsequent sorted segments of an array into
 // a single sorted segment.
 static void merge(void **A, void **T, const long long int mid, const long long int n, const mads_sort_compare_fn cmp)
@@ -256,11 +272,12 @@ static void merge_sort_iterative(void **A, void **T, const long long int n, cons
                 stack_push(stack, (void *)right);
                 stack_push(calls, (void *)type_merge);
                 stack_push(stack, (void *)left);
-                stack_push(stack, (void *)(mid + 1));
+                stack_push(stack, (void *)mid);
                 stack_push(calls, (void *)type_call);
                 stack_push(stack, (void *)(mid + 1));
                 stack_push(stack, (void *)right);
                 stack_push(calls, (void *)type_call);
+
             }
         }
         else
