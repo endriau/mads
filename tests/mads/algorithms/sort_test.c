@@ -13,10 +13,37 @@
 #include <stdlib.h>
 #include <time.h>
 #include <cmocka.h>
+#include <string.h>
 
 #include <mads/algorithms/random.h>
 #include <mads/algorithms/sort.h>
 
+
+static char *generate_random_string()
+{
+    const char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const size_t string_length = mads_genrand64_int64() % 100;
+
+    char *random_string = malloc(sizeof(char) * (string_length + 1));
+    assert(random_string != NULL);
+
+    mads_init_genrand64(time(NULL));
+
+    for (size_t i = 0; i < string_length; i++)
+    {
+        random_string[i] = characters[mads_genrand64_int64() %(sizeof(characters) - 1)];
+    }
+
+    random_string[string_length] = '\0';
+    return random_string;
+}
+
+static int strings_comparator(const void *s, const void *l)
+{
+    const char *ss = (char *)s;
+    const char *ll = (char *)l;
+    return strcmp(ss, ll);
+}
 
 static int reals_comparator(const void *x, const void *y)
 {
@@ -81,14 +108,19 @@ static void mads_quick_sort_test(void **state)
     // Array size, you can modify to test with larger arrays.
     const size_t array_size = 100;
 
+    // Allocating two arrays of doubles.
     double *reals_rblock = malloc(sizeof(double) * array_size);
     double *reals_iblock = malloc(sizeof(double) * array_size);
 
+    // Make sure memory was allocated successfully.
     assert_true(reals_rblock != NULL);
     assert_true(reals_iblock != NULL);
 
+    // initialize random generator with seed.
     mads_init_genrand64(time(NULL));
 
+    // Iterate over the doubles arrays and populate them
+    // with randomly generated doubles.
     for (int i = 0; i < array_size; i++)
     {
         const double random_real = mads_genrand64_real3();
@@ -96,25 +128,81 @@ static void mads_quick_sort_test(void **state)
         reals_iblock[i] = random_real;
     }
 
+    // Make sure the arrays are not sorted.
     assert_false(mads_is_sorted((void **)reals_rblock, array_size, reals_comparator));
     assert_false(mads_is_sorted((void **)reals_iblock, array_size, reals_comparator));
 
+    // Sort first array using recursive quick sort.
     mads_quick_sort((void **)reals_rblock, array_size, reals_comparator, MADS_SORT_RECURSIVE);
+
+    // Sort second array using iterative quick sort.
     mads_quick_sort((void **)reals_iblock, array_size, reals_comparator, MADS_SORT_ITERATIVE);
 
+    // Check to see if the arrays are correctly sorted after calling quick sort.
     assert_true(mads_is_sorted((void **)reals_rblock, array_size, reals_comparator));
     assert_true(mads_is_sorted((void **)reals_iblock, array_size, reals_comparator));
 
+    // Check if each element of the first array matches with the seocnd.
     for (int i = 0; i < array_size; i++)
     {
         assert_float_equal(reals_rblock[i], reals_iblock[i], 1e-5);
     }
+
+    // Free memory for the arrays.
+    free(reals_rblock);
+    free(reals_iblock);
 }
 
 
 static void mads_merge_sort_test(void **state)
 {
-    // TODO: write some tests for merge sort algorithm.
+    // Array size, you can modify to test with larger arrays.
+    const size_t array_size = 10;
+
+    // Allocating two arrays of strings.
+    void **strings_iblock = malloc(sizeof(void *) * array_size);
+    void **strings_rblock = malloc(sizeof(void *) * array_size);
+
+    // Make sure memory was allocate successfully.
+    assert_true(strings_iblock != NULL);
+    assert_true(strings_rblock != NULL);
+
+    // Iterate over the strings array and populate them
+    // with randomly generated strings.
+    for (int  i = 0; i < array_size; i++)
+    {
+        char *random_string = generate_random_string();
+        strings_iblock[i] = (void *)random_string;
+        strings_rblock[i] = (void *)random_string;
+    }
+
+    // Make sure the arrays are not sorted.
+    assert_false(mads_is_sorted(strings_iblock, array_size, strings_comparator));
+    assert_false(mads_is_sorted(strings_rblock, array_size, strings_comparator));
+
+    // Sort first string array using iterative merge sort.
+    mads_merge_sort(strings_iblock, array_size, strings_comparator, MADS_SORT_ITERATIVE);
+
+    // Sort second string array using recursive merge sort.
+    mads_merge_sort(strings_rblock, array_size, strings_comparator, MADS_SORT_RECURSIVE);
+
+    // Check to see if the arrays are correctly sorted after calling merge sort.
+    assert_true(mads_is_sorted(strings_iblock, array_size, strings_comparator));
+    assert_true(mads_is_sorted(strings_rblock, array_size, strings_comparator));
+
+    // Check if each element of the first array matches with the second.
+    for (int i = 0; i < array_size; i++)
+    {
+        assert_string_equal((const char *)strings_iblock[i], (const char *)strings_rblock[i]);
+
+        // Need only free from one array, given that the other one has
+        // a reference of the string and not a copy.
+        free(strings_iblock[i]);
+    }
+
+    // Free memory for the arrays.
+    free(strings_iblock);
+    free(strings_rblock);
 }
 
 int main()
