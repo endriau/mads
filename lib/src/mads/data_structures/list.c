@@ -5,11 +5,11 @@
 #include <mads/data_structures/list.h>
 
 
-list_t *list_create(const list_compare_fn cmp, const list_print_fn print, const list_destroy_fn destroy)
+mads_list_t *mads_list_create(const mads_list_compare_fn cmp, const mads_list_print_fn print, const mads_list_destroy_fn destroy)
 {
-    list_t *list = NULL;
+    mads_list_t *list = NULL;
     assert(cmp!=NULL && print!=NULL);
-    list = (list_t *)malloc(sizeof(*list));
+    list = (mads_list_t *)malloc(sizeof(*list));
     assert(list!=NULL);
     list->size = 0;
     list->head = list->foot = NULL;
@@ -20,11 +20,11 @@ list_t *list_create(const list_compare_fn cmp, const list_print_fn print, const 
 }
 
 
-void list_push(list_t *list, void *data)
+void mads_list_push(mads_list_t *list, void *data)
 {
-    llnode_t *new_node = NULL;
+    mads_llnode_t *new_node = NULL;
     assert(list!=NULL);
-    new_node = (llnode_t *)malloc(sizeof(*new_node));
+    new_node = (mads_llnode_t *)malloc(sizeof(*new_node));
     assert(new_node!=NULL);
     new_node->data = data;
     new_node->previous = new_node->next = NULL;
@@ -45,11 +45,11 @@ void list_push(list_t *list, void *data)
 }
 
 
-void list_append(list_t *list, void *data)
+void mads_list_append(mads_list_t *list, void *data)
 {
-    llnode_t *new_node = NULL;
+    mads_llnode_t *new_node = NULL;
     assert(list!=NULL);
-    new_node = (llnode_t *)malloc(sizeof(*new_node));
+    new_node = (mads_llnode_t *)malloc(sizeof(*new_node));
     assert(new_node!=NULL);
     new_node->data = data;
     new_node->next = new_node->previous = NULL;
@@ -70,23 +70,23 @@ void list_append(list_t *list, void *data)
 }
 
 
-void list_insert_at(list_t *list, void *data, const lluint position)
+void mads_list_insert_at(mads_list_t *list, void *data, const unsigned long long int position)
 {
-    llnode_t *next_node = NULL, *new_node = NULL;
+    mads_llnode_t *next_node = NULL, *new_node = NULL;
     assert(list!=NULL && position<list->size);
 
     if (position == 0)
     {
-        list_push(list, data);
+        mads_list_push(list, data);
     }
     else if (position == list->size - 1)
     {
-        list_append(list, data);
+        mads_list_append(list, data);
     }
     else
     {
-        lluint step = 0;
-        new_node = (llnode_t *)malloc(sizeof(*new_node));
+        unsigned long long int step = 0;
+        new_node = (mads_llnode_t *)malloc(sizeof(*new_node));
         assert(new_node!=NULL);
         new_node->data = data;
         new_node->next = new_node->previous = NULL;
@@ -107,36 +107,36 @@ void list_insert_at(list_t *list, void *data, const lluint position)
 }
 
 
-void *list_get_head(const list_t *list)
+void *mads_list_get_head(const mads_list_t *list)
 {
     assert(list!=NULL);
     return list->head->data;
 }
 
 
-void *list_get_foot(const list_t *list)
+void *mads_list_get_foot(const mads_list_t *list)
 {
     assert(list!=NULL);
     return list->foot->data;
 }
 
 
-void *list_get_at(const list_t *list, const lluint position)
+void *mads_list_get_at(const mads_list_t *list, const unsigned long long int position)
 {
-    const llnode_t *next_node = NULL;
+    const mads_llnode_t *next_node = NULL;
     assert(list!=NULL && position<list->size);
 
     if (position == 0)
     {
-        return list_get_head(list);
+        return mads_list_get_head(list);
     }
 
     if (position == list->size - 1)
     {
-        return list_get_foot(list);
+        return mads_list_get_foot(list);
     }
 
-    lluint step = 0;
+    unsigned long long int step = 0;
     next_node = list->head;
 
     while (next_node != NULL && step <= position)
@@ -149,11 +149,11 @@ void *list_get_at(const list_t *list, const lluint position)
 }
 
 
-void list_remove_head(list_t *list)
+void mads_list_remove_head(mads_list_t *list)
 {
-    llnode_t *old_node = NULL;
+    mads_llnode_t *old_node = NULL;
     assert(list!=NULL);
-    if (list_is_empty(list)) { return; }
+    if (mads_list_is_empty(list)) { return; }
 
     if (list->head != list->foot)
     {
@@ -180,11 +180,11 @@ void list_remove_head(list_t *list)
 }
 
 
-void list_remove_foot(list_t *list)
+void mads_list_remove_foot(mads_list_t *list)
 {
-    llnode_t *old_node = NULL;
+    mads_llnode_t *old_node = NULL;
     assert(list!=NULL);
-    if (list_is_empty(list)) { return; }
+    if (mads_list_is_empty(list)) { return; }
 
     if (list->foot != list->head)
     {
@@ -211,23 +211,23 @@ void list_remove_foot(list_t *list)
 }
 
 
-void list_remove_at(list_t *list, const lluint position)
+void mads_list_remove_at(mads_list_t *list, const unsigned long long int position)
 {
-    llnode_t *old_node = NULL, *next_node = NULL;
+    mads_llnode_t *old_node = NULL, *next_node = NULL;
     assert(list!=NULL && position<list->size);
-    if (list_is_empty(list)) { return; }
+    if (mads_list_is_empty(list)) { return; }
 
     if (position == 0)
     {
-        list_remove_head(list);
+        mads_list_remove_head(list);
     }
     else if (position == list->size - 1)
     {
-        list_remove_foot(list);
+        mads_list_remove_foot(list);
     }
     else
     {
-        lluint step = 0;
+        unsigned long long int step = 0;
         next_node = list->head;
 
         while (next_node != NULL && step <= position)
@@ -254,13 +254,13 @@ void list_remove_at(list_t *list, const lluint position)
 }
 
 
-void list_print(const list_t *list)
+void mads_list_print(const mads_list_t *list)
 {
-    const llnode_t *current_node = NULL;
+    const mads_llnode_t *current_node = NULL;
     assert(list!=NULL);
     current_node = list->head;
 
-    if (list_is_empty(list) == 1)
+    if (mads_list_is_empty(list) == 1)
     {
         printf("[]\n");
         return;
@@ -279,9 +279,9 @@ void list_print(const list_t *list)
 }
 
 
-void list_free(list_t *list)
+void mads_list_free(mads_list_t *list)
 {
-    llnode_t *old_node = NULL, *next_node = NULL;
+    mads_llnode_t *old_node = NULL, *next_node = NULL;
     assert(list!=NULL);
     next_node = list->head;
 
@@ -305,24 +305,24 @@ void list_free(list_t *list)
 }
 
 
-lluint list_get_size(const list_t *list)
+unsigned long long int mads_list_size(const mads_list_t *list)
 {
     assert(list!=NULL);
     return (list->size);
 }
 
 
-int list_is_empty(const list_t *list)
+int mads_list_is_empty(const mads_list_t *list)
 {
     assert(list!=NULL);
     return (list->size == 0 ? 1 : 0);
 }
 
 
-int list_has_elem(const list_t *list, const void *item)
+int mads_list_has_elem(const mads_list_t *list, const void *item)
 {
-    lluint step = 0;
-    const llnode_t *next_node = NULL;
+    unsigned long long int step = 0;
+    const mads_llnode_t *next_node = NULL;
     assert(list!=NULL);
     next_node = list->head;
 

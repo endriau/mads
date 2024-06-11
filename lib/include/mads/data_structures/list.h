@@ -1,52 +1,47 @@
-//
-// Created by p0int3r on 6/12/21.
-//
-
 #ifndef MADS_DATA_STRUCTURES_LIST_H
 #define MADS_DATA_STRUCTURES_LIST_H
 
 
-typedef int (*list_compare_fn)(const void *, const void *);
-typedef void (*list_print_fn)(const void *);
-typedef void (*list_destroy_fn)(void *);
+typedef int (*mads_list_compare_fn)(const void *, const void *);
+typedef void (*mads_list_print_fn)(const void *);
+typedef void (*mads_list_destroy_fn)(void *);
 
-typedef unsigned long long int lluint;
-typedef struct llnode llnode_t;
+typedef struct mads_llnode mads_llnode_t;
 
-struct llnode
+struct mads_llnode
 {
     void *data;
-    llnode_t *next;
-    llnode_t *previous;
+    mads_llnode_t *next;
+    mads_llnode_t *previous;
 };
 
 
 typedef struct
 {
-    lluint size;
-    llnode_t *head;
-    llnode_t *foot;
-    list_compare_fn cmp;
-    list_print_fn print;
-    list_destroy_fn destroy;
-} list_t;
+    unsigned long long int size;
+    mads_llnode_t *head;
+    mads_llnode_t *foot;
+    mads_list_compare_fn cmp;
+    mads_list_print_fn print;
+    mads_list_destroy_fn destroy;
+} mads_list_t;
 
 
-list_t *list_create(list_compare_fn cmp, list_print_fn print, list_destroy_fn destroy);
-void list_push(list_t *list, void *data);
-void list_append(list_t *list, void *data);
-void list_insert_at(list_t *list, void *data, lluint position);
-void *list_get_head(const list_t *list);
-void *list_get_foot(const list_t *list);
-void *list_get_at(const list_t *list, lluint position);
-void list_remove_head(list_t *list);
-void list_remove_foot(list_t *list);
-void list_remove_at(list_t *list, lluint position);
-void list_print(const list_t *list);
-void list_free(list_t *list);
-lluint list_get_size(const list_t *list);
-int list_is_empty(const list_t *list);
-int list_has_elem(const list_t *list, const void *item);
+mads_list_t *mads_list_create(mads_list_compare_fn cmp, mads_list_print_fn print, mads_list_destroy_fn destroy);
+void mads_list_push(mads_list_t *list, void *data);
+void mads_list_append(mads_list_t *list, void *data);
+void mads_list_insert_at(mads_list_t *list, void *data, unsigned long long int position);
+void *mads_list_get_head(const mads_list_t *list);
+void *mads_list_get_foot(const mads_list_t *list);
+void *mads_list_get_at(const mads_list_t *list, unsigned long long int position);
+void mads_list_remove_head(mads_list_t *list);
+void mads_list_remove_foot(mads_list_t *list);
+void mads_list_remove_at(mads_list_t *list, unsigned long long int position);
+void mads_list_print(const mads_list_t *list);
+void mads_list_free(mads_list_t *list);
+unsigned long long int mads_list_size(const mads_list_t *list);
+int mads_list_is_empty(const mads_list_t *list);
+int mads_list_has_elem(const mads_list_t *list, const void *item);
 
 
 #endif //MADS_DATA_STRUCTURES_LIST_H
