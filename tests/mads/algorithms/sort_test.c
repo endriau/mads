@@ -27,8 +27,6 @@ static char *generate_random_string()
     char *random_string = malloc(sizeof(char) * (string_length + 1));
     assert(random_string != NULL);
 
-    mads_init_genrand64(time(NULL));
-
     for (size_t i = 0; i < string_length; i++)
     {
         random_string[i] = characters[mads_genrand64_int64() %(sizeof(characters) - 1)];
@@ -177,6 +175,9 @@ static void mads_merge_sort_test(void **state)
 
     strings_rblock = malloc(sizeof(void *) * array_size);
     assert_true(strings_rblock != NULL);
+
+    // initialize random generator with seed.
+    mads_init_genrand64(time(NULL));
 
     // Iterate over the strings array and populate them
     // with randomly generated strings.
