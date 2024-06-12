@@ -5,11 +5,19 @@ project(mads_tests)
 set(CMAKE_C_STANDARD 23)
 
 # Unit testing for sort.h algorithm.
-add_cmocka_test(test_sort
+add_cmocka_test(sort_test
     SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mads/algorithms/sort_test.c"
     COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
     LINK_OPTIONS ${DEFAULT_LINK_FLAGS}
     LINK_LIBRARIES cmocka-static mads)
+
+# Unit testing for array.h data structure.
+add_cmocka_test(array_test
+    SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mads/data_structures/array_test.c"
+    COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
+    LINK_OPTIONS ${DEFAULT_LINK_OPTIONS}
+    LINK_LIBRARIES cmocka-static mads)
+
 
 if (BUILD_SHARED_LIBS)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

@@ -68,11 +68,14 @@ static int integers_comparator(const void *i, const void *j)
 
 static void mads_insertion_sort_test(void **state)
 {
+    // Variable declarations.
+    long long int *integers_block = NULL;
+
     // Array size, you can modify to test with larger arrays.
     const size_t array_size = 10;
 
     // Allocating an array of integers, each memory block of size 8 bytes.
-    long long int *integers_block = malloc(sizeof(long long int) * array_size);
+    integers_block = malloc(sizeof(long long int) * array_size);
 
     // Make sure memory was allocated successfully.
     assert_true(integers_block != NULL);
@@ -105,15 +108,19 @@ static void mads_insertion_sort_test(void **state)
 
 static void mads_quick_sort_test(void **state)
 {
+    // Variable declarations.
+    double *reals_rblock = NULL;
+    double *reals_iblock = NULL;
+
     // Array size, you can modify to test with larger arrays.
     const size_t array_size = 100;
 
     // Allocating two arrays of doubles.
-    double *reals_rblock = malloc(sizeof(double) * array_size);
-    double *reals_iblock = malloc(sizeof(double) * array_size);
 
-    // Make sure memory was allocated successfully.
+    reals_rblock = malloc(sizeof(double) * array_size);
     assert_true(reals_rblock != NULL);
+
+    reals_iblock = malloc(sizeof(double) * array_size);
     assert_true(reals_iblock != NULL);
 
     // initialize random generator with seed.
@@ -156,15 +163,19 @@ static void mads_quick_sort_test(void **state)
 
 static void mads_merge_sort_test(void **state)
 {
+    // Variable declarations.
+    void **strings_iblock = NULL;
+    void **strings_rblock = NULL;
+
     // Array size, you can modify to test with larger arrays.
     const size_t array_size = 10;
 
     // Allocating two arrays of strings.
-    void **strings_iblock = malloc(sizeof(void *) * array_size);
-    void **strings_rblock = malloc(sizeof(void *) * array_size);
 
-    // Make sure memory was allocate successfully.
+    strings_iblock = malloc(sizeof(void *) * array_size);
     assert_true(strings_iblock != NULL);
+
+    strings_rblock = malloc(sizeof(void *) * array_size);
     assert_true(strings_rblock != NULL);
 
     // Iterate over the strings array and populate them
