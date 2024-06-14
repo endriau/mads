@@ -15,6 +15,14 @@
 #define MADS_ALGORITHMS_SORT_H
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+#include <mads_export.h>
+
+
 /**
  * @def MADS_SORT_RECURSIVE
  * @brief A macro constant to specify the type of sorting as recursive.
@@ -45,7 +53,7 @@ typedef int (*mads_sort_compare_fn)(const void *, const void *);
  * @param[in] cmp A comparison function to determine the sorting order.
  * @param[in] type A constant representing the type of sorting (recursive or iterative).
  */
-void mads_quick_sort(void **A, long long int n, mads_sort_compare_fn cmp, int type);
+MADS_EXPORT void mads_quick_sort(void **A, long long int n, mads_sort_compare_fn cmp, int type);
 
 /**
  * @brief An implementation of the MergeSort algorithm in the mads library.
@@ -54,7 +62,7 @@ void mads_quick_sort(void **A, long long int n, mads_sort_compare_fn cmp, int ty
  * @param[in] cmp A comparison function to determine the sorting order.
  * @param[in] type A constant representing the type of sorting (recursive or iterative).
  */
-void mads_merge_sort(void **A, long long int n, mads_sort_compare_fn cmp, int type);
+MADS_EXPORT void mads_merge_sort(void **A, long long int n, mads_sort_compare_fn cmp, int type);
 
 /**
  * @brief An implementation of the InsertionSort algorithm in the mads library.
@@ -62,7 +70,7 @@ void mads_merge_sort(void **A, long long int n, mads_sort_compare_fn cmp, int ty
  * @param[in] n Size of the array.
  * @param[in] cmp A comparison function to determine the sorting order.
  */
-void mads_insertion_sort(void **A, long long int n, mads_sort_compare_fn cmp);
+MADS_EXPORT void mads_insertion_sort(void **A, long long int n, mads_sort_compare_fn cmp);
 
 /**
  * @brief Checks whether an array is sorted according to a comparison function.
@@ -71,6 +79,10 @@ void mads_insertion_sort(void **A, long long int n, mads_sort_compare_fn cmp);
  * @param[in] cmp The comparison function that determines the sorting order.
  * @return Non-zero if the array is sorted, zero otherwise.
  */
-int mads_is_sorted(void **A, long long int n, mads_sort_compare_fn cmp);
+MADS_EXPORT int mads_is_sorted(void **A, long long int n, mads_sort_compare_fn cmp);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //MADS_ALGORITHMS_SORT_H

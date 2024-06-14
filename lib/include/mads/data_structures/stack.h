@@ -3,6 +3,9 @@
 #ifndef MADS_DATA_STRUCTURES_STACK_H
 #define MADS_DATA_STRUCTURES_STACK_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 /**
@@ -102,6 +105,11 @@ int stack_is_empty(const stack_t *s);
  * @return 1 if found, 0 otherwise.
  */
 int stack_has_elem(const stack_t *s, const void *item);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif //MADS_DATA_STRUCTURES_STACK_H

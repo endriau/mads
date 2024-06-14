@@ -5,6 +5,10 @@
 #ifndef MADS_DATA_STRUCTURES_HEAP_H
 #define MADS_DATA_STRUCTURES_HEAP_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 #define MADS_HEAP_MAX 1
 #define MADS_HEAP_MIN 2
@@ -37,5 +41,8 @@ int mads_heap_is_empty(const mads_heap_t *h);
 void mads_heap_print(mads_heap_t *h);
 void mads_heap_free(mads_heap_t *h);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif //MADS_DATA_STRUCTURES_HEAP_H

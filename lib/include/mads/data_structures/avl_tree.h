@@ -5,6 +5,10 @@
 #ifndef MADS_DATA_STRUCTURES_AVL_TREE_H
 #define MADS_DATA_STRUCTURES_AVL_TREE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 typedef int (*mads_avl_tree_compare_fn)(const void *, const void *);
 typedef void (*mads_avl_tree_print_fn)(const void *);
@@ -42,5 +46,8 @@ int mads_avl_tree_get_height(const mads_avl_tree_t *t);
 void mads_avl_tree_print(const mads_avl_tree_t *t);
 void mads_avl_tree_free(mads_avl_tree_t *t);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif //MADS_DATA_STRUCTURES_AVL_TREE_H

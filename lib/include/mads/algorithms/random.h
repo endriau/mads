@@ -1,6 +1,9 @@
 #ifndef MADS_ALGORITHMS_RANDOM_H
 #define MADS_ALGORITHMS_RANDOM_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 #define MADS_RANDOM_NN 312
@@ -17,5 +20,9 @@ long long int mads_genrand64_int63(void);
 double mads_genrand64_real1(void);
 double mads_genrand64_real2(void);
 double mads_genrand64_real3(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //MADS_ALGORITHMS_RANDOM_H

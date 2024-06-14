@@ -2,6 +2,11 @@
 #define MADS_DATA_STRUCTURES_LIST_H
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 typedef int (*mads_list_compare_fn)(const void *, const void *);
 typedef void (*mads_list_print_fn)(const void *);
 typedef void (*mads_list_destroy_fn)(void *);
@@ -43,5 +48,9 @@ unsigned long long int mads_list_size(const mads_list_t *list);
 int mads_list_is_empty(const mads_list_t *list);
 int mads_list_has_elem(const mads_list_t *list, const void *item);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //MADS_DATA_STRUCTURES_LIST_H

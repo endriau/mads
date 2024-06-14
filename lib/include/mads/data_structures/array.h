@@ -18,6 +18,10 @@
 #ifndef MADS_DATA_STRUCTURES_ARRAY_H
 #define MADS_DATA_STRUCTURES_ARRAY_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 /**
  * @brief Function pointer type for comparing elements in the array
@@ -147,5 +151,9 @@ void mads_array_print(const mads_array_t *array);
  */
 void mads_array_free(mads_array_t *array);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //MADS_DATA_STRUCTURES_ARRAY_H
