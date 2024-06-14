@@ -7,5 +7,9 @@ if (NOT cmocka_FOUND)
         GIT_TAG cmocka-1.1.5
         GIT_PROGRESS TRUE
         EXCLUDE_FROM_ALL)
+    set(WITH_CMOCKERY_SUPPORT OFF)
+    set(WITH_EXAMPLES OFF)
+    set(UNIT_TESTING OFF)
+    set(PICKY_DEVELOPER OFF)
     FetchContent_MakeAvailable(cmocka)
 endif ()
