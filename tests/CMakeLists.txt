@@ -9,14 +9,14 @@ add_cmocka_test(sort_test
     SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mads/algorithms/sort_test.c"
     COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
     LINK_OPTIONS ${DEFAULT_LINK_FLAGS}
-    LINK_LIBRARIES cmocka::cmocka mads)
+    LINK_LIBRARIES ${CMOCKA_LIBRARIES} mads)
 
 # Unit testing for array.h data structure.
 add_cmocka_test(array_test
     SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mads/data_structures/array_test.c"
     COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
     LINK_OPTIONS ${DEFAULT_LINK_OPTIONS}
-    LINK_LIBRARIES cmocka::cmocka mads)
+    LINK_LIBRARIES ${CMOCKA_LIBRARIES} mads)
 
 
 #if (BUILD_SHARED_LIBS)
