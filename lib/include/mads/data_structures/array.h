@@ -4,7 +4,6 @@
 /**
  * @file array.h
  * @brief This header file provides an API for managing dynamic arrays.
- *
  * In this file, a generic dynamic array is implemented. It includes methods to create,
  * manipulate, and destruct arrays. The dynamic array is a data structure that holds pointers
  * to your stored elements. It supports adding elements in different ways: appending, prepending,

@@ -7,6 +7,7 @@
 extern "C" {
 #endif
 
+#include <mads_export.h>
 
 /**
  * @file stack.h
@@ -29,19 +30,19 @@ extern "C" {
  * @return An integer less than, equal to, or greater than zero if the first argument
  * is considered to be respectively less than, equal to, or greater than the second.
  */
-typedef int (*stack_compare_fn)(const void *a, const void *b);
+typedef int (*mads_stack_compare_fn)(const void *a, const void *b);
 
 /**
  * @brief Function pointer type for printing elements in the stack.
  * @param[in] item Element pointer.
  */
-typedef void (*stack_print_fn)(const void *item);
+typedef void (*mads_stack_print_fn)(const void *item);
 
 /**
  * @brief Function pointer type for destroying elements in the stack.
  * @param[out] item Element pointer.
  */
-typedef void (*stack_destroy_fn)(void *item);
+typedef void (*mads_stack_destroy_fn)(void *item);
 
 /**
  * @brief Struct representing a stack.
@@ -51,10 +52,10 @@ typedef struct
     void **A;           /** @brief Pointer to the array holding the stack elements. */
     long long int n;    /** @brief Index of the top element on the stack. */
     long long int size; /** @brief Total size of the stack. */
-    stack_compare_fn cmp; /** @brief Comparison function for the stack elements. */
-    stack_print_fn print; /** @brief Print function for the stack elements. */
-    stack_destroy_fn destroy; /** @brief Destroy function for the stack elements. */
-} stack_t;
+    mads_stack_compare_fn cmp; /** @brief Comparison function for the stack elements. */
+    mads_stack_print_fn print; /** @brief Print function for the stack elements. */
+    mads_stack_destroy_fn destroy; /** @brief Destroy function for the stack elements. */
+} mads_stack_t;
 
 /**
  * @brief Creates a new stack.
@@ -63,40 +64,40 @@ typedef struct
  * @param[in] destroy Destroy function.
  * @return New stack.
  */
-stack_t *stack_create(stack_compare_fn cmp, stack_print_fn print, stack_destroy_fn destroy);
+MADS_EXPORT mads_stack_t *mads_stack_create(mads_stack_compare_fn cmp, mads_stack_print_fn print, mads_stack_destroy_fn destroy);
 
 /**
  * @brief Pushes an item on to the stack.
  * @param[out] s Stack pointer.
  * @param[in] item Item pointer.
  */
-void stack_push(stack_t *s, void *item);
+MADS_EXPORT void mads_stack_push(mads_stack_t *s, void *item);
 
 /**
  * @brief Removes the item on top of the stack and returns it.
  * @param[out] s Stack pointer.
  * @return Item pointer.
  */
-void *stack_pop(stack_t *s);
+MADS_EXPORT void *mads_stack_pop(mads_stack_t *s);
 
 /**
  * @brief Prints the stack.
  * @param[in] s Stack pointer.
  */
-void stack_print(const stack_t *s);
+MADS_EXPORT void mads_stack_print(const mads_stack_t *s);
 
 /**
  * @brief Frees the stack.
  * @param[out] s Stack pointer.
  */
-void stack_free(stack_t *s);
+MADS_EXPORT void mads_stack_free(mads_stack_t *s);
 
 /**
  * @brief Checks if the stack is empty.
  * @param[in] s Stack pointer.
  * @return 1 if empty, 0 otherwise.
  */
-int stack_is_empty(const stack_t *s);
+MADS_EXPORT int mads_stack_is_empty(const mads_stack_t *s);
 
 /**
  * @brief Checks if a certain item is in the stack.
@@ -104,7 +105,7 @@ int stack_is_empty(const stack_t *s);
  * @param[in] item Item pointer.
  * @return 1 if found, 0 otherwise.
  */
-int stack_has_elem(const stack_t *s, const void *item);
+MADS_EXPORT int mads_stack_has_elem(const mads_stack_t *s, const void *item);
 
 
 #ifdef __cplusplus

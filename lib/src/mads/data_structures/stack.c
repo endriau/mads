@@ -10,7 +10,7 @@
 // This function is used to create a new stack.
 // It initializes the stack's properties such as its size, the comparison function,
 // the print function, and the element destroy function.
-stack_t *stack_create(const stack_compare_fn cmp, const stack_print_fn print, const stack_destroy_fn destroy)
+mads_stack_t *mads_stack_create(const mads_stack_compare_fn cmp, const mads_stack_print_fn print, const mads_stack_destroy_fn destroy)
 {
     // Make sure the comparison function and print function are not NULL.
     assert(cmp!=NULL && print!=NULL);
@@ -19,8 +19,8 @@ stack_t *stack_create(const stack_compare_fn cmp, const stack_print_fn print, co
     const long long int initial_size = 20;
 
     // Declare a stack pointer and allocate it dynamically.
-    stack_t *stack = NULL;
-    stack = (stack_t *)malloc(sizeof(*stack));
+    mads_stack_t *stack = NULL;
+    stack = (mads_stack_t *)malloc(sizeof(*stack));
 
     // Make sure the stack was allocated successfully.
     assert(stack!=NULL);
@@ -46,7 +46,7 @@ stack_t *stack_create(const stack_compare_fn cmp, const stack_print_fn print, co
 // The stack_push function is used to push an item onto the stack.
 // The function first checks if the stack pointer isn't NULL, if the next position equals the size of the stack (meaning it's full),
 // it reallocates the memory for the stack to double its size, then adds the item and increases the index of the top element.
-void stack_push(stack_t *s, void *item)
+void mads_stack_push(mads_stack_t *s, void *item)
 {
     // Confirm the stack pointer isn't NULL
     assert(s!=NULL);
@@ -75,7 +75,7 @@ void stack_push(stack_t *s, void *item)
 // Then it checks if the stack is empty. If it is empty, it return NULL. If it's not empty, it retrieves
 // the item on the top of the stack, sets its place in the array to NULL, decreases the index of
 // the top element in the stack and returns the removed item.
-void *stack_pop(stack_t *s)
+void *mads_stack_pop(mads_stack_t *s)
 {
     // old is used to hold the item that is to be popped from the stack
     void *old = NULL;
@@ -84,7 +84,7 @@ void *stack_pop(stack_t *s)
     assert(s!=NULL);
 
     // Check if the stack is empty
-    if (stack_is_empty(s) == 1)
+    if (mads_stack_is_empty(s) == 1)
     {
         // If the stack is empty, there is nothing to pop i.e., return NULL
         return NULL;
@@ -108,7 +108,7 @@ void *stack_pop(stack_t *s)
 // It first checks if the stack pointer isn't NULL, then it goes through each item in the stack
 // using the print function for the stack elements to print the item. Each item is separated by a new line.
 // At the start and end of this operation, messages are printed marking the beginning and the end of the stack.
-void stack_print(const stack_t *s)
+void mads_stack_print(const mads_stack_t *s)
 {
     // Make sure the stack pointer isn't NULL.
     assert(s!=NULL);
@@ -134,7 +134,7 @@ void stack_print(const stack_t *s)
 // It first checks if the stack pointer isn't NULL, then it goes through each item in the stack
 // and if a destroy function has been provided, it uses this function to properly deallocate each item.
 // Then it frees up the array of the stack and sets its pointer to NULL. Lastly, the stack structure itself is freed and its pointer is set to NULL.
-void stack_free(stack_t *s)
+void mads_stack_free(mads_stack_t *s)
 {
     // Ensure that the stack isn't already NULL
     assert(s!=NULL);
@@ -167,7 +167,7 @@ void stack_free(stack_t *s)
 // then it checks if the index variable of the top element is equal to -1.
 // If it is, it returns 1 as the stack is empty.
 // And if it's not, it returns 0, indicating that the stack is not empty.
-int stack_is_empty(const stack_t *s)
+int mads_stack_is_empty(const mads_stack_t *s)
 {
     assert(s!=NULL);
     return (s->n == -1 ? 1 : 0);
@@ -178,7 +178,7 @@ int stack_is_empty(const stack_t *s)
 // then it goes through each item in the stack using a loop.
 // In the loop, it uses the comparison function for the stack elements to compare the item of the stack with the given item.
 // If it finds a match, it returns 1. If no matches are found after going through the whole stack, it returns 0.
-int stack_has_elem(const stack_t *s, const void *item)
+int mads_stack_has_elem(const mads_stack_t *s, const void *item)
 {
     assert(s!=NULL);
 

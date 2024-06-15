@@ -133,7 +133,7 @@ static void quick_sort_recursive(void **A, const long long int n, const mads_sor
 static void quick_sort_iterative(void **A, const long long int n, const mads_sort_compare_fn cmp)
 {
     // A stack is used to replace the call stack used in the recursive approach
-    stack_t *stack = NULL;
+    mads_stack_t *stack = NULL;
     long long int first_eq, first_gt;
     long long int left = 0, right = n - 1;
 
@@ -141,15 +141,15 @@ static void quick_sort_iterative(void **A, const long long int n, const mads_sor
     assert(A != NULL && cmp != NULL && n >= 0);
 
     // Creating the stack and initializing it
-    stack = stack_create(compare_indices, print_index, NULL);
-    stack_push(stack, (void *)left);
-    stack_push(stack, (void *)right);
+    stack = mads_stack_create(compare_indices, print_index, NULL);
+    mads_stack_push(stack, (void *)left);
+    mads_stack_push(stack, (void *)right);
 
     // while loop stands in for the recursion in the recursive quick sort
-    while (!stack_is_empty(stack))
+    while (!mads_stack_is_empty(stack))
     {
-        right = (long long int)stack_pop(stack);
-        left = (long long int)stack_pop(stack);
+        right = (long long int)mads_stack_pop(stack);
+        left = (long long int)mads_stack_pop(stack);
         if ((right - left) > 0)
         {
             const long long int new_n = (right - left) + 1;
@@ -158,19 +158,19 @@ static void quick_sort_iterative(void **A, const long long int n, const mads_sor
                 &first_eq, &first_gt, cmp);
             if (first_eq > 1)
             {
-                stack_push(stack, (void *)left);
-                stack_push(stack, (void *)(left + first_eq - 1));
+                mads_stack_push(stack, (void *)left);
+                mads_stack_push(stack, (void *)(left + first_eq - 1));
             }
             if (first_gt < new_n)
             {
-                stack_push(stack, (void *)(left + first_gt));
-                stack_push(stack, (void *)right);
+                mads_stack_push(stack, (void *)(left + first_gt));
+                mads_stack_push(stack, (void *)right);
             }
         }
     }
 
     // proper cleanup
-    stack_free(stack);
+    mads_stack_free(stack);
 }
 
 
@@ -243,7 +243,7 @@ static void merge_sort_recursive(void **A, void **T, const long long int n, cons
 static void merge_sort_iterative(void **A, void **T, const long long int n, const mads_sort_compare_fn cmp)
 {
     long long int left = 0, right = n - 1;
-    stack_t *stack = NULL, *calls = NULL;
+    mads_stack_t *stack = NULL, *calls = NULL;
     const long long int type_call = 99;
 
     // Precondition checks
@@ -251,17 +251,17 @@ static void merge_sort_iterative(void **A, void **T, const long long int n, cons
     assert(n >= 0 && cmp != NULL);
 
     // Stack creation and initial push of elements
-    stack = stack_create(compare_indices, print_index, NULL);
-    calls = stack_create(compare_indices, print_index, NULL);
-    stack_push(stack, (void *)left);
-    stack_push(stack, (void *)right);
-    stack_push(calls, (void *)type_call);
+    stack = mads_stack_create(compare_indices, print_index, NULL);
+    calls = mads_stack_create(compare_indices, print_index, NULL);
+    mads_stack_push(stack, (void *)left);
+    mads_stack_push(stack, (void *)right);
+    mads_stack_push(calls, (void *)type_call);
 
-    while (!stack_is_empty(stack))
+    while (!mads_stack_is_empty(stack))
     {
-        right = (long long int)stack_pop(stack);
-        left = (long long int)stack_pop(stack);
-        const long long int type = (long long int)stack_pop(calls);
+        right = (long long int)mads_stack_pop(stack);
+        left = (long long int)mads_stack_pop(stack);
+        const long long int type = (long long int)mads_stack_pop(calls);
         const long long int mid = (right + left) / 2;
 
         if (type == type_call)
@@ -269,15 +269,15 @@ static void merge_sort_iterative(void **A, void **T, const long long int n, cons
             if ((right - left) > 0)
             {
                 const long long int type_merge = 109;
-                stack_push(stack, (void *)left);
-                stack_push(stack, (void *)right);
-                stack_push(calls, (void *)type_merge);
-                stack_push(stack, (void *)left);
-                stack_push(stack, (void *)mid);
-                stack_push(calls, (void *)type_call);
-                stack_push(stack, (void *)(mid + 1));
-                stack_push(stack, (void *)right);
-                stack_push(calls, (void *)type_call);
+                mads_stack_push(stack, (void *)left);
+                mads_stack_push(stack, (void *)right);
+                mads_stack_push(calls, (void *)type_merge);
+                mads_stack_push(stack, (void *)left);
+                mads_stack_push(stack, (void *)mid);
+                mads_stack_push(calls, (void *)type_call);
+                mads_stack_push(stack, (void *)(mid + 1));
+                mads_stack_push(stack, (void *)right);
+                mads_stack_push(calls, (void *)type_call);
 
             }
         }
@@ -288,8 +288,8 @@ static void merge_sort_iterative(void **A, void **T, const long long int n, cons
     }
 
     // Destroy stacks
-    stack_free(stack);
-    stack_free(calls);
+    mads_stack_free(stack);
+    mads_stack_free(calls);
 }
 
 // Main function to perform merge sort algorithm
