@@ -13,7 +13,9 @@
 #include <mads/algorithms/random.h>
 #include <mads/data_structures/array.h>
 
-static char *generate_random_string()
+
+
+static char *generate_random_string(void)
 {
     const char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const size_t string_length = mads_genrand64_int64() % 10;
@@ -130,7 +132,7 @@ static void mads_array_free_test(void **state)
 }
 
 
-int main()
+int main(void)
 {
     const struct CMUnitTest tests[] =
     {

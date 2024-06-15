@@ -19,7 +19,7 @@
 #include <mads/algorithms/sort.h>
 
 
-static char *generate_random_string()
+static char *generate_random_string(void)
 {
     const char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const size_t string_length = mads_genrand64_int64() % 100;
@@ -217,7 +217,7 @@ static void mads_merge_sort_test(void **state)
     free(strings_rblock);
 }
 
-int main()
+int main(void)
 {
     const struct CMUnitTest tests[] =
     {
