@@ -17,10 +17,11 @@
 
 static char *generate_random_string(void)
 {
+    char *random_string = NULL;
     const char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const size_t string_length = mads_genrand64_int64() % 10;
 
-    char *random_string = malloc(sizeof(char) * (string_length + 1));
+    random_string = (char *)malloc(sizeof(char) * (string_length + 1));
     assert(random_string != NULL);
 
     for (size_t i = 0; i < string_length; i++)
@@ -116,9 +117,6 @@ static void mads_array_create_test(void **state)
         mads_array_remove_at(integers_array, 0);
         mads_array_remove_at(reals_array, 0);
         mads_array_remove_at(strings_array, 0);
-        // mads_array_print(integers_array);
-        // mads_array_print(reals_array);
-        // mads_array_print(strings_array);
     }
 
     mads_array_free(integers_array);

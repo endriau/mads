@@ -1,9 +1,11 @@
 #ifndef MADS_DATA_STRUCTURES_UNI_HASH_H
 #define MADS_DATA_STRUCTURES_UNI_HASH_H
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 #include <mads_export.h>
 
@@ -25,5 +27,6 @@ MADS_EXPORT void mads_uni_hash_free(mads_uni_hash_t *h);
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif //MADS_DATA_STRUCTURES_UNI_HASH_H

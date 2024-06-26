@@ -73,7 +73,7 @@ static void mads_insertion_sort_test(void **state)
     const size_t array_size = 10;
 
     // Allocating an array of integers, each memory block of size 8 bytes.
-    integers_block = malloc(sizeof(long long int) * array_size);
+    integers_block = (long long int *)malloc(sizeof(long long int) * array_size);
 
     // Make sure memory was allocated successfully.
     assert_true(integers_block != NULL);
@@ -115,10 +115,10 @@ static void mads_quick_sort_test(void **state)
 
     // Allocating two arrays of doubles.
 
-    reals_rblock = malloc(sizeof(double) * array_size);
+    reals_rblock = (double *)malloc(sizeof(double) * array_size);
     assert_true(reals_rblock != NULL);
 
-    reals_iblock = malloc(sizeof(double) * array_size);
+    reals_iblock = (double *)malloc(sizeof(double) * array_size);
     assert_true(reals_iblock != NULL);
 
     // initialize random generator with seed.
@@ -170,10 +170,10 @@ static void mads_merge_sort_test(void **state)
 
     // Allocating two arrays of strings.
 
-    strings_iblock = malloc(sizeof(void *) * array_size);
+    strings_iblock = (void **)malloc(sizeof(void *) * array_size);
     assert_true(strings_iblock != NULL);
 
-    strings_rblock = malloc(sizeof(void *) * array_size);
+    strings_rblock = (void **)malloc(sizeof(void *) * array_size);
     assert_true(strings_rblock != NULL);
 
     // initialize random generator with seed.

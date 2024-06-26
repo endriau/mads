@@ -41,7 +41,7 @@ mads_uni_hash_t *mads_uni_hash_create(const unsigned long long int ts, const uns
 {
     mads_uni_hash_t *h = NULL;
     assert(ts != 0 && k != 0);
-    h = (mads_uni_hash_t *)malloc(sizeof(*h));
+    h = (mads_uni_hash_t *)malloc(sizeof(mads_uni_hash_t));
     assert(h != NULL);
     h->kvalue = k;
     h->tabsize = ts;
