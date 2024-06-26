@@ -1,5 +1,8 @@
+// ReSharper disable CppDoxygenUnresolvedReference
+
+
 /**
-* @file list.h
+ * @file list.h
  * @brief This file contains the API definitions for the MADS Double Linked List data structure.
  * The MADS Linked List data structure implementation in this file supports operations for creation, insertion, removal,
  * accessing list elements and some additional functionality. It also supports custom comparison, print and destruction
@@ -7,7 +10,6 @@
  */
 
 
-// ReSharper disable CppDoxygenUnresolvedReference
 #ifndef MADS_DATA_STRUCTURES_LIST_H
 #define MADS_DATA_STRUCTURES_LIST_H
 
