@@ -6,13 +6,13 @@
 
 
 // Function to create a cue (key) with provided comparison, printing, and destroying functions.
-mads_cue_t *mads_cue_create(void *cue, const mads_cue_compare_fn cmp, const mads_cue_print_fn print, const mads_cue_destroy_fn destroy)
+mads_cue_t *mads_cue_create(void *cue, const mads_cue_comparator_fn comparator, const mads_cue_printer_fn printer, const mads_cue_destructor_fn destructor)
 {
     // Declare new cue
     mads_cue_t *new_cue = NULL;
 
     // Check to ensure that necessary function pointers are not null
-    assert(cmp != NULL && print != NULL);
+    assert(comparator != NULL && printer != NULL);
 
     // Allocate memory for new cue
     new_cue = (mads_cue_t *)malloc(sizeof(mads_cue_t));
@@ -22,9 +22,9 @@ mads_cue_t *mads_cue_create(void *cue, const mads_cue_compare_fn cmp, const mads
 
     // Assign provided arguments to corresponding fields
     new_cue->cue = cue;
-    new_cue->cmp = cmp;
-    new_cue->print = print;
-    new_cue->destroy = destroy;
+    new_cue->comparator = comparator;
+    new_cue->printer = printer;
+    new_cue->destructor = destructor;
 
     // Return the new cue
     return new_cue;
@@ -47,7 +47,7 @@ int mads_cue_compare_to(const mads_cue_t *k, const void *data)
     assert(k != NULL);
 
     // Perform the comparison
-    const int result = k->cmp(k->cue, data);
+    const int result = k->comparator(k->cue, data);
 
     // Return the result
     return result;
@@ -60,7 +60,7 @@ void mads_cue_print(const mads_cue_t *k)
     assert(k != NULL);
 
     // Run the print function
-    k->print(k->cue);
+    k->printer(k->cue);
 }
 
 // Function to free the memory associated with a mads_cue_t object
@@ -70,25 +70,25 @@ void mads_cue_free(mads_cue_t *k)
     assert(k != NULL);
 
     // Run the destroy function if it exists
-    if (k->destroy != NULL) { k->destroy(k->cue); }
+    if (k->destructor != NULL) { k->destructor(k->cue); }
 
     // Clear function pointers and free memory
-    k->cmp = NULL;
-    k->print = NULL;
-    k->destroy = NULL;
+    k->comparator = NULL;
+    k->printer = NULL;
+    k->destructor = NULL;
     free(k);
     k = NULL;
 }
 
 
 // Function to create a value object with provided comparison, printing, and destroying functions
-mads_value_t *mads_value_create(void *value, const mads_value_compare_fn cmp, const mads_value_print_fn print, const mads_value_destroy_fn destroy)
+mads_value_t *mads_value_create(void *value, const mads_value_comparator_fn comparator, const mads_value_printer_fn printer, const mads_value_destructor_fn destructor)
 {
     // Declare variable for the new value object
     mads_value_t *new_value = NULL;
 
     // Check to ensure that necessary function pointers are not null
-    assert(cmp != NULL && print != NULL);
+    assert(comparator != NULL && printer != NULL);
 
     // Allocate memory for the new value object
     new_value = (mads_value_t *)malloc(sizeof(mads_value_t));
@@ -98,9 +98,9 @@ mads_value_t *mads_value_create(void *value, const mads_value_compare_fn cmp, co
 
     // Assign provided arguments to the corresponding fields of the value object
     new_value->value = value;
-    new_value->cmp = cmp;
-    new_value->print = print;
-    new_value->destroy = destroy;
+    new_value->comparator = comparator;
+    new_value->printer = printer;
+    new_value->destructor = destructor;
 
     // Return the new value object
     return new_value;
@@ -113,6 +113,7 @@ void *mads_value_get(const mads_value_t *v)
 {
     // Ensure that the mads_value_t object is not null
     assert(v != NULL);
+
     // Return the value stored in the object
     return v->value;
 }
@@ -122,8 +123,10 @@ int mads_value_compare_to(const mads_value_t *v, const void *data)
 {
     // Ensure that the mads_value_t object is not null
     assert(v != NULL);
+
     // Perform the comparison using the comparison function defined in mads_value_t
-    const int result = v->cmp(v->value, data);
+    const int result = v->comparator(v->value, data);
+
     // Return the result of the comparison
     return result;
 }
@@ -133,8 +136,9 @@ void mads_value_print(const mads_value_t *v)
 {
     // Ensure that the mads_value_t object is not null
     assert(v != NULL);
+
     // Use the printing function defined in mads_value_t to print the value
-    v->print(v->value);
+    v->printer(v->value);
 }
 
 // Function to free the memory occupied by mads_value_t and its value
@@ -142,14 +146,18 @@ void mads_value_free(mads_value_t *v)
 {
     // Ensure that the mads_value_t object is not null
     assert(v != NULL);
+
     // Invoke the destroy function in mads_value_t when such function exists
-    if (v->destroy != NULL) { v->destroy(v->value); }
+    if (v->destructor != NULL) { v->destructor(v->value); }
+
     // Clear all function pointers
-    v->cmp = NULL;
-    v->print = NULL;
-    v->destroy = NULL;
+    v->comparator = NULL;
+    v->printer = NULL;
+    v->destructor = NULL;
+
     // Free the memory occupied by the mads_value_t object itself
     free(v);
+
     // Nullify the pointer
     v = NULL;
 }
@@ -184,6 +192,7 @@ mads_cue_t *mads_pair_get_cue(const mads_pair_t *p)
 {
     // Ensure that the key-value pair is not null
     assert(p != NULL);
+
     // Return the key from the pair
     return p->k;
 }
@@ -193,6 +202,7 @@ mads_value_t *mads_pair_get_value(const mads_pair_t *p)
 {
     // Ensure that the pair is not null
     assert(p != NULL);
+
     // Return the value from the pair
     return p->v;
 }
@@ -202,12 +212,16 @@ void mads_pair_change_cue(mads_pair_t *p, mads_cue_t *new_k)
 {
     // Pointer to keep track of the old key before changing it
     mads_cue_t *old_cue = NULL;
+
     // Ensure that the pair and the new key are not null
     assert(p != NULL && new_k != NULL);
+
     // Get the old key from the pair
     old_cue = mads_pair_get_cue(p);
+
     // Free the memory associated with the old key
     mads_cue_free(old_cue);
+
     // Replace the old key with the new key in the pair
     p->k = new_k;
 }
@@ -217,12 +231,16 @@ void mads_pair_change_value(mads_pair_t *p, mads_value_t *new_v)
 {
     // Pointer to keep track of the old value before changing it
     mads_value_t *old_value = NULL;
+
     // Ensure that the pair and the new value are not null
     assert(p != NULL && new_v != NULL);
+
     // Get the old value from the pair
     old_value = mads_pair_get_value(p);
+
     // Free the memory associated with the old value
     mads_value_free(old_value);
+
     // Replace the old value with the new value in the pair
     p->v = new_v;
 }
@@ -232,12 +250,15 @@ void mads_pair_print(const mads_pair_t *p)
 {
     // Ensure the pair is not null
     assert(p != NULL);
+
     // Temporary pointers to retrieve the key and value components of the pair
     const mads_cue_t *temp_cue = NULL;
     const mads_value_t *temp_value = NULL;
+
     // Retrieve the key and value from the pair
     temp_cue = mads_pair_get_cue(p);
     temp_value = mads_pair_get_value(p);
+
     // Print the key and value in a user-friendly format
     printf("{ ");
     mads_cue_print(temp_cue);
@@ -251,12 +272,16 @@ void mads_pair_free(mads_pair_t *p)
 {
     // Ensure that the pair is not null
     assert(p != NULL);
+
     // Free the memory associated with the value component of the pair
     mads_value_free(mads_pair_get_value(p));
+
     // Free the memory associated with the key component of the pair
     mads_cue_free(mads_pair_get_cue(p));
+
     // Free the memory for the pair itself
     free(p);
+
     // Zero out the pointer for safety
     p = NULL;
 }

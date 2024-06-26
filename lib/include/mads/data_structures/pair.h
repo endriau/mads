@@ -22,7 +22,7 @@ extern "C" {
 
 
 /**
- * @typedef mads_cue_compare_fn
+ * @typedef mads_cue_comparator_fn
  * @brief Function pointer type for comparing two cues.
  *
  * A function of this type should take two void pointers to the cues that need to be compared.
@@ -34,31 +34,31 @@ extern "C" {
  * @return An integer less than, equal to, or greater than zero if the first cue is considered to
  * be respectively less than, equal to, or greater than the second.
  */
-typedef int (*mads_cue_compare_fn)(const void *, const void *);
+typedef int (*mads_cue_comparator_fn)(const void *, const void *);
 
 
 /**
- * @typedef mads_cue_print_fn
+ * @typedef mads_cue_printer_fn
  * @brief Function pointer type for printing a cue.
  * A function of this type should take a void pointer to the cue that needs to be printed.
  * The function should cast the void pointer to the appropriate data type before printing it.
  * @param [in] GenericPointer Pointer to the cue.
  */
-typedef void (*mads_cue_print_fn)(const void *);
+typedef void (*mads_cue_printer_fn)(const void *);
 
 
 /**
- * @typedef mads_cue_destroy_fn
+ * @typedef mads_cue_destructor_fn
  * @brief Function pointer type for destroying a cue.
  * A function of this type should take a void pointer to the cue that needs to be destroyed.
  * The function should cast the void pointer to the appropriate data type before destroying it.
  * @param [in] GenericPointer Pointer to the cue to be destroyed.
  */
-typedef void (*mads_cue_destroy_fn)(void *);
+typedef void (*mads_cue_destructor_fn)(void *);
 
 
 /**
-* @typedef mads_value_compare_fn
+* @typedef mads_value_comparator_fn
 * @brief Function pointer type for comparing two values.
 * A function of this type should take two void pointers to the values that need to be compared.
 * The function should cast the void pointers to the appropriate data types before comparing them.
@@ -69,22 +69,22 @@ typedef void (*mads_cue_destroy_fn)(void *);
 * @return An integer less than, equal to, or greater than zero if the first value is considered to
 * be respectively less than, equal to, or greater than the second.
 */
-typedef int (*mads_value_compare_fn)(const void *, const void *);
+typedef int (*mads_value_comparator_fn)(const void *, const void *);
 
 
 /**
- * @typedef mads_value_print_fn
+ * @typedef mads_value_printer_fn
  * @brief Function pointer type for printing a value.
  * A function of this type should take a void pointer to the value that
  * needs to be printed. The function should cast the void pointer to the
  * appropriate data type before printing it.
  * @param [in] GenericPointer Pointer to the value.
  */
-typedef void (*mads_value_print_fn)(const void *);
+typedef void (*mads_value_printer_fn)(const void *);
 
 
 /**
- * @typedef mads_value_destroy_fn
+ * @typedef mads_value_destructor_fn
  * @brief Function pointer type for destroying a value.
  * A function of this type should take a void pointer to
  * the value that needs to be destroyed. The function should
@@ -92,7 +92,7 @@ typedef void (*mads_value_print_fn)(const void *);
  * destroying it.
  * @param [in] GenericPointer Pointer to the value to be destroyed.
  */
-typedef void (*mads_value_destroy_fn)(void *);
+typedef void (*mads_value_destructor_fn)(void *);
 
 /**
  * @brief Data structure that represents the key of a pair.
@@ -100,9 +100,9 @@ typedef void (*mads_value_destroy_fn)(void *);
 typedef struct
 {
     void *cue; ///< @brief Pointer to the data that represents the cue
-    mads_cue_compare_fn cmp; ///< @brief Function pointer to a comparator for the cue
-    mads_cue_print_fn print; ///< @brief  Function pointer to a printer for the cue
-    mads_cue_destroy_fn destroy; ///< @brief  Function pointer to a destructor for the cue
+    mads_cue_comparator_fn comparator; ///< @brief Function pointer to a comparator for the cue
+    mads_cue_printer_fn printer; ///< @brief  Function pointer to a printer for the cue
+    mads_cue_destructor_fn destructor; ///< @brief  Function pointer to a destructor for the cue
 } mads_cue_t;
 
 
@@ -112,9 +112,9 @@ typedef struct
 typedef struct
 {
     void *value; ///< @brief  Pointer to the data that represents the value
-    mads_value_compare_fn cmp; ///< @brief  Function pointer to a comparator for the value
-    mads_value_print_fn print; ///< @brief  Function pointer to a printer for the value
-    mads_value_destroy_fn destroy; ///< @brief  Function pointer to a destructor for the value
+    mads_value_comparator_fn comparator; ///< @brief  Function pointer to a comparator for the value
+    mads_value_printer_fn printer; ///< @brief  Function pointer to a printer for the value
+    mads_value_destructor_fn destructor; ///< @brief  Function pointer to a destructor for the value
 } mads_value_t;
 
 
@@ -133,12 +133,12 @@ typedef struct
 /**
  * @brief This function is used to create a new mads_cue_t object.
  * @param [in] cue    - This should be a pointer that points to the cue data.
- * @param [in] cmp    - A function pointer set to compare two cue items.
- * @param [in] print  - A function pointer that is set to handle cue printing.
- * @param [in] destroy - A function pointer that is set to manage cue destruction.
+ * @param [in] comparator    - A function pointer set to compare two cue items.
+ * @param [in] printer  - A function pointer that is set to handle cue printing.
+ * @param [in] destructor - A function pointer that is set to manage cue destruction.
  * @return This function returns a pointer to the new mads_cue_t object.
  */
-MADS_EXPORT mads_cue_t *mads_cue_create(void *cue, mads_cue_compare_fn cmp, mads_cue_print_fn print, mads_cue_destroy_fn destroy);
+MADS_EXPORT mads_cue_t *mads_cue_create(void *cue, mads_cue_comparator_fn comparator, mads_cue_printer_fn printer, mads_cue_destructor_fn destructor);
 
 
 /**
@@ -178,12 +178,12 @@ MADS_EXPORT void mads_cue_free(mads_cue_t *k);
 /**
  * @brief This function is used to create a new mads_value_t object.
  * @param [in] value   - This should be a pointer that points to the value data.
- * @param [in] cmp     - A function pointer set to compare two value items.
- * @param [in] print   - A function pointer that is set to handle value printing.
- * @param [in] destroy - A function pointer that is set to manage value destruction.
+ * @param [in] comparator     - A function pointer set to compare two value items.
+ * @param [in] printer   - A function pointer that is set to handle value printing.
+ * @param [in] destructor - A function pointer that is set to manage value destruction.
  * @return This function returns a pointer to the new mads_value_t object.
  */
-MADS_EXPORT mads_value_t *mads_value_create(void *value, mads_value_compare_fn cmp, mads_value_print_fn print, mads_value_destroy_fn destroy);
+MADS_EXPORT mads_value_t *mads_value_create(void *value, mads_value_comparator_fn comparator, mads_value_printer_fn printer, mads_value_destructor_fn destructor);
 
 
 /**
