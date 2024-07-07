@@ -235,26 +235,30 @@ void mads_array_print(const mads_array_t *array)
 }
 
 // The function that frees the mads array by removing all elements and then freeing the array itself.
-void mads_array_free(mads_array_t *array)
+void mads_array_free(mads_array_t **array)
 {
     // Check if the array is not NULL. If it is, throw an assertion error.
-    assert(array != NULL);
+    assert((*array) != NULL);
 
     // If the destructor function is available, iterate over the array and free all elements using the destructor.
-    if (array->destructor != NULL)
+    if ((*array)->destructor != NULL)
     {
-        for (long long int i = 0; i <= array->index; i++)
+        for (long long int i = 0; i <= (*array)->index; i++)
         {
-            array->destructor(array->mblocks[i]);
-            array->mblocks[i] = NULL;
+            (*array)->destructor((*array)->mblocks[i]);
+            (*array)->mblocks[i] = NULL;
         }
     }
 
     // Free the array blocks and set the pointer to NULL.
-    free(array->mblocks);
-    array->mblocks = NULL;
+    free((*array)->mblocks);
+    (*array)->mblocks = NULL;
+
+    // Set the function pointers to NULL.
+    (*array)->comparator = NULL;
+    (*array)->printer = NULL;
+    (*array)->destructor = NULL;
 
     // Free the mads array and set the pointer to NULL.
-    free(array);
-    array = NULL;
+    free(*array); *array = NULL;
 }

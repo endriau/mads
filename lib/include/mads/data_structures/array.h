@@ -149,7 +149,7 @@ MADS_EXPORT void mads_array_print(const mads_array_t *array);
  * @brief Function to free an array, releasing all allocated memory
  * @param[in,out] array The array to free
  */
-MADS_EXPORT void mads_array_free(mads_array_t *array);
+MADS_EXPORT void mads_array_free(mads_array_t **array);
 
 
 #ifdef __cplusplus
