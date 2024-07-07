@@ -1,6 +1,7 @@
 // ReSharper disable CppDFAMemoryLeak
 // ReSharper disable CppDFANullDereference
-
+// ReSharper disable CppRedundantCastExpression
+// ReSharper disable CppJoinDeclarationAndAssignment
 #include <stdarg.h>
 #include <setjmp.h>
 #include <stdio.h>
@@ -14,23 +15,23 @@
 #include <mads/data_structures/array.h>
 
 
-// static char *generate_random_string(void)
-// {
-//     char *random_string = NULL;
-//     const char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-//     const size_t string_length = mads_genrand64_int64() % 10;
-//
-//     random_string = (char *)malloc(sizeof(char) * (string_length + 1));
-//     assert(random_string != NULL);
-//
-//     for (size_t i = 0; i < string_length; i++)
-//     {
-//         random_string[i] = characters[mads_genrand64_int64() %(sizeof(characters) - 1)];
-//     }
-//
-//     random_string[string_length] = '\0';
-//     return random_string;
-// }
+static char *generate_random_string(void)
+{
+    char *random_string = NULL;
+    const char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const size_t string_length = mads_genrand64_int64() % 10;
+
+    random_string = (char *)malloc(sizeof(char) * (string_length + 1));
+    assert(random_string != NULL);
+
+    for (size_t i = 0; i < string_length; i++)
+    {
+        random_string[i] = characters[mads_genrand64_int64() % (sizeof(characters) - 1)];
+    }
+
+    random_string[string_length] = '\0';
+    return random_string;
+}
 
 static int strings_comparator(const void *s, const void *l)
 {
@@ -89,7 +90,6 @@ static void mads_array_create_test(void **state)
     mads_array_t *integers_array = NULL;
     mads_array_t *reals_array = NULL;
     mads_array_t *strings_array = NULL;
-    // char *random_string = NULL;
 
     integers_array = mads_array_create(integers_comparator, integers_printer, NULL);
     assert_true(integers_array != NULL);
@@ -140,13 +140,60 @@ static void mads_array_free_test(void **state)
     assert_null(strings_array);
 }
 
+static void mads_array_operations_test(void **state)
+{
+    mads_array_t *integers_array = NULL;
+    mads_array_t *reals_array = NULL;
+    mads_array_t *strings_array = NULL;
+    char *random_string = NULL;
+    void *temp_data = NULL;
+    long long int last_index;
+
+    integers_array = mads_array_create(integers_comparator, integers_printer, NULL);
+    reals_array = mads_array_create(reals_comparator, reals_printer, NULL);
+    strings_array = mads_array_create(strings_comparator, strings_printer, strings_destructor);
+
+    for (long long int i = 0; i < 10; i++)
+    {
+        long long int integer_number = mads_genrand64_int64() % 100;
+        mads_array_append(integers_array, *(void **)&integer_number);
+        last_index = mads_array_size(integers_array) - 1;
+        temp_data = mads_array_get_at(integers_array, last_index);
+        assert_int_equal(integer_number, *(long long int *)&temp_data);
+    }
+
+    for (long long int i = 0; i < 10; i++)
+    {
+        double real_number = mads_genrand64_real3();
+        mads_array_prepend(reals_array, *(void **)&real_number);
+        temp_data = mads_array_get_at(reals_array, 0);
+        assert_float_equal(real_number, *(double *)&temp_data, 0.001);
+    }
+
+    for (long long int i = 0; i < 10; i++)
+    {
+        random_string = generate_random_string();
+        mads_array_insert_at(strings_array, i, (void *)random_string);
+        temp_data = mads_array_get_at(strings_array, i);
+        assert_string_equal(random_string, (char *)temp_data);
+    }
+
+    mads_array_print(integers_array);
+    mads_array_print(reals_array);
+
+    mads_array_free(&integers_array);
+    mads_array_free(&reals_array);
+    mads_array_free(&strings_array);
+}
+
 
 int main(void)
 {
     const struct CMUnitTest tests[] =
     {
         cmocka_unit_test(mads_array_create_test),
-        cmocka_unit_test(mads_array_free_test)
+        cmocka_unit_test(mads_array_free_test),
+        cmocka_unit_test(mads_array_operations_test)
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);
