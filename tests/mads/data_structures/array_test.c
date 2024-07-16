@@ -178,9 +178,6 @@ static void mads_array_operations_test(void **state)
         assert_string_equal(random_string, (char *)temp_data);
     }
 
-    mads_array_print(integers_array);
-    mads_array_print(reals_array);
-
     mads_array_free(&integers_array);
     mads_array_free(&reals_array);
     mads_array_free(&strings_array);

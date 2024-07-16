@@ -29,7 +29,7 @@ extern "C" {
  * @return Integer value less than, equal to, or greater than zero if the first argument is considered to be respectively
  *         less than, equal to, or greater than the second.
  */
-typedef int (*mads_list_compare_fn)(const void *, const void *);
+typedef int (*mads_list_comparator_fn)(const void *, const void *);
 
 /**
  * @brief Print function type.
@@ -37,7 +37,7 @@ typedef int (*mads_list_compare_fn)(const void *, const void *);
  *          This function pointer is used while implementing the print functionality.
  * @param [in] GenericPointer to the element.
  */
-typedef void (*mads_list_print_fn)(const void *);
+typedef void (*mads_list_printer_fn)(const void *);
 
 /**
  * @brief Destroy function type.
@@ -45,7 +45,7 @@ typedef void (*mads_list_print_fn)(const void *);
  *          This function is used while implementing the destroy list functionality.
  * @param [in] GenericPointer to the element.
  */
-typedef void (*mads_list_destroy_fn)(void *);
+typedef void (*mads_list_destructor_fn)(void *);
 
 // Forward declaration for Linked list node type
 typedef struct mads_llnode mads_llnode_t;
@@ -68,9 +68,9 @@ typedef struct
     unsigned long long int size; ///< @brief Number of elements in the list
     mads_llnode_t *head; ///< @brief Pointer to the head of the list
     mads_llnode_t *foot; ///< @brief Pointer to the tail of the list
-    mads_list_compare_fn cmp; ///< @brief Function to compare two elements in the list
-    mads_list_print_fn print; ///< @brief Function to print an element of the list
-    mads_list_destroy_fn destroy; ///< @brief Function to destroy an element of the list
+    mads_list_comparator_fn cmp; ///< @brief Function to compare two elements in the list
+    mads_list_printer_fn print; ///< @brief Function to print an element of the list
+    mads_list_destructor_fn destroy; ///< @brief Function to destroy an element of the list
 } mads_list_t;
 
 
@@ -79,12 +79,12 @@ typedef struct
 * @details This function creates a new doubly linked list and initializes its attributes.
 * The compare, print, and destroy function pointers are set to the provided input functions.
 * The size is initialized to 0 and head and foot pointers are set to NULL.
-* @param [in] cmp User provided function pointer for comparing two list elements
-* @param [in] print User provided function pointer for printing an element of the list
-* @param [in] destroy User provided function pointer to free or delete an element of the list
+* @param [in] comparator User provided function pointer for comparing two list elements
+* @param [in] printer User provided function pointer for printing an element of the list
+* @param [in] destructor User provided function pointer to free or delete an element of the list
 * @return Pointer to the newly created list
 */
-MADS_EXPORT mads_list_t *mads_list_create(mads_list_compare_fn cmp, mads_list_print_fn print, mads_list_destroy_fn destroy);
+MADS_EXPORT mads_list_t *mads_list_create(mads_list_comparator_fn comparator, mads_list_printer_fn printer, mads_list_destructor_fn destructor);
 
 /**
 * @brief Adds a new element to the front of the list

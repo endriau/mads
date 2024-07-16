@@ -13,16 +13,16 @@
 #define MADS_AVL_TREE_MAX(a,b) (a > b ? a : b)
 
 
-mads_avl_tree_t *mads_avl_tree_create(const mads_avl_tree_compare_fn cmp, const mads_avl_tree_print_fn print, const mads_avl_tree_destroy_fn destroy)
+mads_avl_tree_t *mads_avl_tree_create(const mads_avl_tree_comparator_fn comparator, const mads_avl_tree_printer_fn printer, const mads_avl_tree_destructor_fn destructor)
 {
     mads_avl_tree_t *new_tree = NULL;
-    assert(cmp != NULL && print != NULL);
+    assert(comparator != NULL && printer != NULL);
     new_tree = (mads_avl_tree_t *)malloc(sizeof(*new_tree));
     assert(new_tree != NULL);
     new_tree->root = NULL;
-    new_tree->cmp = cmp;
-    new_tree->print = print;
-    new_tree->destroy = destroy;
+    new_tree->cmp = comparator;
+    new_tree->print = printer;
+    new_tree->destroy = destructor;
     return new_tree;
 }
 
@@ -101,7 +101,7 @@ static mads_avl_node_t *avl_tree_balance(mads_avl_node_t *node)
 }
 
 
-static mads_avl_node_t *avl_tree_recursive_insert(mads_avl_node_t *node, const mads_avl_tree_compare_fn cmp, void *data)
+static mads_avl_node_t *avl_tree_recursive_insert(mads_avl_node_t *node, const mads_avl_tree_comparator_fn cmp, void *data)
 {
     mads_avl_node_t *new_node = NULL;
     assert(cmp != NULL);
@@ -139,7 +139,7 @@ void mads_avl_tree_insert(mads_avl_tree_t *t, void *data)
 }
 
 
-static mads_avl_node_t *avl_tree_recursive_search(mads_avl_node_t *node, const mads_avl_tree_compare_fn cmp, void *item)
+static mads_avl_node_t *avl_tree_recursive_search(mads_avl_node_t *node, const mads_avl_tree_comparator_fn cmp, void *item)
 {
     assert(cmp != NULL);
     if (node == NULL) { return node; }
@@ -200,7 +200,7 @@ static mads_avl_node_t *avl_tree_find_min(mads_avl_node_t *node)
 }
 
 
-static mads_avl_node_t *avl_tree_recursive_remove(mads_avl_node_t *node, const mads_avl_tree_compare_fn cmp, const mads_avl_tree_destroy_fn destroy, void *item)
+static mads_avl_node_t *avl_tree_recursive_remove(mads_avl_node_t *node, const mads_avl_tree_comparator_fn cmp, const mads_avl_tree_destructor_fn destroy, void *item)
 {
     assert(cmp != NULL);
     if (node == NULL) { return node; }
@@ -300,7 +300,7 @@ int mads_avl_tree_get_height(const mads_avl_tree_t *t)
 }
 
 
-static void avl_tree_recursive_print(const mads_avl_node_t *node, const mads_avl_tree_print_fn print, const int depth)
+static void avl_tree_recursive_print(const mads_avl_node_t *node, const mads_avl_tree_printer_fn print, const int depth)
 {
     assert(print != NULL);
     if (node == NULL) { return; }

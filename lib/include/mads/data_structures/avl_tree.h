@@ -11,9 +11,9 @@ extern "C" {
 
 #include <mads_export.h>
 
-typedef int (*mads_avl_tree_compare_fn)(const void *, const void *);
-typedef void (*mads_avl_tree_print_fn)(const void *);
-typedef void (*mads_avl_tree_destroy_fn)(void *);
+typedef int (*mads_avl_tree_comparator_fn)(const void *, const void *);
+typedef void (*mads_avl_tree_printer_fn)(const void *);
+typedef void (*mads_avl_tree_destructor_fn)(void *);
 
 
 typedef struct mads_avl_node mads_avl_node_t;
@@ -29,13 +29,13 @@ struct mads_avl_node
 typedef struct
 {
     mads_avl_node_t *root;
-    mads_avl_tree_compare_fn cmp;
-    mads_avl_tree_print_fn print;
-    mads_avl_tree_destroy_fn destroy;
+    mads_avl_tree_comparator_fn cmp;
+    mads_avl_tree_printer_fn print;
+    mads_avl_tree_destructor_fn destroy;
 } mads_avl_tree_t;
 
 
-MADS_EXPORT mads_avl_tree_t *mads_avl_tree_create(mads_avl_tree_compare_fn cmp, mads_avl_tree_print_fn print, mads_avl_tree_destroy_fn destroy);
+MADS_EXPORT mads_avl_tree_t *mads_avl_tree_create(mads_avl_tree_comparator_fn comparator, mads_avl_tree_printer_fn printer, mads_avl_tree_destructor_fn destructor);
 MADS_EXPORT void mads_avl_tree_insert(mads_avl_tree_t *t, void *data);
 MADS_EXPORT int mads_avl_tree_search(const mads_avl_tree_t *t, void *item);
 MADS_EXPORT void *mads_avl_tree_get_elem(const mads_avl_tree_t *t, void *item);

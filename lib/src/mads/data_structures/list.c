@@ -7,14 +7,14 @@
 
 // This function, `mads_list_create`, creates a new list, setting all initial values and
 // assigning the function pointers that are passed as parameters. It returns the created list struct.
-mads_list_t *mads_list_create(const mads_list_compare_fn cmp, const mads_list_print_fn print, const mads_list_destroy_fn destroy)
+mads_list_t *mads_list_create(const mads_list_comparator_fn comparator, const mads_list_printer_fn printer, const mads_list_destructor_fn destructor)
 {
     // Declare a pointer to a `mads_list_t` and initialize it to `NULL`.
     mads_list_t *list = NULL;
 
     // Assert that `cmp` and `print` function pointers are not `NULL`. This is necessary because
     // these functions are essential for the operations on the list.
-    assert(cmp!=NULL && print!=NULL);
+    assert(comparator!=NULL && printer!=NULL);
 
     // Allocate memory to hold the `mads_list_t` struct. The parameter of `sizeof` is a
     // dereferenced `list` to get the size of what `list` points to, i.e., a `mads_list_t`.
@@ -26,9 +26,9 @@ mads_list_t *mads_list_create(const mads_list_compare_fn cmp, const mads_list_pr
     // Initialize the fields of the list
     list->size = 0; // Give the initial size of the list as 0
     list->head = list->foot = NULL; // Set the head and foot of the list to NULL
-    list->cmp = cmp; // Assign the `cmp` function pointer to the list's `cmp` member
-    list->print = print; // Assign the `print` function pointer to the list's `print` member
-    list->destroy = destroy; // Assign the passed in `destroy` function pointer to the list's `destroy` member
+    list->cmp = comparator; // Assign the `cmp` function pointer to the list's `cmp` member
+    list->print = printer; // Assign the `print` function pointer to the list's `print` member
+    list->destroy = destructor; // Assign the passed in `destroy` function pointer to the list's `destroy` member
 
     // Return a pointer to the new list
     return list;

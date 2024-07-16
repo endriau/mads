@@ -176,7 +176,7 @@ mads_pair_t *mads_pair_create(mads_cue_t *k, mads_value_t *v)
     new_pair = (mads_pair_t *)malloc(sizeof(mads_pair_t));
 
     // Assert that memory allocation was successful
-    assert(new_pair!=NULL);
+    assert(new_pair != NULL);
 
     // Point to the key and value
     new_pair->k = k;
