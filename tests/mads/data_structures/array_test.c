@@ -92,23 +92,23 @@ static void mads_array_create_test(void **state)
     mads_array_t *strings_array = NULL;
 
     integers_array = mads_array_create(integers_comparator, integers_printer, NULL);
-    assert_true(integers_array != NULL);
+    assert_non_null(integers_array);
     assert_ptr_equal(integers_array->comparator, integers_comparator);
     assert_ptr_equal(integers_array->printer, integers_printer);
-    assert_ptr_equal(integers_array->destructor, NULL);
+    assert_null(integers_array->destructor);
     assert_int_equal(integers_array->msize, 16);
     assert_int_equal(integers_array->index, -1);
 
     reals_array = mads_array_create(reals_comparator, reals_printer, NULL);
-    assert_true(reals_array != NULL);
+    assert_non_null(reals_array);
     assert_ptr_equal(reals_array->comparator, reals_comparator);
     assert_ptr_equal(reals_array->printer, reals_printer);
-    assert_ptr_equal(reals_array->destructor, NULL);
+    assert_null(reals_array->destructor);
     assert_int_equal(reals_array->msize, 16);
     assert_int_equal(reals_array->index, -1);
 
     strings_array = mads_array_create(strings_comparator, strings_printer, strings_destructor);
-    assert_true(strings_array != NULL);
+    assert_non_null(strings_array);
     assert_ptr_equal(strings_array->comparator, strings_comparator);
     assert_ptr_equal(strings_array->printer, strings_printer);
     assert_ptr_equal(strings_array->destructor, strings_destructor);

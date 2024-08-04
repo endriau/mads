@@ -36,7 +36,7 @@ MADS_EXPORT void mads_hash_table_remove(mads_hash_table_t *t, void *key);
 MADS_EXPORT void *mads_hash_table_get_value(const mads_hash_table_t *t, void *key);
 MADS_EXPORT void mads_hash_table_change_value(const mads_hash_table_t *t, void *key, void *value);
 MADS_EXPORT void mads_hash_table_print(const mads_hash_table_t *t);
-MADS_EXPORT void mads_hash_table_free(mads_hash_table_t *t);
+MADS_EXPORT void mads_hash_table_free(mads_hash_table_t **t);
 
 #ifdef __cplusplus
 }

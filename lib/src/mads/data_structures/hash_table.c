@@ -371,26 +371,25 @@ void mads_hash_table_print(const mads_hash_table_t *t)
 }
 
 
-void mads_hash_table_free(mads_hash_table_t *t)
+void mads_hash_table_free(mads_hash_table_t **t)
 {
     assert(t != NULL);
 
-    for (unsigned long long int i = 0; i < t->size; i++)
+    for (unsigned long long int i = 0; i < (*t)->size; i++)
     {
-        if (t->chain_type == MADS_HASH_TABLE_CHAIN_LIST)
+        if ((*t)->chain_type == MADS_HASH_TABLE_CHAIN_LIST)
         {
-            mads_list_free(t->A[i]);
+            mads_list_free((*t)->A[i]);
         }
-        else if (t->chain_type == MADS_HASH_TABLE_CHAIN_TREE)
+        else if ((*t)->chain_type == MADS_HASH_TABLE_CHAIN_TREE)
         {
-            mads_avl_tree_free(t->A[i]);
+            mads_avl_tree_free((*t)->A[i]);
         }
     }
 
-    free(t->A);
-    t->A = NULL;
-    mads_uni_hash_free(t->hfunc);
-    t->hfunc = NULL;
-    free(t);
-    t = NULL;
+    free((*t)->A);
+    (*t)->A = NULL;
+    mads_uni_hash_free((*t)->hfunc);
+    (*t)->hfunc = NULL;
+    free(*t); *t = NULL;
 }

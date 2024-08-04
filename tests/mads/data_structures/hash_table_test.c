@@ -119,7 +119,7 @@ static void mads_hash_table_create_test(void **state)
     assert_non_null(hash_table->hfunc);
     assert_ptr_equal(hash_table->hash, hash_string);
 
-    mads_hash_table_free(hash_table);
+    mads_hash_table_free(&hash_table);
 }
 
 
@@ -130,7 +130,8 @@ static void mads_hash_table_free_test(void **state)
     mads_hash_table_t *hash_table = NULL;
     hash_table = mads_hash_table_create(hash_string, MADS_HASH_TABLE_CHAIN_TREE);
 
-    mads_hash_table_free(hash_table);
+    mads_hash_table_free(&hash_table);
+    assert_null(hash_table);
 }
 
 
