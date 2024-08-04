@@ -105,42 +105,41 @@ static unsigned long long int hash_string(const mads_uni_hash_t *uni_hash, const
     return hval % tab_size;
 }
 
-static void mads_hash_table_test_create(void **state)
+static void mads_hash_table_create_test(void **state)
 {
-    mads_init_genrand64(time(NULL));
-
     mads_hash_table_t *hash_table = NULL;
     hash_table = mads_hash_table_create(hash_string, MADS_HASH_TABLE_CHAIN_LIST);
 
-    for (int i = 0; i < 10000; i++)
-    {
-        char *name_string = generate_random_string();
-        unsigned long long int age = mads_genrand64_int64() % 100;
+    assert_non_null(hash_table);
+    assert_non_null(hash_table);
+    assert_int_equal(hash_table->chain_type, MADS_HASH_TABLE_CHAIN_LIST);
+    assert_int_equal(hash_table->size, MADS_HASH_TABLE_INITIAL_SIZE);
+    assert_int_equal(hash_table->n, 0);
+    assert_int_equal(hash_table->load_factor, 0);
+    assert_non_null(hash_table->hfunc);
+    assert_ptr_equal(hash_table->hash, hash_string);
 
-        if (!mads_hash_table_lookup(hash_table, (void *)name_string))
-        {
-            mads_cue_t *name_cue = mads_cue_create(name_string, strings_comparator, strings_printer, strings_destructor);
-            mads_value_t *age_value = mads_value_create(*(void **)&age, integers_comparator, integers_printer, NULL);
-            mads_pair_t *name_age_pair = mads_pair_create(name_cue, age_value);
-
-            mads_hash_table_insert(hash_table, name_age_pair);
-        }
-        else
-        {
-            mads_hash_table_change_value(hash_table, (void *)name_string, *(void **)&age);
-            free(name_string);
-        }
-    }
-
-    mads_hash_table_print(hash_table);
     mads_hash_table_free(hash_table);
 }
+
+
+static void mads_hash_table_free_test(void **state)
+{
+    // TODO: Test the destructor function for the hash table data structure.
+
+    mads_hash_table_t *hash_table = NULL;
+    hash_table = mads_hash_table_create(hash_string, MADS_HASH_TABLE_CHAIN_TREE);
+
+    mads_hash_table_free(hash_table);
+}
+
 
 int main(void)
 {
     const struct CMUnitTest tests[] =
     {
-        cmocka_unit_test(mads_hash_table_test_create),
+        cmocka_unit_test(mads_hash_table_create_test),
+        cmocka_unit_test(mads_hash_table_free_test)
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);
