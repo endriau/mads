@@ -98,7 +98,8 @@ static unsigned long long int hash_string(const mads_uni_hash_t *uni_hash, const
 
     for (unsigned long long int i = 0; string_key[i] != '\0'; i++)
     {
-        hval += string_key[i] * uni_hash->values[k]; k++;
+        hval += string_key[i] * uni_hash->values[k];
+        k++;
         if (k == max_k) { k = 0; }
     }
 

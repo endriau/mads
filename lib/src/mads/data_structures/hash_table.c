@@ -4,6 +4,7 @@
 // ReSharper disable CppRedundantElseKeyword
 
 
+// ReSharper disable CppDFANullDereference
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -171,7 +172,6 @@ static void hash_table_rehash(mads_hash_table_t *t)
 
 mads_hash_table_t *mads_hash_table_create(const mads_hash_table_hash_fn hash, const int chain_type)
 {
-
     mads_hash_table_t *new_table = NULL;
     assert(hash != NULL);
     assert(chain_type == MADS_HASH_TABLE_CHAIN_LIST || chain_type == MADS_HASH_TABLE_CHAIN_TREE);
@@ -391,5 +391,6 @@ void mads_hash_table_free(mads_hash_table_t **t)
     (*t)->A = NULL;
     mads_uni_hash_free((*t)->hfunc);
     (*t)->hfunc = NULL;
-    free(*t); *t = NULL;
+    free(*t);
+    *t = NULL;
 }
