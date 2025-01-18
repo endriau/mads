@@ -1,4 +1,4 @@
-// Include necessary headers
+// Include the necessary headers
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -6,7 +6,10 @@
 
 
 // Function to create a cue (key) with provided comparison, printing, and destroying functions.
-mads_cue_t *mads_cue_create(void *cue, const mads_cue_comparator_fn comparator, const mads_cue_printer_fn printer, const mads_cue_destructor_fn destructor)
+mads_cue_t *mads_cue_create(void *cue,
+    const mads_cue_comparator_fn comparator,
+    const mads_cue_printer_fn printer,
+    const mads_cue_destructor_fn destructor)
 {
     // Declare new cue
     mads_cue_t *new_cue = NULL;
@@ -81,7 +84,10 @@ void mads_cue_free(mads_cue_t **k)
 
 
 // Function to create a value object with provided comparison, printing, and destroying functions
-mads_value_t *mads_value_create(void *value, const mads_value_comparator_fn comparator, const mads_value_printer_fn printer, const mads_value_destructor_fn destructor)
+mads_value_t *mads_value_create(void *value,
+    const mads_value_comparator_fn comparator,
+    const mads_value_printer_fn printer,
+    const mads_value_destructor_fn destructor)
 {
     // Declare variable for the new value object
     mads_value_t *new_value = NULL;
