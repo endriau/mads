@@ -107,7 +107,7 @@ MADS_EXPORT void mads_array_set_at(const mads_array_t *array, long long int inde
  * @brief Function to get data at a specific index from the array
  * @param[in] array The array to get data from
  * @param[in] index The position index of wanted data
- * @return The data at the specified position or NULL if index is invalid
+ * @return The data at the specified position or NULL if the index is invalid
 */
 MADS_EXPORT void *mads_array_get_at(const mads_array_t *array, long long int index);
 
@@ -129,7 +129,7 @@ MADS_EXPORT long long int mads_array_size(const mads_array_t *array);
 /**
  * @brief Function to check if an array is empty
  * @param[in] array The array to check
- * @return 1 if the array is empty, 0 otherwise
+ * @return One if the array is empty, zero otherwise
  */
 MADS_EXPORT int mads_array_is_empty(const mads_array_t *array);
 

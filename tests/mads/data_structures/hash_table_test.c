@@ -2,6 +2,10 @@
 // ReSharper disable CppDFANullDereference
 // ReSharper disable CppRedundantCastExpression
 // ReSharper disable CppJoinDeclarationAndAssignment
+// ReSharper disable CppDeclaratorNeverUsed
+// ReSharper disable CppUnusedIncludeDirective
+
+// ReSharper disable CppParameterNeverUsed
 #include <stdarg.h>
 #include <setjmp.h>
 #include <stdio.h>
@@ -125,13 +129,15 @@ static void mads_hash_table_create_test(void **state)
 
 static void mads_hash_table_free_test(void **state)
 {
-    // TODO: Test the destructor function for the hash table data structure.
+    mads_hash_table_t *list_hash_table = NULL;
+    mads_hash_table_t *tree_hash_table = NULL;
+    list_hash_table = mads_hash_table_create(hash_string, MADS_HASH_TABLE_CHAIN_TREE);
+    tree_hash_table = mads_hash_table_create(hash_string, MADS_HASH_TABLE_CHAIN_TREE);
 
-    mads_hash_table_t *hash_table = NULL;
-    hash_table = mads_hash_table_create(hash_string, MADS_HASH_TABLE_CHAIN_TREE);
-
-    mads_hash_table_free(&hash_table);
-    assert_null(hash_table);
+    mads_hash_table_free(&list_hash_table);
+    mads_hash_table_free(&tree_hash_table);
+    assert_null(list_hash_table);
+    assert_null(tree_hash_table);
 }
 
 

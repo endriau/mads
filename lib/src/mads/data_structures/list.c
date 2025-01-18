@@ -35,7 +35,7 @@ mads_list_t *mads_list_create(const mads_list_comparator_fn comparator, const ma
 }
 
 
-// Implementing the mads_list_push function
+// Implementing the mads_list_push function,
 // This function pushes a new node onto the list.
 void mads_list_push(mads_list_t *list, void *data)
 {
@@ -127,7 +127,7 @@ void mads_list_insert_at(mads_list_t *list, void *data, const unsigned long long
     // Declare nodes needed for operation
     mads_llnode_t *next_node = NULL, *new_node = NULL;
 
-    // Asserts that list is not NULL and the position is within the list's size
+    // Asserts that the list is not NULL and the position is within the list's size
     assert(list!=NULL && position<list->size);
 
     // If the position is 0, insert the node at the head of the list using mads_list_push
@@ -151,7 +151,7 @@ void mads_list_insert_at(mads_list_t *list, void *data, const unsigned long long
         // Assert that memory allocation was successful
         assert(new_node!=NULL);
 
-        // Assign data to the new node. new_node is not connected to any other nodes yet
+        // Assign data to the new node. New_node is not connected to any other nodes yet
         new_node->data = data;
         new_node->next = new_node->previous = NULL;
 
@@ -181,8 +181,8 @@ void mads_list_insert_at(mads_list_t *list, void *data, const unsigned long long
 // The list and the position are passed as parameters.
 // The function returns a pointer to the data found at the specified position.
 //
-// `list` is a pointer to the list where we are searching for data.
-// `position` is the index of the item we are looking for in the list.
+// `List` is a pointer to the list where we are searching for data.
+// `Position` is the index of the item we are looking for in the list.
 void *mads_list_get_at(const mads_list_t *list, const unsigned long long int position)
 {
     // Declare a local constant pointer to struct mads_llnode_t that will traverse the list
@@ -209,7 +209,7 @@ void *mads_list_get_at(const mads_list_t *list, const unsigned long long int pos
     // Start traversing from the head of the list
     next_node = list->head;
 
-    // Loop until the end of the list, or until the requested position is reached
+    // Loop until the end of the list or until the requested position is reached
     while (next_node != NULL && step <= position)
     {
         // Move to the next node
@@ -239,7 +239,7 @@ void *mads_list_get_foot(const mads_list_t *list)
 }
 
 
-// Implementing the mads_list_remove_head function
+// Implementing the mads_list_remove_head function,
 // This function removes the head (the first node) of the list
 void mads_list_remove_head(mads_list_t *list)
 {
@@ -310,7 +310,7 @@ void mads_list_remove_foot(mads_list_t *list)
     // If the list is empty, there is nothing to remove, so we return
     if (mads_list_is_empty(list)) { return; }
 
-    // If list's head is different from its foot, it means there are multiple nodes in the list
+    // If the list's head is different from its foot, it means there are multiple nodes in the list
     if (list->foot != list->head)
     {
         // Make the node previous to the current foot node as the new foot of the list
@@ -325,7 +325,7 @@ void mads_list_remove_foot(mads_list_t *list)
     }
     else
     {
-        // Situation where there is only one node in the list (i.e., head and foot are same)
+        // Situation where there is only one node in the list (i.e., head and foot are the same)
         old_node = list->foot;
 
         // Empty the list by setting both the head and the foot to NULL
@@ -358,19 +358,19 @@ void mads_list_remove_at(mads_list_t *list, const unsigned long long int positio
     // Confirm the provided list is not NULL and the given position is within the list's size
     assert(list!=NULL && position<list->size);
 
-    // If the list has no nodes then there is nothing to remove, so return
+    // If the list has no nodes, then there is nothing to remove, so return
     if (mads_list_is_empty(list)) { return; }
 
     // If the position is at the head of the list
     if (position == 0)
     {
-        // Remove the head of the list using existing function
+        // Remove the head of the list using the existing function
         mads_list_remove_head(list);
     }
     // If the position is at the foot of the list
     else if (position == list->size - 1)
     {
-        // Remove the foot of the list using existing function
+        // Remove the foot of the list using the existing function
         mads_list_remove_foot(list);
     }
     else
@@ -398,7 +398,7 @@ void mads_list_remove_at(mads_list_t *list, const unsigned long long int positio
         // Set previous and next of old_node to NULL as it is removed from the list
         old_node->previous = old_node->next = NULL;
 
-        // if a destroy function was provided use it to properly free the data held by the node
+        // if a destroy function was provided, use it to properly free the data held by the node
         if (list->destroy != NULL)
         {
             list->destroy(old_node->data);
@@ -440,7 +440,7 @@ void mads_list_print(const mads_list_t *list)
     // If the list is not empty, begin the output with an opening bracket
     printf("[ ");
 
-    // Traverse the list by following `next` pointers, until we reach a NULL pointer indicating the end of the list
+    // Traverse the list by following `next` pointers until we reach a NULL pointer indicating the end of the list
     while (current_node != NULL)
     {
         // Print the data of the current node using the print function provided in `list`
@@ -459,27 +459,27 @@ void mads_list_print(const mads_list_t *list)
 }
 
 
-// The function `mads_list_free` is used to deallocate memory and cleanup
+// The function `mads_list_free` is used to deallocate memory and clean up
 // the data if a cleanup function is provided
-void mads_list_free(mads_list_t *list)
+void mads_list_free(mads_list_t **list)
 {
     // Declare pointers to nodes for traversal and cleanup
     mads_llnode_t *old_node = NULL, *next_node = NULL;
 
     // Assert that the given list is not NULL
-    assert(list!=NULL);
+    assert((*list) != NULL);
 
-    // Start traversing from head of the list
-    next_node = list->head;
+    // Start traversing from the head of the list
+    next_node = (*list)->head;
 
     // Traverse the list as long as there are elements
     while (next_node != NULL)
     {
         // If a destroy function is provided in the list structure
-        if (list->destroy != NULL)
+        if ((*list)->destroy != NULL)
         {
-            // Use it to cleanup the data of the node
-            list->destroy(next_node->data);
+            // Use it to clean up the data of the node
+            (*list)->destroy(next_node->data);
 
             // After cleaning, ensure that we set it to NULL
             next_node->data = NULL;
@@ -494,23 +494,23 @@ void mads_list_free(mads_list_t *list)
         // Free the memory of the old node
         free(old_node);
 
-        // Set our reference to old node to NULL for safety
+        // Set our reference to the old node to NULL for safety
         old_node = NULL;
     }
 
     // Getting here means we have cleaned up all nodes, so clean up the list itself
     old_node = NULL; // for safety although not much effect as old_node will go out of scope
-    free(list);
+    free(*list);
 
-    // For safety set list pointer to NULL to prevent it from being a dangling pointer
-    list = NULL;
+    // For safety set a list pointer to NULL to prevent it from being a dangling pointer
+    *list = NULL;
 }
 
 
 // The function returns the size of the list.
 unsigned long long int mads_list_size(const mads_list_t *list)
 {
-    assert(list!=NULL);
+    assert(list != NULL);
     return (list->size);
 }
 
@@ -522,7 +522,7 @@ unsigned long long int mads_list_size(const mads_list_t *list)
 // Assert is used here to ensure that the list pointer provided is not NULL.
 int mads_list_is_empty(const mads_list_t *list)
 {
-    assert(list!=NULL);
+    assert(list != NULL);
     return (list->size == 0 ? 1 : 0);
 }
 
@@ -531,7 +531,7 @@ int mads_list_has_elem(const mads_list_t *list, const void *item)
 {
     unsigned long long int step = 0;
     const mads_llnode_t *next_node = NULL;
-    assert(list!=NULL);
+    assert(list != NULL);
     next_node = list->head;
 
     // The function goes through each node in the list by following the `next` links.
@@ -544,7 +544,7 @@ int mads_list_has_elem(const mads_list_t *list, const void *item)
         if (result == 0)
         {
             // If a match is found, the function returns the index of the node in the list.
-            return step;
+            return step; // NOLINT(*-narrowing-conversions)
         }
 
         step++;

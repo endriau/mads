@@ -4,6 +4,7 @@
 // ReSharper disable CppRedundantElseKeyword
 
 
+// ReSharper disable CppDFANullDereference
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -47,7 +48,7 @@ static void hash_table_deallocate_pair(void *p)
 static double hash_table_load_factor(mads_hash_table_t *t)
 {
     assert(t != NULL);
-    const double lf = (double)(t->n) / (t->size);
+    const double lf = (double)t->n / t->size;
     t->load_factor = lf;
     return lf;
 }
@@ -138,7 +139,7 @@ static void hash_table_rehash(mads_hash_table_t *t)
                 mads_list_remove_head(temp_list);
             }
 
-            mads_list_free(temp_list);
+            mads_list_free(&temp_list);
         }
         else if (t->chain_type == MADS_HASH_TABLE_CHAIN_TREE)
         {
@@ -171,7 +172,6 @@ static void hash_table_rehash(mads_hash_table_t *t)
 
 mads_hash_table_t *mads_hash_table_create(const mads_hash_table_hash_fn hash, const int chain_type)
 {
-
     mads_hash_table_t *new_table = NULL;
     assert(hash != NULL);
     assert(chain_type == MADS_HASH_TABLE_CHAIN_LIST || chain_type == MADS_HASH_TABLE_CHAIN_TREE);
@@ -379,7 +379,8 @@ void mads_hash_table_free(mads_hash_table_t **t)
     {
         if ((*t)->chain_type == MADS_HASH_TABLE_CHAIN_LIST)
         {
-            mads_list_free((*t)->A[i]);
+
+            mads_list_free((mads_list_t **)&(*t)->A[i]);
         }
         else if ((*t)->chain_type == MADS_HASH_TABLE_CHAIN_TREE)
         {
@@ -387,8 +388,7 @@ void mads_hash_table_free(mads_hash_table_t **t)
         }
     }
 
-    free((*t)->A);
-    (*t)->A = NULL;
+    free((*t)->A); (*t)->A = NULL;
     mads_uni_hash_free((*t)->hfunc);
     (*t)->hfunc = NULL;
     free(*t); *t = NULL;

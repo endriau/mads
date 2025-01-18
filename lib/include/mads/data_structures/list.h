@@ -5,7 +5,7 @@
  * @file list.h
  * @brief This file contains the API definitions for the MADS Double Linked List data structure.
  * The MADS Linked List data structure implementation in this file supports operations for creation, insertion, removal,
- * accessing list elements and some additional functionality. It also supports custom comparison, print and destruction
+ * accessing list elements, and some additional functionality. It also supports custom comparison, print, and destruction
  * functionality passed as function pointers.
  */
 
@@ -21,7 +21,7 @@ extern "C" {
 #include <mads_export.h>
 
 /**
- * @brief Compare function type.
+ * @brief Comparator function.
  * @details This type is used to pass a function to compare two list elements. This function pointer is used while maintaining
  *          the ordering or while checking for the existence of an element in the list.
  * @param [in] GenericPointer to the first element.
@@ -40,14 +40,14 @@ typedef int (*mads_list_comparator_fn)(const void *, const void *);
 typedef void (*mads_list_printer_fn)(const void *);
 
 /**
- * @brief Destroy function type.
+ * @brief Destructor function.
  * @details This type is used to pass a function to destroy/free a list element.
  *          This function is used while implementing the destroy list functionality.
  * @param [in] GenericPointer to the element.
  */
 typedef void (*mads_list_destructor_fn)(void *);
 
-// Forward declaration for Linked list node type
+// Forward declaration for a linked list node type
 typedef struct mads_llnode mads_llnode_t;
 
 /**
@@ -78,10 +78,10 @@ typedef struct
 * @brief Creates a doubly linked list
 * @details This function creates a new doubly linked list and initializes its attributes.
 * The compare, print, and destroy function pointers are set to the provided input functions.
-* The size is initialized to 0 and head and foot pointers are set to NULL.
-* @param [in] comparator User provided function pointer for comparing two list elements
-* @param [in] printer User provided function pointer for printing an element of the list
-* @param [in] destructor User provided function pointer to free or delete an element of the list
+* The size is initialized to 0, and head and foot pointers are set to NULL.
+* @param [in] comparator User provided a function pointer for comparing two list elements
+* @param [in] printer User provided a function pointer for printing an element of the list
+* @param [in] destructor User provided a function pointer to free or delete an element of the list
 * @return Pointer to the newly created list
 */
 MADS_EXPORT mads_list_t *mads_list_create(mads_list_comparator_fn comparator, mads_list_printer_fn printer, mads_list_destructor_fn destructor);
@@ -102,7 +102,7 @@ MADS_EXPORT void mads_list_push(mads_list_t *list, void *data);
 * After freeing all nodes, it frees the list itself.
 * @param [in] list The list to be freed
 */
-MADS_EXPORT void mads_list_free(mads_list_t *list);
+MADS_EXPORT void mads_list_free(mads_list_t **list);
 
 
 /**
@@ -152,7 +152,7 @@ MADS_EXPORT void *mads_list_get_at(const mads_list_t *list, unsigned long long i
 
 /**
 * @brief This function removes the head node from the list.
-* @details This function takes in a list, removes the head node and adjusts the `head` pointer to point at the next node.
+* @details This function takes in a list, removes the head node, and adjusts the `head` pointer to point at the next node.
 * @param list The list from which to remove the head.
 * @return void
 */
@@ -160,7 +160,7 @@ MADS_EXPORT void mads_list_remove_head(mads_list_t *list);
 
 /**
 * @brief This function removes the foot node from the list.
-* @details This function takes in a list, removes the last node and adjusts the `foot` pointer to point at the previous node.
+* @details This function takes in a list, removes the last node, and adjusts the `foot` pointer to point at the previous node.
 * @param list The list from which to remove the foot.
 * @return void
 */
@@ -170,7 +170,7 @@ MADS_EXPORT void mads_list_remove_foot(mads_list_t *list);
 /**
 * @brief This function removes an element from the list at the given position.
 * @details This function takes in the list and the position as inputs. It navigates to the given position on
-*          the list, removes the corresponding node and adjusts the `next` and `previous` pointers of the adjacent nodes.
+*          the list, removes the corresponding node, and adjusts the `next` and `previous` pointers of the adjacent nodes.
 * @param list The list from which to remove the node.
 * @param position The specified position in the list where the node is located.
 * @return void
@@ -202,7 +202,7 @@ MADS_EXPORT int mads_list_is_empty(const mads_list_t *list);
 * @brief This function checks if a specific element exists in the list.
 * @param list The list to check.
 * @param item The item to search for.
-* @return 1 if the item exists in the list, 0 otherwise.
+* @return One if the item exists in the list, zerp otherwise.
 */
 MADS_EXPORT int mads_list_has_elem(const mads_list_t *list, const void *item);
 
