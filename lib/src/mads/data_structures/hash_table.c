@@ -391,5 +391,6 @@ void mads_hash_table_free(mads_hash_table_t **t)
     free((*t)->A); (*t)->A = NULL;
     mads_uni_hash_free((*t)->hfunc);
     (*t)->hfunc = NULL;
-    free(*t); *t = NULL;
+    free(*t);
+    *t = NULL;
 }

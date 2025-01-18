@@ -3,7 +3,7 @@
 /**
  * @file pair.h
  * @brief The file contains API definitions for the MADS pair data structure.
- * The pair implementation is comprised of two fields, a cue and a value component.
+ * The pair implementation comprises two fields, a cue and a value component.
  * The implementation for each in this file supports operations for creation, get
  * and set functions. It also supports custom comparison, print and destruction
  * functionality passed as function pointers.
