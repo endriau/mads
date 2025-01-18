@@ -40,7 +40,7 @@ static void hash_table_deallocate_pair(void *p)
 {
     mads_pair_t *pair = NULL;
     pair = (mads_pair_t *)p;
-    mads_pair_free(pair);
+    mads_pair_free(&pair);
     pair = NULL;
 }
 

@@ -64,20 +64,19 @@ void mads_cue_print(const mads_cue_t *k)
 }
 
 // Function to free the memory associated with a mads_cue_t object
-void mads_cue_free(mads_cue_t *k)
+void mads_cue_free(mads_cue_t **k)
 {
     // Check to ensure that the object is not null
-    assert(k != NULL);
+    assert((*k) != NULL);
 
     // Run the destroy function if it exists
-    if (k->destructor != NULL) { k->destructor(k->cue); }
+    if ((*k)->destructor != NULL) { (*k)->destructor((*k)->cue); }
 
     // Clear function pointers and free memory
-    k->comparator = NULL;
-    k->printer = NULL;
-    k->destructor = NULL;
-    free(k);
-    k = NULL;
+    (*k)->comparator = NULL;
+    (*k)->printer = NULL;
+    (*k)->destructor = NULL;
+    free(*k); *k = NULL;
 }
 
 
@@ -142,31 +141,31 @@ void mads_value_print(const mads_value_t *v)
 }
 
 // Function to free the memory occupied by mads_value_t and its value
-void mads_value_free(mads_value_t *v)
+void mads_value_free(mads_value_t **v)
 {
     // Ensure that the mads_value_t object is not null
-    assert(v != NULL);
+    assert((*v) != NULL);
 
-    // Invoke the destroy function in mads_value_t when such function exists
-    if (v->destructor != NULL) { v->destructor(v->value); }
+    // Invoke the destroy function in mads_value_t when such a function exists
+    if ((*v)->destructor != NULL) { (*v)->destructor((*v)->value); }
 
     // Clear all function pointers
-    v->comparator = NULL;
-    v->printer = NULL;
-    v->destructor = NULL;
+    (*v)->comparator = NULL;
+    (*v)->printer = NULL;
+    (*v)->destructor = NULL;
 
     // Free the memory occupied by the mads_value_t object itself
-    free(v);
+    free(*v);
 
     // Nullify the pointer
-    v = NULL;
+    *v = NULL;
 }
 
 
 // Function to create a key-value pair
 mads_pair_t *mads_pair_create(mads_cue_t *k, mads_value_t *v)
 {
-    // Declare new pair variable
+    // Declare a new pair variable
     mads_pair_t *new_pair = NULL;
 
     // Assert that key and value pointers are not NULL
@@ -220,7 +219,7 @@ void mads_pair_change_cue(mads_pair_t *p, mads_cue_t *new_k)
     old_cue = mads_pair_get_cue(p);
 
     // Free the memory associated with the old key
-    mads_cue_free(old_cue);
+    mads_cue_free(&old_cue);
 
     // Replace the old key with the new key in the pair
     p->k = new_k;
@@ -239,7 +238,7 @@ void mads_pair_change_value(mads_pair_t *p, mads_value_t *new_v)
     old_value = mads_pair_get_value(p);
 
     // Free the memory associated with the old value
-    mads_value_free(old_value);
+    mads_value_free(&old_value);
 
     // Replace the old value with the new value in the pair
     p->v = new_v;
@@ -268,20 +267,22 @@ void mads_pair_print(const mads_pair_t *p)
 }
 
 // Function for freeing the memory associated with a key-value pair
-void mads_pair_free(mads_pair_t *p)
+void mads_pair_free(mads_pair_t **p)
 {
     // Ensure that the pair is not null
-    assert(p != NULL);
+    assert((*p) != NULL);
 
     // Free the memory associated with the value component of the pair
-    mads_value_free(mads_pair_get_value(p));
+    mads_value_t *value = mads_pair_get_value(*p);
+    mads_value_free(&value);
 
     // Free the memory associated with the key component of the pair
-    mads_cue_free(mads_pair_get_cue(p));
+    mads_cue_t *cue = mads_pair_get_cue(*p);
+    mads_cue_free(&cue);
 
     // Free the memory for the pair itself
-    free(p);
+    free(*p);
 
     // Zero out the pointer for safety
-    p = NULL;
+    *p = NULL;
 }

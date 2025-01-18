@@ -5,7 +5,7 @@
  * @brief The file contains API definitions for the MADS pair data structure.
  * The pair implementation comprises two fields, a cue and a value component.
  * The implementation for each in this file supports operations for creation, get
- * and set functions. It also supports custom comparison, print and destruction
+ * and set functions. It also supports custom comparison, print to std io, and destruction
  * functionality passed as function pointers.
  */
 
@@ -172,7 +172,7 @@ MADS_EXPORT void mads_cue_print(const mads_cue_t *k);
  *          It's important to remember that it does not deallocate the memory for the cue data itself.
  * @param [in] k - A pointer to an instance of mads_cue_t which is to be freed.
  */
-MADS_EXPORT void mads_cue_free(mads_cue_t *k);
+MADS_EXPORT void mads_cue_free(mads_cue_t **k);
 
 
 /**
@@ -187,7 +187,7 @@ MADS_EXPORT mads_value_t *mads_value_create(void *value, mads_value_comparator_f
 
 
 /**
- * @brief Function to obtain the value data from a mads_value_t object.
+ * @brief Function to retrieve the value data from a mads_value_t object.
  * @details This function takes as input a pointer to a mads_value_t object and retrieves the value it's storing.
  * @param [in] v Pointer to the mads_value_t object whose value data we want to retrieve.
  * @return Returns a void pointer that points to the value data stored in the input mads_value_t object.
@@ -197,7 +197,7 @@ MADS_EXPORT void *mads_value_get(const mads_value_t *v);
 
 /**
  * @brief This function is used to compare the value data from a mads_value_t object with the data provided.
- * @details This function calls the comparator passed during the creation of mads_value_t object for comparison.
+ * @details This function calls the comparator passed during the creation of a mads_value_t object for comparison.
  * @param [in] v - This should be a pointer to an instance of mads_value_t.
  * @param [in] data - This should be a void pointer to the data to be compared with the value data.
  * @return This function returns an integer less than, equal to, or greater than zero if the value
@@ -216,13 +216,13 @@ MADS_EXPORT void mads_value_print(const mads_value_t *v);
 /**
  * @brief This function is used to free the memory associated with a mads_value_t object.
  * @details This function not only frees the memory for the mads_value_t object but also calls
- * the destroy function, if it was provided during the creation of the mads_value_t object, to
+ * the destroy function if it was provided during the creation of the mads_value_t object, to
  * deal with the memory associated with the value data.
  * Also, it's important to note that this function does not ensure the removal of any reference to
  * the mads_value_t object in other data structures.
  * @param [in] v Is a pointer to a mads_value_t object which is to be freed.
  */
-MADS_EXPORT void mads_value_free(mads_value_t *v);
+MADS_EXPORT void mads_value_free(mads_value_t **v);
 
 
 /**
@@ -231,7 +231,7 @@ MADS_EXPORT void mads_value_free(mads_value_t *v);
  * and packages them into a mads_pair_t object. This object represents a key-value pair
  * in which mads_cue_t acts as the key and mads_value_t, as the value.
  * @param [in] k - Pointer to a mads_cue_t object that represents the key.
- * @param [in] v - Pointer to a mads_value_t object that represent the value.
+ * @param [in] v - Pointer to a mads_value_t object that represents the value.
  * @return A pointer to the newly created mads_pair_t object.
  */
 MADS_EXPORT mads_pair_t *mads_pair_create(mads_cue_t *k, mads_value_t *v);
@@ -259,7 +259,7 @@ MADS_EXPORT mads_value_t *mads_pair_get_value(const mads_pair_t *p);
  * @brief This function is used to change the cue of a mads_pair_t object.
  * @details In case the cue part of the provided pair needs to be replaced or updated,
  * this function can be used. It replaces the existing cue within the pair with the newly
- * provided cue. Note that this function does NOT free the old cue memory, you should handle
+ * provided cue. Note that this function does NOT free the old cue memory; you should handle
  * that manually if necessary.
  * @param [in] p - A pointer to a mads_pair_t object whose cue is to be changed.
  * @param [in] new_k - A pointer to a mads_cue_t object that will now act as the new cue.
@@ -271,7 +271,7 @@ MADS_EXPORT void mads_pair_change_cue(mads_pair_t *p, mads_cue_t *new_k);
  * @brief This function is used to change the value of a mads_pair_t object.
  * @details In case the value part of the provided pair needs to be replaced or updated,
  * this function can be used. It replaces the existing value within the pair with the newly
- * provided value. Note that this function does NOT free the old value memory, you should handle
+ * provided value. Note that this function does NOT free the old value memory; you should handle
  * that manually if necessary.
  * @param [in] p - A pointer to a mads_pair_t object whose value is to be changed.
  * @param [in] new_v - A pointer to a mads_value_t object that will now act as the new value.
@@ -291,13 +291,13 @@ MADS_EXPORT void mads_pair_print(const mads_pair_t *p);
 
 /**
  * @brief This function is used to deallocate the memory linked with a mads_pair_t object.
- * @details This function not only frees the memory allocated for the mads_pair_t object, but
+ * @details This function not only frees the memory allocated for the mads_pair_t object but
  * also calls the destruction functions for mads_cue_t and mads_value_t, if present during the
  * creation of these structures. Please note that this function does not ensure the removal of
  * any reference to the mads_pair_t object in other data structures.
  * @param [in] p - A pointer to the mads_pair_t object which is to be freed.
  */
-MADS_EXPORT void mads_pair_free(mads_pair_t *p);
+MADS_EXPORT void mads_pair_free(mads_pair_t **p);
 
 
 #ifdef __cplusplus
