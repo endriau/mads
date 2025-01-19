@@ -2,12 +2,12 @@
 
 /**
  * @file sort.h
- * @brief Contains prototypes for different sorting algorithms i.e. QuickSort, MergeSort, and InsertionSort.
+ * @brief Contains prototypes for different sorting algorithms i.e., QuickSort, MergeSort, and InsertionSort.
  * It also includes utility macros and a check function for array sorting validation.
  *
  * The sorting algorithms provide both iterative and recursive variants where applicable.
  * These algorithms operate on arrays of generic pointers and use a comparison function to determine the sorting order.
- * The actual comparison function must be provided by the caller.
+ * The caller must provide the actual comparison function.
  */
 
 
