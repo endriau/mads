@@ -112,6 +112,12 @@ MADS_EXPORT void mads_hash_table_change_value(const mads_hash_table_t *t, void *
 
 
 /**
+ * @brief Function to clear the hash table.
+ * @param[in,out] t Hash table data structure to be cleared.
+ */
+MADS_EXPORT void mads_hash_table_clear(mads_hash_table_t *t);
+
+/**
  * @brief Function to print the contents of the hash table.
  * @param[in] t The hash table whose contents will be printed.
  */

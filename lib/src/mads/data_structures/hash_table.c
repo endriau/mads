@@ -2,9 +2,8 @@
 // ReSharper disable CppDFAUnreachableCode
 // ReSharper disable CppRedundantElseKeywordInsideCompoundStatement
 // ReSharper disable CppRedundantElseKeyword
-
-
 // ReSharper disable CppDFANullDereference
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -348,6 +347,11 @@ void mads_hash_table_change_value(const mads_hash_table_t *t, void *key, void *v
         new_value = mads_value_create(value, old_value->comparator, old_value->printer, old_value->destructor);
         mads_pair_change_value(returned_pair, new_value);
     }
+}
+
+void mads_hash_table_clear(mads_hash_table_t *t)
+{
+    // TODO: Implement clearing of the hash table.
 }
 
 
