@@ -160,7 +160,7 @@ static void hash_table_rehash(mads_hash_table_t *t)
         }
     }
 
-    mads_uni_hash_free(t->hfunc);
+    mads_uni_hash_free((mads_uni_hash_t **)t->hfunc);
     t->hfunc = new_h;
     old_array = t->A;
     free(old_array);
@@ -389,7 +389,7 @@ void mads_hash_table_free(mads_hash_table_t **t)
     }
 
     free((*t)->A); (*t)->A = NULL;
-    mads_uni_hash_free((*t)->hfunc);
+    mads_uni_hash_free(&(*t)->hfunc);
     (*t)->hfunc = NULL;
     free(*t);
     *t = NULL;

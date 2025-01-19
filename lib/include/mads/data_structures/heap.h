@@ -1,6 +1,4 @@
-//
-// Created by p0int3r on 6/13/21.
-//
+
 
 #ifndef MADS_DATA_STRUCTURES_HEAP_H
 #define MADS_DATA_STRUCTURES_HEAP_H

@@ -13,12 +13,12 @@ static int uni_hash_is_prime(const unsigned long long int n)
 {
     int isprime = 1; // Initially assume n is prime
 
-    if (n < 2) { return 0; } // Any number less than 2 is not a prime
+    if (n < 2) { return 0; } // Any number less than 2 is not prime
 
     // Check for factors from 2 up to the square root of n
     for (unsigned long long int divisor = 2; divisor * divisor <= n; divisor++)
     {
-        if (n % divisor == 0) // If n is divisible by any divisor, it is not a prime
+        if (n % divisor == 0) // If n is divisible by any divisor, it is not prime
         {
             isprime = 0;
             break;
@@ -56,10 +56,12 @@ mads_uni_hash_t *mads_uni_hash_create(const unsigned long long int ts, const uns
     h->kvalue = k; // Set the k value
     h->tabsize = ts; // Set the table size
 
-    h->values = (unsigned long long int *)malloc(k * sizeof(unsigned long long int)); // Allocate memory for the values array
+    // Allocate memory for the values' array
+    h->values = (unsigned long long int *)malloc(k * sizeof(unsigned long long int));
+
     assert(h->values != NULL); // Ensure allocation was successful
 
-    // Populate the values array with prime numbers
+    // Populate the values' array with prime numbers
     for (unsigned long long int i = 0; i < k; i++)
     {
         h->values[i] = uni_hash_next_prime(ts + mads_genrand64_int64() % ts);
@@ -68,11 +70,11 @@ mads_uni_hash_t *mads_uni_hash_create(const unsigned long long int ts, const uns
     return h; // Return the newly created hash structure
 }
 
-// Retrieves the values array from the given hash structure
+// Retrieves the values' array from the given hash structure
 unsigned long long int *mads_uni_hash_get_values(const mads_uni_hash_t *h)
 {
     assert(h != NULL); // Ensure the hash structure is not NULL
-    return h->values; // Return the values array
+    return h->values; // Return the values' array
 }
 
 // Retrieves the table size from the given hash structure
@@ -95,7 +97,7 @@ void mads_uni_hash_print(const mads_uni_hash_t *h)
     assert(h != NULL); // Ensure the hash structure is not NULL
     printf("table_size=%llu, k=%llu, values=[ ", h->tabsize, h->kvalue); // Print table size and k value
 
-    // Print each value in the values array
+    // Print each value in the values' array
     for (unsigned long long int i = 0; i < h->kvalue; i++)
     {
         printf("%llu, ", h->values[i]);
@@ -105,16 +107,16 @@ void mads_uni_hash_print(const mads_uni_hash_t *h)
 }
 
 // Frees the memory allocated for the given hash structure
-void mads_uni_hash_free(mads_uni_hash_t *h)
+void mads_uni_hash_free(mads_uni_hash_t **h)
 {
-    assert(h != NULL); // Ensure the hash structure is not NULL
+    assert((*h) != NULL); // Ensure the hash structure is not NULL
 
-    h->kvalue = 0; // Reset the k value
-    h->tabsize = 0; // Reset the table size
+    (*h)->kvalue = 0; // Reset the k value
+    (*h)->tabsize = 0; // Reset the table size
 
-    free(h->values); // Free the memory allocated for the values array
-    h->values = NULL; // Set values to NULL
+    free((*h)->values); // Free the memory allocated for the values' array
+    (*h)->values = NULL; // Set values to NULL
 
-    free(h); // Free the memory allocated for the hash structure
-    h = NULL; // Set the pointer to NULL
+    free(*h); // Free the memory allocated for the hash structure
+    *h = NULL; // Set the pointer to NULL
 }

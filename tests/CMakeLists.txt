@@ -14,7 +14,7 @@ add_cmocka_test(sort_test
 # Unit testing for array.h data structure.
 add_cmocka_test(array_test
     SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mads/data_structures/array_test.c"
-    COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
+    COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS} "-fno-strict-aliasing"
     LINK_OPTIONS ${DEFAULT_LINK_OPTIONS}
     LINK_LIBRARIES ${CMOCKA_LIBRARY} mads)
 

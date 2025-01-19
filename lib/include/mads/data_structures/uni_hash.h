@@ -69,9 +69,9 @@ MADS_EXPORT void mads_uni_hash_print(const mads_uni_hash_t *h);
 
 /**
  * @brief This function is used to free the memory allocated for the mads_uni_hash_t object.
- * @param [in] h - A pointer to the mads_uni_hash_t object to be freed.
+ * @param [in] h - The mads_uni_hash_t object to be freed.
  */
-MADS_EXPORT void mads_uni_hash_free(mads_uni_hash_t *h);
+MADS_EXPORT void mads_uni_hash_free(mads_uni_hash_t **h);
 
 
 #ifdef __cplusplus
