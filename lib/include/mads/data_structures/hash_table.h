@@ -55,7 +55,7 @@ typedef unsigned long long int (*mads_hash_table_hash_fn)(const mads_uni_hash_t 
 typedef struct
 {
     void **A; ///< @brief Pointers to memory blocks holding hash table elements.
-    int chain_type; ///< @brief The type of separate chaining method (linked list or tree).
+    int chain_type; ///< @brief The type of the separate chaining method (linked list or tree).
     unsigned long long int n; ///< @brief The number of elements in the hash table.
     unsigned long long int size; ///< @brief The current memory size of the hash table.
     double load_factor; ///< @brief the load factor of the hash table.
@@ -67,7 +67,7 @@ typedef struct
 /**
  * @brief Function to create a new hash table.
  * @param[in] hash The hashing function for the key element.
- * @param[in] chain_type The type of separate chaining method.
+ * @param[in] chain_type The type of the separate chaining method.
  * @return Pointer to created hash table.
  */
 MADS_EXPORT mads_hash_table_t *mads_hash_table_create(mads_hash_table_hash_fn hash, int chain_type);

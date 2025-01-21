@@ -4,15 +4,25 @@
 // ReSharper disable CppRedundantElseKeyword
 // ReSharper disable CppDFANullDereference
 
+
+// Including the necessary libraries.
+// Stdio.h is included for input/output operations.
+// Stdlib.h is included for dynamic memory allocation.
+// Assert.h is included to provide a macro called assert() which can be used to verify assumptions made by the program
+// and print a diagnostic message if this assumption is false.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
+// Including the header files for the doubly linked list,
+// the balanced binary tree and the hash table.
 #include <mads/data_structures/list.h>
 #include <mads/data_structures/avl_tree.h>
 #include <mads/data_structures/hash_table.h>
 
 
+// Comparator function for the pair data structure of the hash table.
 static int hash_table_compare_pairs(const void *p1, const void *p2)
 {
     const mads_pair_t *pp1 = NULL;
@@ -27,6 +37,7 @@ static int hash_table_compare_pairs(const void *p1, const void *p2)
 }
 
 
+// Printer function for the pair data structure of the hash table.
 static void hash_table_print_pair(const void *p)
 {
     const mads_pair_t *pair = NULL;
@@ -34,7 +45,7 @@ static void hash_table_print_pair(const void *p)
     mads_pair_print(pair);
 }
 
-
+// Destructor function for the pair data structure of the hash table.
 static void hash_table_deallocate_pair(void *p)
 {
     mads_pair_t *pair = NULL;
@@ -44,6 +55,12 @@ static void hash_table_deallocate_pair(void *p)
 }
 
 
+// Static function that computes the load factor of the hash table.
+// The load factor is computed as:
+//
+//      lf = n / size
+//
+// The number of current elements divided by the current size of the hash table.
 static double hash_table_load_factor(mads_hash_table_t *t)
 {
     assert(t != NULL);
@@ -52,12 +69,22 @@ static double hash_table_load_factor(mads_hash_table_t *t)
     return lf;
 }
 
-
+// Static function that takes an integer and determines whether
+// it is a prime number or not. Brute force algorithm. It returns
+// one if the given number is prime or zero otherwise.
 static int hash_table_is_prime(const unsigned long long int n)
 {
     unsigned long long int isprime = 1;
+
+    // If n is less than two, then it is not a prime number.
     if (n < 2) { return 0; }
 
+    // The code uses the condition divisor * divisor <= n in the for loop instead
+    // of iterating up to n. This dramatically reduces the range of numbers to check
+    // for divisors. Here's why this works, if n is divisible by any number d where
+    // d > sqrt(n) then n must also be divisible by a corresponding number d' such
+    // that d' <= sqrt(n) because d * d' = n, this means testing for divisors only
+    // up to sqrt(n) is mathematically sufficient to decide primality for n.
     for (unsigned long long int divisor = 2; divisor * divisor <= n; divisor++)
     {
         if (n % divisor == 0)
@@ -70,12 +97,13 @@ static int hash_table_is_prime(const unsigned long long int n)
     return isprime;
 }
 
-
+// Static function that computes the next prime after the given number.
 static unsigned long long int hash_table_next_prime(const unsigned long long int n)
 {
     assert(n != 0);
     unsigned long long int step = n + 1;
 
+    // Use the above-optimized function to query for primality.
     while (hash_table_is_prime(step) == 0)
     {
         step++;
@@ -174,10 +202,13 @@ mads_hash_table_t *mads_hash_table_create(const mads_hash_table_hash_fn hash, co
     mads_hash_table_t *new_table = NULL;
     assert(hash != NULL);
     assert(chain_type == MADS_HASH_TABLE_CHAIN_LIST || chain_type == MADS_HASH_TABLE_CHAIN_TREE);
+
     new_table = (mads_hash_table_t *)malloc(sizeof(*new_table));
     assert(new_table != NULL);
+
     new_table->A = (void **)malloc(MADS_HASH_TABLE_INITIAL_SIZE * sizeof(void *));
     assert(new_table->A != NULL);
+
     new_table->chain_type = chain_type;
 
     for (unsigned long long int i = 0; i < MADS_HASH_TABLE_INITIAL_SIZE; i++)
@@ -383,7 +414,6 @@ void mads_hash_table_free(mads_hash_table_t **t)
     {
         if ((*t)->chain_type == MADS_HASH_TABLE_CHAIN_LIST)
         {
-
             mads_list_free((mads_list_t **)&(*t)->A[i]);
         }
         else if ((*t)->chain_type == MADS_HASH_TABLE_CHAIN_TREE)
@@ -392,7 +422,8 @@ void mads_hash_table_free(mads_hash_table_t **t)
         }
     }
 
-    free((*t)->A); (*t)->A = NULL;
+    free((*t)->A);
+    (*t)->A = NULL;
     mads_uni_hash_free(&(*t)->hfunc);
     (*t)->hfunc = NULL;
     free(*t);
