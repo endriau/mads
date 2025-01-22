@@ -50,8 +50,8 @@ typedef void (*mads_array_destructor_fn)(void *);
 typedef struct
 {
     void **mblocks; ///< @brief Pointers to blocks holding array elements
-    long long int n; ///< @brief Current number of elements.
-    long long int msize; ///< @brief Maximum size of the array
+    size_t size; ///< @brief Current number of elements.
+    size_t memsize; ///< @brief Maximum memory size of the array
     mads_array_comparator_fn comparator; ///< @brief Comparator function for array elements
     mads_array_printer_fn printer; ///< @brief Printer function for array elements
     mads_array_destructor_fn destructor; ///< @brief Destructor function for array elements
@@ -94,14 +94,14 @@ MADS_EXPORT void mads_array_prepend(mads_array_t *array, void *data);
  * @param[in] index The position index where new data is to be inserted
  * @param[in] data The new data to insert
  */
-MADS_EXPORT void mads_array_insert_at(mads_array_t *array, long long int index, void *data);
+MADS_EXPORT void mads_array_insert_at(mads_array_t *array, size_t index, void *data);
 
 /**
  * @brief Function to remove data at a specific index in the array
  * @param[in,out] array The array to remove data from
  * @param[in] index The position index where data is to be removed
  */
-MADS_EXPORT void mads_array_remove_at(mads_array_t *array, long long int index);
+MADS_EXPORT void mads_array_remove_at(mads_array_t *array, size_t index);
 
 /**
  * @brief Function to set data at a specific index in the array
@@ -109,7 +109,7 @@ MADS_EXPORT void mads_array_remove_at(mads_array_t *array, long long int index);
  * @param[in] index The position index where data is to be set
  * @param[in] data The data to set
  */
-MADS_EXPORT void mads_array_set_at(const mads_array_t *array, long long int index, void *data);
+MADS_EXPORT void mads_array_set_at(const mads_array_t *array, size_t index, void *data);
 
 /**
  * @brief Function to get data at a specific index from the array
@@ -117,7 +117,7 @@ MADS_EXPORT void mads_array_set_at(const mads_array_t *array, long long int inde
  * @param[in] index The position index of wanted data
  * @return The data at the specified position or NULL if the index is invalid
 */
-MADS_EXPORT void *mads_array_get_at(const mads_array_t *array, long long int index);
+MADS_EXPORT void *mads_array_get_at(const mads_array_t *array, size_t index);
 
 /**
  * @brief Function to check if an array contains a given item
@@ -125,14 +125,14 @@ MADS_EXPORT void *mads_array_get_at(const mads_array_t *array, long long int ind
  * @param[in] item The item to find in the array
  * @return The position index of the item if found, -1 otherwise
  */
-MADS_EXPORT long long int mads_array_has_element(const mads_array_t *array, const void *item);
+MADS_EXPORT int mads_array_has_element(const mads_array_t *array, const void *item);
 
 /**
  * @brief Function to get the size of an array
  * @param[in] array The array to find the size of
  * @return The current size of the array
  */
-MADS_EXPORT long long int mads_array_size(const mads_array_t *array);
+MADS_EXPORT size_t mads_array_size(const mads_array_t *array);
 
 /**
  * @brief Function to check if an array is empty
