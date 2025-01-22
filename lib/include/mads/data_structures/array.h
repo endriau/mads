@@ -50,7 +50,7 @@ typedef void (*mads_array_destructor_fn)(void *);
 typedef struct
 {
     void **mblocks; ///< @brief Pointers to blocks holding array elements
-    long long int index; ///< @brief Current index
+    long long int n; ///< @brief Current number of elements.
     long long int msize; ///< @brief Maximum size of the array
     mads_array_comparator_fn comparator; ///< @brief Comparator function for array elements
     mads_array_printer_fn printer; ///< @brief Printer function for array elements

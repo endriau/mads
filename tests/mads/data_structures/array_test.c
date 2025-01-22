@@ -97,7 +97,7 @@ static void mads_array_create_test(void **state)
     assert_ptr_equal(integers_array->printer, integers_printer);
     assert_null(integers_array->destructor);
     assert_int_equal(integers_array->msize, 16);
-    assert_int_equal(integers_array->index, -1);
+    assert_int_equal(integers_array->n, 0);
 
     reals_array = mads_array_create(reals_comparator, reals_printer, NULL);
     assert_non_null(reals_array);
@@ -105,7 +105,7 @@ static void mads_array_create_test(void **state)
     assert_ptr_equal(reals_array->printer, reals_printer);
     assert_null(reals_array->destructor);
     assert_int_equal(reals_array->msize, 16);
-    assert_int_equal(reals_array->index, -1);
+    assert_int_equal(reals_array->n, 0);
 
     strings_array = mads_array_create(strings_comparator, strings_printer, strings_destructor);
     assert_non_null(strings_array);
@@ -113,7 +113,7 @@ static void mads_array_create_test(void **state)
     assert_ptr_equal(strings_array->printer, strings_printer);
     assert_ptr_equal(strings_array->destructor, strings_destructor);
     assert_int_equal(strings_array->msize, 16);
-    assert_int_equal(strings_array->index, -1);
+    assert_int_equal(strings_array->n, 0);
 
     mads_array_free(&integers_array);
     mads_array_free(&reals_array);
