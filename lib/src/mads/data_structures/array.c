@@ -54,6 +54,17 @@ mads_array_t *mads_array_create(const mads_array_comparator_fn comparator, const
     return new_array;
 }
 
+// Function to return the memory blocks of the array.
+void **mads_array_data(const mads_array_t *array)
+{
+    // Check if the array is not NULL. If it is, throw an assertion error.
+    assert(array != NULL);
+
+    // Return the memory blocks of the array.
+    return array->mblocks;
+}
+
+
 // The function that appends data to the array.
 void mads_array_append(mads_array_t *array, void *data)
 {

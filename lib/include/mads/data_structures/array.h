@@ -66,6 +66,14 @@ typedef struct
  */
 MADS_EXPORT mads_array_t *mads_array_create(mads_array_comparator_fn comparator, mads_array_printer_fn printer, mads_array_destructor_fn destructor);
 
+
+/**
+ * @brief Function that returns the raw memory blocks of the array.
+ * @param[in] array The array data structure
+ * @return The memory blocks of the array.
+ */
+MADS_EXPORT void **mads_array_data(const mads_array_t *array);
+
 /**
  * @brief Function to append data to an array
  * @param[in,out] array The array to append to
