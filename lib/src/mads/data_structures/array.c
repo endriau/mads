@@ -26,7 +26,7 @@ mads_array_t *mads_array_create(const mads_array_comparator_fn comparator, const
     mads_array_t *new_array = NULL;
 
     // Set the initial size for the array.
-    const long long int initial_msize = 16;
+    const size_t initial_msize = 16;
 
     // Check that both comparator and printer functions are provided. If not, throw an assertion error.
     assert(comparator != NULL && printer != NULL);
@@ -40,10 +40,10 @@ mads_array_t *mads_array_create(const mads_array_comparator_fn comparator, const
     assert(new_array->mblocks != NULL);
 
     // Set the array size as the initial size.
-    new_array->msize = initial_msize;
+    new_array->memsize = initial_msize;
 
-    // Set the initial index for the array as -1 (empty).
-    new_array->index = -1;
+    // Set the initial index for the array as 0 (empty).
+    new_array->size = 0;
 
     // Attach the comparator, printer and destructor functions to the array object.
     new_array->comparator = comparator;
@@ -54,6 +54,17 @@ mads_array_t *mads_array_create(const mads_array_comparator_fn comparator, const
     return new_array;
 }
 
+// Function to return the memory blocks of the array.
+void **mads_array_data(const mads_array_t *array)
+{
+    // Check if the array is not NULL. If it is, throw an assertion error.
+    assert(array != NULL);
+
+    // Return the memory blocks of the array.
+    return array->mblocks;
+}
+
+
 // The function that appends data to the array.
 void mads_array_append(mads_array_t *array, void *data)
 {
@@ -61,7 +72,7 @@ void mads_array_append(mads_array_t *array, void *data)
     assert(array != NULL);
 
     // Insert the data at the end of the array.
-    mads_array_insert_at(array, array->index + 1, data);
+    mads_array_insert_at(array, array->size, data);
 }
 
 // The function that prepends data to the array.
@@ -75,41 +86,41 @@ void mads_array_prepend(mads_array_t *array, void *data)
 }
 
 // The function that inserts data at a specific location in the array.
-void mads_array_insert_at(mads_array_t *array, const long long int index, void *data)
+void mads_array_insert_at(mads_array_t *array, const size_t index, void *data)
 {
     // Check if the array is not NULL. If it is, throw an assertion error.
     assert(array != NULL);
 
     // Check if the index is within the correct range. If it is not, throw an assertion error.
-    assert(index >= 0 && index <= array->index + 1);
+    assert(index >= 0 && index <= array->size);
 
     // Check if the array has reached its maximum capacity. If it has, double the size.
-    if (array->index + 1 == array->msize)
+    if (array->size == array->memsize)
     {
-        const long long int double_msize = 2 * array->msize;
+        const size_t double_msize = 2 * array->memsize;
         array->mblocks = (void **)realloc(array->mblocks, double_msize * sizeof(void *)); // NOLINT(*-suspicious-realloc-usage)
         assert(array->mblocks != NULL);
-        array->msize = double_msize;
+        array->memsize = double_msize;
     }
 
-    // Index increase for the new element.
-    array->index++;
-
     // Shift all elements to the right of the index one place to the right.
-    for (long long int i = array->index; i > index; i--) { array->mblocks[i] = array->mblocks[i - 1]; }
+    for (size_t i = array->size; i > index; i--) { array->mblocks[i] = array->mblocks[i - 1]; }
 
     // Insert the new element at the correct position.
     array->mblocks[index] = data;
+
+    // current size increase for the new element.
+    array->size++;
 }
 
 // The function that removes the data at a specific position in the array.
-void mads_array_remove_at(mads_array_t *array, const long long int index)
+void mads_array_remove_at(mads_array_t *array, const size_t index)
 {
     // Check if the array is not NULL. If it is, throw an assertion error.
     assert(array != NULL);
 
     // Check if the index is within the correct range. If it is not, throw an assertion error.
-    assert(index >= 0 && index <= array->index);
+    assert(index >= 0 && index < array->size);
 
     // If the destructor function is available, call it.
     if (array->destructor != NULL)
@@ -119,20 +130,20 @@ void mads_array_remove_at(mads_array_t *array, const long long int index)
     }
 
     // Shift all elements to the right of the index one place to the left.
-    for (long long int i = index; i < array->index; i++) { array->mblocks[i] = array->mblocks[i + 1]; }
+    for (size_t i = index; i < array->size - 1; i++) { array->mblocks[i] = array->mblocks[i + 1]; }
 
     // Index decrease after the deletion.
-    array->index--;
+    array->size--;
 }
 
 // The function that updates the data at a specific position in the array.
-void mads_array_set_at(const mads_array_t *array, const long long int index, void *data)
+void mads_array_set_at(const mads_array_t *array, const size_t index, void *data)
 {
     // Check if the array is not NULL. If it is, throw an assertion error.
     assert(array != NULL);
 
     // Check if the index is within the correct range. If it is not, throw an assertion error.
-    assert(index >= 0 && index <= array->index);
+    assert(index >= 0 && index < array->size);
 
     // If the destructor function is available, free the old data
     if (array->destructor != NULL) { array->destructor(array->mblocks[index]); }
@@ -142,26 +153,26 @@ void mads_array_set_at(const mads_array_t *array, const long long int index, voi
 }
 
 // The function that retrieves data from a specific position in the array.
-void *mads_array_get_at(const mads_array_t *array, const long long int index)
+void *mads_array_get_at(const mads_array_t *array, const size_t index)
 {
     // Check if the array is not NULL. If it is, throw an assertion error.
     assert(array != NULL);
 
     // Check if the index is within the correct range. If it is not, throw an assertion error.
-    assert(index >= 0 && index <= array->index);
+    assert(index >= 0 && index < array->size);
 
     // Return the data at the requested index.
     return array->mblocks[index];
 }
 
 // The function that searches for an item in the array and returns the index it was found at. If not found, it returns -1.
-long long int mads_array_has_element(const mads_array_t *array, const void *item)
+int mads_array_has_element(const mads_array_t *array, const void *item)
 {
     // Check if the array is not NULL. If it is, throw an assertion error.
     assert(array != NULL);
 
     // Iterate over the array and use the comparator function to check if the item is in the array.
-    for (long long int i = 0; i <= array->index; i++)
+    for (size_t i = 0; i < array->size; i++)
     {
         const int result = array->comparator(array->mblocks[i], item);
         if (result == 0) { return i; }
@@ -172,13 +183,13 @@ long long int mads_array_has_element(const mads_array_t *array, const void *item
 }
 
 // The function that returns the current size of the array.
-long long int mads_array_size(const mads_array_t *array)
+size_t mads_array_size(const mads_array_t *array)
 {
     // Check if the array is not NULL. If it is, throw an assertion error.
     assert(array != NULL);
 
     // Return the current size of the array.
-    return (array->index + 1);
+    return array->size;
 }
 
 // The function that checks if the array is empty.
@@ -188,7 +199,7 @@ int mads_array_is_empty(const mads_array_t *array)
     assert(array != NULL);
 
     // Check if the index is -1. If it is, return 1 indicating the array is empty. Otherwise, return 0.
-    return (array->index == -1 ? 1 : 0);
+    return (array->size == 0 ? 1 : 0);
 }
 
 // The function that clears the array by removing all elements.
@@ -200,15 +211,15 @@ void mads_array_clear(mads_array_t *array)
     // If the destructor function is available, iterate over the array and free all elements using the destructor.
     if (array->destructor != NULL)
     {
-        for (long long int i = 0; i <= array->index; i++)
+        for (size_t i = 0; i < array->size; i++)
         {
             array->destructor(array->mblocks[i]);
             array->mblocks[i] = NULL;
         }
     }
 
-    // Set the array's index to -1 (empty).
-    array->index = -1;
+    // Set the array's index to zero (empty).
+    array->size = 0;
 }
 
 // The function that prints all items in the array.
@@ -226,7 +237,7 @@ void mads_array_print(const mads_array_t *array)
 
     // Print the items in the array using the printer function.
     printf("[ ");
-    for (long long int i = 0; i <= array->index; i++)
+    for (size_t i = 0; i < array->size; i++)
     {
         array->printer(array->mblocks[i]);
         printf(", ");
@@ -243,7 +254,7 @@ void mads_array_free(mads_array_t **array)
     // If the destructor function is available, iterate over the array and free all elements using the destructor.
     if ((*array)->destructor != NULL)
     {
-        for (long long int i = 0; i <= (*array)->index; i++)
+        for (size_t i = 0; i < (*array)->size; i++)
         {
             (*array)->destructor((*array)->mblocks[i]);
             (*array)->mblocks[i] = NULL;
