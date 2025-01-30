@@ -11,6 +11,7 @@ typedef void (*mads_slot_fn)(void *context, void *data);
 
 typedef struct
 {
+    int blocked;
     void *context;
     mads_slot_fn function;
 } mads_slot_t;

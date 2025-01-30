@@ -11,6 +11,7 @@ mads_slot_t *mads_slot_create(void *context, const mads_slot_fn function)
     assert(context != NULL && function != NULL);
     mads_slot_t *slot = (mads_slot_t *)malloc(sizeof(mads_slot_t));
     assert(slot != NULL);
+    slot->blocked = 0;
     slot->context = context;
     slot->function = function;
     return slot;

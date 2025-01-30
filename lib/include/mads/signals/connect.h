@@ -12,6 +12,10 @@ extern "C" {
 
 MADS_EXPORT void mads_connect(void *context, mads_signal_t *signal, mads_slot_fn function);
 MADS_EXPORT void mads_disconnect(const void *context, mads_signal_t *signal, mads_slot_fn function);
+MADS_EXPORT void mads_block_all(const void *context, mads_signal_t *signal);
+MADS_EXPORT void mads_unblock_all(const void *context, mads_signal_t *signal);
+MADS_EXPORT void mads_block(const void *context, mads_signal_t *signal, mads_slot_fn function);
+MADS_EXPORT void mads_unblock(const void *context, mads_signal_t *signal, mads_slot_fn function);
 MADS_EXPORT void mads_emit(mads_signal_t *signal, void *data);
 
 #ifdef __cplusplus
