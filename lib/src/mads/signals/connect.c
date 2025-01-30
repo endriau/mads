@@ -17,7 +17,7 @@ void mads_connect(void *context, mads_signal_t *signal, const mads_slot_fn funct
 }
 
 
-void mads_disconnect(const void *context, mads_signal_t *signal, mads_slot_fn function)
+void mads_disconnect(const void *context, mads_signal_t *signal, const mads_slot_fn function)
 {
     assert(context != NULL && signal != NULL && function != NULL);
 
